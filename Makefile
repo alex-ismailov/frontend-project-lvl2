@@ -6,3 +6,6 @@ publish:
 
 logs:
 	git log --oneline --decorate --graph --all
+
+lint:
+	npx eslint src/
