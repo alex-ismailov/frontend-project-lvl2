@@ -1,15 +1,24 @@
 name: hexlet-check
 
 on:
-  push:
-    branches:
-      - main
+  - push
+  - pull_request
+  
 
 jobs:
-  build:
+  testing:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Hexlet project check
-        uses: hexlet/project-action@release
+      - name: git clone 
+        uses: actions/checkout@v2 frontend-project-lvl2 repository
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: make install
+      - name: Run linter
+        uses: make lint
