@@ -1,6 +1,6 @@
 # Difference calculator
 
-![tiranozavr](https://github.com/alex-ismailov/git-imgs/blob/master/tiranozavr-left-right-without-bg.png)
+![tiranozavr](https://github.com/alex-ismailov/git-imgs/blob/master/tiranozavr-left-right-without-bg-500x294.png)
 
 Difference calculator a program that determines the difference between two data structures.
 
