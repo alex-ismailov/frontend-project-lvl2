@@ -8,7 +8,7 @@ logs:
 	git log --oneline --decorate --graph --all
 
 lint:
-	npx eslint src/
+	npx eslint .
 
 lint-fix:
 	npx eslint --fix src/
