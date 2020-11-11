@@ -6,4 +6,4 @@
     'airbnb-base'
   
   rules:
-    import/extensios: 0
+    import/extensions: 0
