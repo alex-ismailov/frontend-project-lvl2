@@ -33,7 +33,7 @@ const calculateDiffOnStrings = (data1, data2) => {
   return res;
 };
 
-const app = (filePath1, filePath2) => {
+export default (filePath1, filePath2) => {
   // TODO: Программа должна уметь работать как с относительными, так и абсолютными путями до файлов (полезные функции: path.resolve() и process.cwd()).
   const rawData1 = readFile(filePath1);
   const rawData2 = readFile(filePath2);
@@ -48,8 +48,6 @@ const app = (filePath1, filePath2) => {
 
   return diff1;
 };
-
-export default app;
 
 /* ********* my tests ************** */
 // const file1Path = 'myTests/file1.json';
