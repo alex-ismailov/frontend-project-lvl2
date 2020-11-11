@@ -34,6 +34,7 @@ const calculateDiffOnStrings = (data1, data2) => {
 };
 
 const app = (filePath1, filePath2) => {
+  // TODO: Программа должна уметь работать как с относительными, так и абсолютными путями до файлов (полезные функции: path.resolve() и process.cwd()).
   const rawData1 = readFile(filePath1);
   const rawData2 = readFile(filePath2);
 
