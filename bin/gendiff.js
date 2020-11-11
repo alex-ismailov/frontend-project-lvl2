@@ -3,7 +3,7 @@
 import commander from 'commander';
 import app from '../src/index.js';
 
-const argv = process.argv;
+const { argv } = process;
 
 commander
   .arguments('<filepath1> <filepath2>')
