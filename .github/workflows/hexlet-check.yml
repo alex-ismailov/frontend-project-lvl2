@@ -19,6 +19,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: make install
+        run: make i
       - name: Run linter
         run: make lint
