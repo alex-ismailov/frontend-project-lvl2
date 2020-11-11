@@ -12,8 +12,8 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - name: git clone 
-        uses: actions/checkout@v2 frontend-project-lvl2 repository
+      - name: git clone frontend-project-lvl2 repository
+        uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -21,4 +21,4 @@ jobs:
       - name: Install dependencies
         run: make install
       - name: Run linter
-        uses: make lint
+        run: make lint
