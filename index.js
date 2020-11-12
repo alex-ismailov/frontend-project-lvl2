@@ -18,4 +18,3 @@ export default (args) => {
 
   return differ(fullPath1, fullPath2);
 };
-// /home/smile/code/frontend-project-lvl2/test-data/file1.json
