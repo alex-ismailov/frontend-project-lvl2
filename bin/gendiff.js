@@ -13,5 +13,3 @@ commander
   .action((filepath1, filepath2) => console.log(app(filepath1, filepath2)));
 
 commander.parse(argv);
-
-console.log(app(argv));
