@@ -1,4 +1,4 @@
-import differ from './src/differ.js';
+/* eslint-disable import/order */
 
 import path from 'path';
 
