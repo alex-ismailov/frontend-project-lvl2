@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import commander from 'commander';
-import app from '../src/index.js';
+import app from '../index.js';
 
 const { argv } = process;
 
