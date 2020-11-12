@@ -8,9 +8,8 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default (args) => {
-  const [file1Path, file2Path] = args.slice(2);
 
+export default (file1Path, file2Path) => {
   // TODO: Кому делигоровать обработку относительных и абсолютных путей?
   // оставить ее в index.js или перенести в src/differ.js?
   const fullPath1 = path.resolve(__dirname, file1Path);
