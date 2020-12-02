@@ -1,8 +1,10 @@
 import fs from 'fs';
 
 const readFile = (filePath) => {
-  const fullFilePath = path.resolve(process.cwd(), filePath);
-  const data = fs.readFileSync(fullFilePath).toString();
+  // const fullFilePath = path.resolve(process.cwd(), filePath);
+  // const data = fs.readFileSync(fullFilePath).toString();
+  // return data;
+  const data = fs.readFileSync(filePath).toString();
   return data;
 };
 
