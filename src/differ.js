@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 
 const readFile = (filePath) => {
   const fullFilePath = path.resolve(process.cwd(), filePath);
