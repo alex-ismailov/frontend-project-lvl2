@@ -9,7 +9,7 @@ const readFile = (filePath) => {
 };
 
 /* Вариант на строках */
-const calculateDiffOnStrings = (data1, data2) => {
+const calculateDifference = (data1, data2) => {
   const data1Keys = Object.keys(data1);
   const data2Keys = Object.keys(data2);
   const datasKeys = [...data1Keys, ...data2Keys];
@@ -49,4 +49,5 @@ export default (fullPath1, fullPath2) => {
   const diff1 = calculateDiffOnStrings(data1, data2);
 
   return diff1;
+  return calculateDifference(data1, data2);
 };
