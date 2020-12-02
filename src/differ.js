@@ -43,11 +43,5 @@ export default (fullPath1, fullPath2) => {
   const data1 = JSON.parse(rawData1);
   const data2 = JSON.parse(rawData2);
 
-  // построение итоговой структуры diff пока что перенес в отдельную
-  // абстракцию calculateDiffOnStrings, так не до конца понимаю,
-  // что она из себя представляет, и как и ее вычислять.
-  const diff1 = calculateDiffOnStrings(data1, data2);
-
-  return diff1;
   return calculateDifference(data1, data2);
 };
