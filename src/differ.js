@@ -21,6 +21,8 @@ const calculateDifference = (obj1, obj2) => {
         : [...acc, key]
     ), []);
 
+  allUniqKeys.sort((a, b) => a.localeCompare(b, 'en'));
+
   const rows = allUniqKeys
     .reduce((acc, key) => {
       if (_.has(obj1, key) && _.has(obj2, key)) {
