@@ -19,7 +19,7 @@ const calculateDifference = (obj1, obj2) => {
         ? acc
         : [...acc, key]
     ), [])
-    .sort((a, b) => a.localeCompare(b, 'en'));;
+    .sort((a, b) => a.localeCompare(b, 'en'));
 
   const rows = uniqAllKeys.reduce((acc, key) => {
     if (obj1[key] && obj2[key]) {
