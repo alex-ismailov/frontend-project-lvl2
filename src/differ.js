@@ -36,10 +36,11 @@ const calculateDifference = (obj1, obj2) => {
         return [...acc, `  - ${key}: ${obj1[key]}`];
       }
       return [...acc, `  + ${key}: ${obj2[key]}`];
-    }, [])
-    .join('\n');
+    }, []);
 
-  return `{\n${rows}\n}`;
+  const resultString = `{\n${rows.join('\n')}\n}`;
+
+  return resultString;
 };
 
 export default (fullPath1, fullPath2) => {
