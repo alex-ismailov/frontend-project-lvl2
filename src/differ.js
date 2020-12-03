@@ -35,10 +35,9 @@ const calculateDifference = (obj1, obj2) => {
 
         return string;
       }
-      if (_.has(obj1, key)) {
-        return [...acc, `  - ${key}: ${obj1[key]}`];
-      }
-      return [...acc, `  + ${key}: ${obj2[key]}`];
+      return _.has(obj1, key)
+        ? [...acc, `  - ${key}: ${obj1[key]}`]
+        : [...acc, `  + ${key}: ${obj2[key]}`];
     }, []);
 
   const resultString = `{\n${rows.join('\n')}\n}`;
