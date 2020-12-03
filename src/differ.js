@@ -35,8 +35,6 @@ const calculateDifference = (data1, data2) => {
 };
 
 export default (fullPath1, fullPath2) => {
-  /* TODO: Программа должна уметь работать как с относительными, так и
-  c абсолютными путями до файлов (полезные функции: path.resolve() и process.cwd()). */
   const rawData1 = readFile(fullPath1);
   const rawData2 = readFile(fullPath2);
 
