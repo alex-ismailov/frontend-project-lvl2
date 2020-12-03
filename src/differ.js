@@ -55,9 +55,11 @@ const calculateDifference = (obj1, obj2) => {
     .sort((a, b) => a.localeCompare(b, 'en'))
     .reduce((acc, key) => {
       if (_.has(obj1, key) && _.has(obj2, key)) {
-        return obj1[key] === obj2[key]
+        const string = obj1[key] === obj2[key]
           ? [...acc, `    ${key}: ${obj1[key]}`]
           : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
+
+        return string;
       }
       if (_.has(obj1, key)) {
         return [...acc, `  - ${key}: ${obj1[key]}`];
