@@ -11,14 +11,15 @@ const readFile = (filePath) => {
 const calculateDifference = (obj1, obj2) => {
   const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
-  const allKeys = [...obj1Keys, ...obj2Keys].sort((a, b) => a.localeCompare(b, 'en'));
+  const allKeys = [...obj1Keys, ...obj2Keys];
   /* Или вместо reduce использ. метод из lodash uniq() */
-  const uniqAllKeys = allKeys.reduce((acc, key) => (
-    acc.includes(key)
-      ? acc
-      : [...acc, key]
-  ),
-  []);
+  const uniqAllKeys = allKeys
+    .reduce((acc, key) => (
+      acc.includes(key)
+        ? acc
+        : [...acc, key]
+    ), [])
+    .sort((a, b) => a.localeCompare(b, 'en'));;
 
   const rows = uniqAllKeys.reduce((acc, key) => {
     if (obj1[key] && obj2[key]) {
