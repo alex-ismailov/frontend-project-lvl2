@@ -65,6 +65,9 @@ const calculateDifference = (obj1, obj2) => {
         return [...acc, `  - ${key}: ${obj1[key]}`];
       }
       return [...acc, `  + ${key}: ${obj2[key]}`];
+    }, [])
+    .join('\n');
+
   const resultString = `{\n${rows}\n}`;
 
   return resultString;
