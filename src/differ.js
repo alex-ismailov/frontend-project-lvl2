@@ -68,9 +68,7 @@ const calculateDifference = (obj1, obj2) => {
     }, [])
     .join('\n');
 
-  const resultString = `{\n${rows}\n}`;
-
-  return resultString;
+  return `{\n${rows}\n}`;
 };
 
 export default (fullPath1, fullPath2) => {
