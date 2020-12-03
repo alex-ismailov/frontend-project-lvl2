@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 const readFile = (filePath) => {
   // const fullFilePath = path.resolve(process.cwd(), filePath);
@@ -7,6 +8,36 @@ const readFile = (filePath) => {
   const data = fs.readFileSync(filePath).toString();
   return data;
 };
+
+// const calculateDifference = (obj1, obj2) => {
+//   const obj1Keys = Object.keys(obj1);
+//   const obj2Keys = Object.keys(obj2);
+//   const allKeys = [...obj1Keys, ...obj2Keys];
+//   /* Или вместо reduce использ. метод из lodash uniq() */
+//   const uniqAllKeys = allKeys
+//     .reduce((acc, key) => (
+//       acc.includes(key)
+//         ? acc
+//         : [...acc, key]
+//     ), []);
+
+//   const rows = uniqAllKeys
+//     .sort((a, b) => a.localeCompare(b, 'en'))
+//     .reduce((acc, key) => {
+//       if (obj1[key] && obj2[key]) {
+//         return obj1[key] === obj2[key]
+//           ? [...acc, `    ${key}: ${obj1[key]}`]
+//           : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
+//       }
+//       if (!obj2[key]) {
+//         return [...acc, `  - ${key}: ${obj1[key]}`];
+//       }
+//       return [...acc, `  + ${key}: ${obj2[key]}`];
+//     }, []).join('\n');
+
+//   const res = `{\n${rows}\n}`;
+//   return res;
+// };
 
 const calculateDifference = (obj1, obj2) => {
   const obj1Keys = Object.keys(obj1);
@@ -23,12 +54,12 @@ const calculateDifference = (obj1, obj2) => {
   const rows = uniqAllKeys
     .sort((a, b) => a.localeCompare(b, 'en'))
     .reduce((acc, key) => {
-      if (obj1[key] && obj2[key]) {
+      if (_.has(obj1, key) && _.has(obj2, key)) {
         return obj1[key] === obj2[key]
           ? [...acc, `    ${key}: ${obj1[key]}`]
           : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
       }
-      if (!obj2[key]) {
+      if (_.has(obj1, key)) {
         return [...acc, `  - ${key}: ${obj1[key]}`];
       }
       return [...acc, `  + ${key}: ${obj2[key]}`];
