@@ -14,13 +14,12 @@ const calculateDifference = (obj1, obj2) => {
   const obj2Keys = Object.keys(obj2);
   const allKeys = [...obj1Keys, ...obj2Keys].sort((a, b) => a.localeCompare(b, 'en'));
   /* Или вместо reduce использ. метод из lodash uniq() */
-  // const uniqAllKeys = allKeys.reduce((acc, key) => (
-  //   acc.includes(key)
-  //     ? acc
-  //     : [...acc, key]
-  // ),
-  // []);
-  const uniqAllKeys = _.uniq(allKeys);
+  const uniqAllKeys = allKeys.reduce((acc, key) => (
+    acc.includes(key)
+      ? acc
+      : [...acc, key]
+  ),
+  []);
 
   const rows = uniqAllKeys.reduce((acc, key) => {
     if (obj1[key] && obj2[key]) {
