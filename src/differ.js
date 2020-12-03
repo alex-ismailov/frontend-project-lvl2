@@ -18,20 +18,21 @@ const calculateDifference = (obj1, obj2) => {
       acc.includes(key)
         ? acc
         : [...acc, key]
-    ), [])
-    .sort((a, b) => a.localeCompare(b, 'en'));
+    ), []);
 
-  const rows = uniqAllKeys.reduce((acc, key) => {
-    if (obj1[key] && obj2[key]) {
-      return obj1[key] === obj2[key]
-        ? [...acc, `    ${key}: ${obj1[key]}`]
-        : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
-    }
-    if (!obj2[key]) {
-      return [...acc, `  - ${key}: ${obj1[key]}`];
-    }
-    return [...acc, `  + ${key}: ${obj2[key]}`];
-  }, []).join('\n');
+  const rows = uniqAllKeys
+    .sort((a, b) => a.localeCompare(b, 'en'))
+    .reduce((acc, key) => {
+      if (obj1[key] && obj2[key]) {
+        return obj1[key] === obj2[key]
+          ? [...acc, `    ${key}: ${obj1[key]}`]
+          : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
+      }
+      if (!obj2[key]) {
+        return [...acc, `  - ${key}: ${obj1[key]}`];
+      }
+      return [...acc, `  + ${key}: ${obj2[key]}`];
+    }, []).join('\n');
 
   const res = `{\n${rows}\n}`;
   return res;
