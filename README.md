@@ -4,6 +4,6 @@
 
 Difference calculator a program that determines the difference between two data structures.
 
-[![Github-Actions](https://github.com/alex-ismailov/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/alex-ismailov/frontend-project-lvl2/actions)
+[![Github-Actions](https://github.com/alex-ismailov/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/alex-ismailov/frontend-project-lvl2/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/82fcb720295747438972/maintainability)](https://codeclimate.com/github/alex-ismailov/frontend-project-lvl2/maintainability)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/82fcb720295747438972/maintainability)](https://codeclimate.com/github/alex-ismailov/frontend-project-lvl2/maintainability)
+
