@@ -9,16 +9,8 @@ const readFile = (filePath) => {
   return data;
 };
 
-const calculateDifference = (obj1, obj2) => {
-  const obj1Keys = Object.keys(obj1);
-  const obj2Keys = Object.keys(obj2);
-  const allKeys = [...obj1Keys, ...obj2Keys];
-  const allKeysSet = new Set(allKeys);
-  const allUniqKeys = Array.from(allKeysSet);
-
-  allUniqKeys.sort((a, b) => a.localeCompare(b, 'en'));
-
-  const rows = allUniqKeys
+const getStringRows = (keys, obj1, obj2) => {
+  return keys
     .reduce((acc, key) => {
       if (_.has(obj1, key) && _.has(obj2, key)) {
         const string = obj1[key] === obj2[key]
@@ -32,7 +24,32 @@ const calculateDifference = (obj1, obj2) => {
         : [...acc, `  + ${key}: ${obj2[key]}`];
     }, [])
     .join('\n');
+};
 
+const calculateDifference = (obj1, obj2) => {
+  const obj1Keys = Object.keys(obj1);
+  const obj2Keys = Object.keys(obj2);
+  const allKeys = [...obj1Keys, ...obj2Keys];
+  const allKeysSet = new Set(allKeys);
+  const allUniqKeys = Array.from(allKeysSet);
+
+  allUniqKeys.sort((a, b) => a.localeCompare(b, 'en'));
+
+  // const rows = allUniqKeys
+  //   .reduce((acc, key) => {
+  //     if (_.has(obj1, key) && _.has(obj2, key)) {
+  //       const string = obj1[key] === obj2[key]
+  //         ? [...acc, `    ${key}: ${obj1[key]}`]
+  //         : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
+
+  //       return string;
+  //     }
+  //     return _.has(obj1, key)
+  //       ? [...acc, `  - ${key}: ${obj1[key]}`]
+  //       : [...acc, `  + ${key}: ${obj2[key]}`];
+  //   }, [])
+  //   .join('\n');
+  const rows = getStringRows(allUniqKeys, obj1, obj2);
   const resultString = `{\n${rows}\n}`;
 
   return resultString;
