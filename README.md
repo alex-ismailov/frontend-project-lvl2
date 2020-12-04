@@ -6,4 +6,10 @@ Difference calculator a program that determines the difference between two data 
 
 [![Github-Actions](https://github.com/alex-ismailov/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/alex-ismailov/frontend-project-lvl2/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/82fcb720295747438972/maintainability)](https://codeclimate.com/github/alex-ismailov/frontend-project-lvl2/maintainability)
 
+---
+
+## Gendiff demo
+Calculating defference between two json files.
+
+[![asciicast](https://asciinema.org/a/Ycds6IxHVaS66s2omJjWtJtj5.svg)](https://asciinema.org/a/Ycds6IxHVaS66s2omJjWtJtj5)
 
