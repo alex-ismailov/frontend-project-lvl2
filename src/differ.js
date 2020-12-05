@@ -21,11 +21,11 @@ const calculateDifference = (obj1, obj2) => {
   const rows = allUniqKeys
     .reduce((acc, key) => {
       if (_.has(obj1, key) && _.has(obj2, key)) {
-        const string = obj1[key] === obj2[key]
+        const currentAcc = obj1[key] === obj2[key]
           ? [...acc, `    ${key}: ${obj1[key]}`]
           : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
 
-        return string;
+        return currentAcc;
       }
       return _.has(obj1, key)
         ? [...acc, `  - ${key}: ${obj1[key]}`]
