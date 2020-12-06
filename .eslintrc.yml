@@ -1,6 +1,8 @@
 ---
   env:
     node: true
+  plugins: 
+    - 'jest'
   
   extends:
     'airbnb-base'
