@@ -40,6 +40,20 @@ describe('Main flow with two json files', () => {
   });
 });
 
+describe('Paths tests', () => {
+  test('absolute paths', async () => {
+    const filepath1 = getFixturePath('file1.json');
+    const filepath2 = getFixturePath('file2.json');
+    const expectedString = await readFile('twoJsonFilesDiff.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  });
+
+  test('relative paths', async () => {
+    const filepath1 = '__fixtures__/file1.json';
+    const filepath2 = '__fixtures__/file2.json';
+    const expectedString = await readFile('twoJsonFilesDiff.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  });
 });
 
 });
