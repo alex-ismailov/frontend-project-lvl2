@@ -20,22 +20,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: make i
+        env:
+          CI: true
       - name: Run linter
         run: make lint
-      - name: Run tests
-        run: make test
-  coverage:
-    needs: [ testing ]
-    name: coverage
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@master
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: make i
-    - uses: paambaati/codeclimate-action@v2.2.4
-      env:
-        CC_TEST_REPORTER_ID: b7853d9de39ca64b5bf2f370317755cfa9cfdd0b7428ae31c23aa1b3c29ba4fd
-      with:
-        coverageCommand: npm coverage
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
