@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "difference calculator - a program that determines the difference between two data structures",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
