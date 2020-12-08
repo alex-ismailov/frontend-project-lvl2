@@ -12,9 +12,4 @@ const readFile = (filename) => fs.readFile(getFixturePath(filename), 'utf-8');
 
 });
 
-test('test absolute paths', async () => {
-  const filepath1 = '/home/smile/code/frontend-project-lvl2/__fixtures__/file1.json';
-  const filepath2 = '/home/smile/code/frontend-project-lvl2/__fixtures__/file2.json';
-  const expectedString = await readFile('twoJsonDiff.txt');
-  expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
 });
