@@ -10,6 +10,36 @@ const __dirname = path.dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFile(getFixturePath(filename), 'utf-8');
 
+describe('Main flow with two json files', () => {
+  test('two filled files', async () => {
+    const filepath1 = getFixturePath('file1.json');
+    const filepath2 = getFixturePath('file2.json');
+    const expectedString = await readFile('twoJsonFilesDiff.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  });
+
+  test('filled file with empty file', async () => {
+    const filepath1 = getFixturePath('file1.json');
+    const filepath2 = getFixturePath('file3-empty.json');
+    const expectedString = await readFile('file1DiffWithEmptyFile.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  });
+
+  test('empty file with filled file', async () => {
+    const filepath1 = getFixturePath('file3-empty.json');
+    const filepath2 = getFixturePath('file1.json');
+    const expectedString = await readFile('emptyFileDIffWIthFile1.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  });
+
+  test('two empty files', async () => {
+    const filepath1 = getFixturePath('file3-empty.json');
+    const filepath2 = getFixturePath('file3-empty.json');
+    const expectedString = await readFile('twoEmptyJsonFilesDiff.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  });
+});
+
 });
 
 });
