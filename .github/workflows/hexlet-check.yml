@@ -3,7 +3,7 @@ name: hexlet-check
 on:
   - push
   - pull_request
-  
+
 
 jobs:
   testing:
@@ -22,3 +22,5 @@ jobs:
         run: make i
       - name: Run linter
         run: make lint
+      - name: Run tests
+        run: make test
