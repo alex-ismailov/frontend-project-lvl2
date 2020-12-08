@@ -12,4 +12,3 @@ Difference calculator a program that determines the difference between two data 
 Calculating defference between two json files.
 
 [![asciicast](https://asciinema.org/a/Ycds6IxHVaS66s2omJjWtJtj5.svg)](https://asciinema.org/a/Ycds6IxHVaS66s2omJjWtJtj5)
-
