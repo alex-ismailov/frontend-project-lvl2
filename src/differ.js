@@ -5,8 +5,11 @@ const readFile = (filePath) => {
   // const fullFilePath = path.resolve(process.cwd(), filePath);
   // const data = fs.readFileSync(fullFilePath).toString();
   // return data;
-  const data = fs.readFileSync(filePath).toString();
-  return data;
+  try {
+    return fs.readFileSync(filePath).toString();
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const calculateDifference = (obj1, obj2) => {
