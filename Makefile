@@ -1,4 +1,4 @@
-i: 
+i:
 	npm install
 
 publish:
@@ -18,3 +18,6 @@ test:
 
 test-watch:
 	npx -n --experimental-vm-modules jest --watchAll .
+
+test-coverage:
+	npm test -- --coverage --coverageProvider=v8
