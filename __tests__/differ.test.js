@@ -56,4 +56,10 @@ describe('Paths tests', () => {
   });
 });
 
+describe('Edge cases', () => {
+  test('non-existent file', async () => {
+    const nonExistenPath = 'non-exist-file.json';
+    const filepath2 = getFixturePath('file2.json');
+    expect(() => differ(nonExistenPath, filepath2)).toThrow();
+  });
 });
