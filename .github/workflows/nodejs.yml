@@ -1,9 +1,8 @@
-name: hexlet-check
+name: Node%20CI
 
 on:
   - push
   - pull_request
-
 
 jobs:
   testing:
