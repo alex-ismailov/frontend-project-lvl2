@@ -17,7 +17,7 @@ test:
 	npm test
 
 test-watch:
-	npx -n --experimental-vm-modules jest --watchAll .
+	npm run test-watch
 
 test-coverage:
 	npm test -- --coverage --coverageProvider=v8
