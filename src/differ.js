@@ -42,6 +42,11 @@ const calculateDifference = (obj1, obj2) => {
   return resultString;
 };
 
+const getFileExtension = (filename) => {
+  const [extension] = filename.match(/(?<=\w\.)\w+$/);
+  return extension;
+};
+
 export default (fullPath1, fullPath2) => {
   const rawData1 = readFile(fullPath1);
   const rawData2 = readFile(fullPath2);
