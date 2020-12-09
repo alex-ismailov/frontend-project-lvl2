@@ -1,5 +1,6 @@
 import fs from 'fs';
 import _ from 'lodash';
+import parsers from './parsers.js';
 
 const readFile = (filePath) => {
   // const fullFilePath = path.resolve(process.cwd(), filePath);
