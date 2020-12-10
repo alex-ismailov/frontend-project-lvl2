@@ -29,7 +29,12 @@ describe('Main flow', async () => {
     const expectedResult = await readFile('diffOfFile1AndFile2.txt').trim();
     expect(differ(filepath1, filepath2)).toEqual(expectedResult);
   });
-  test('Empty files difference', () => {});
+  test('Empty files difference', () => {
+    const filepath1 = getFixturePath('fileEmpty.json');
+    const filepath2 = getFixturePath('fileEmpty.yaml');
+    const expectedResult = await readFile('diff-emptyFiles.txt').trim();
+    expect(differ(filepath1, filepath2)).toEqual(expectedResult);
+  });
 });
 
 describe('Paths tests', () => {
