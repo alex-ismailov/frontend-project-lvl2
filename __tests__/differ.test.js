@@ -11,33 +11,33 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filename) => fs.readFile(getFixturePath(filename), 'utf-8');
 
 describe('Main flow', async () => {
-  test('Filled JSON files difference', () => {
+  test('Filled JSON files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('diffOfFile1AndFile2.txt').trim();
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult);
+    const expectedResult = await readFile('diffOfFile1AndFile2.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
-  test('Filled JSON and YAML files difference', () => {
+  test('Filled JSON and YAML files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.yaml');
-    const expectedResult = await readFile('diffOfFile1AndFile2.txt').trim();
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult);
+    const expectedResult = await readFile('diffOfFile1AndFile2.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
-  test('Filled and empty files difference', () => {
+  test('Filled and empty files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('diffOfFile1AndFile2.txt').trim();
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult);
+    const expectedResult = await readFile('diffOfFile1AndFile2.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
-  test('Empty files difference', () => {
+  test('Empty files difference', async () => {
     const filepath1 = getFixturePath('fileEmpty.json');
     const filepath2 = getFixturePath('fileEmpty.yaml');
-    const expectedResult = await readFile('diff-emptyFiles.txt').trim();
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult);
+    const expectedResult = await readFile('diff-emptyFiles.txt');
+    expect(differ(filepath1, filepath2)).toEqual(expectedResul.trim());
   });
 });
 
-describe('Paths tests', () => {
+describe('Paths tests', async () => {
   test('absolute paths', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
