@@ -23,24 +23,31 @@ const calculateDifference = (obj1, obj2) => {
 
   allUniqKeys.sort((a, b) => a.localeCompare(b, 'en'));
 
-  const rows = allUniqKeys
+const getObjsDifferenceAST = (obj1, obj2) => {
+  const keysUnion = getKeysUnion(obj1, obj2);
+  keysUnion.sort((a, b) => a.localeCompare(b, 'en'));
+
+  // ast представляет из себя массив узлов. Узел описывает св-ва отдельного взятого ключа из
+  // объединения множеств ключей двух объектов. Если два текущих св-ва на проверке являются объектами, то
+  // ast вычисляется рекурсивно.
+  return keysUnion
     .reduce((acc, key) => {
       if (_.has(obj1, key) && _.has(obj2, key)) {
+        if (obj1[key] instanceof Object && obj2[key] instanceof Object) {
+          return [...acc, { name: key, type: 'parent', children: [...getObjsDifferenceAST(obj1[key], obj2[key])]}];
+        }
+
         const currentAcc = obj1[key] === obj2[key]
-          ? [...acc, `    ${key}: ${obj1[key]}`]
-          : [...acc, `  - ${key}: ${obj1[key]}`, `  + ${key}: ${obj2[key]}`];
+          ? [...acc, { name: key, type: 'same', value: obj1[key] }]
+          : [...acc, { name: key, type: 'changed', value: obj2[key], prevValue: obj1[key] }];
 
         return currentAcc;
       }
+
       return _.has(obj1, key)
-        ? [...acc, `  - ${key}: ${obj1[key]}`]
-        : [...acc, `  + ${key}: ${obj2[key]}`];
-    }, [])
-    .join('\n');
-
-  const resultString = `{\n${rows}\n}`;
-
-  return resultString;
+        ? [...acc, { name: key, type: 'deleted', value: obj1[key] }]
+        : [...acc, { name: key, type: 'added', value: obj2[key] }];
+    }, []);
 };
 
 export default (fullPath1, fullPath2) => {
