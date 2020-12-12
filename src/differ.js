@@ -14,13 +14,35 @@ const readFile = (filePath) => {
   }
 };
 
+const stringsMap = {
+  same: (keyNode) => [`    ${keyNode.name}: ${keyNode.value}`],
+  changed: (keyNode) => [`  - ${keyNode.name}: ${keyNode.prevValue}`, `  + ${keyNode.name}: ${keyNode.value}`],
+  added: (keyNode) => [`  + ${keyNode.name}: ${keyNode.value}`],
+  deleted: (keyNode) => [`  - ${keyNode.name}: ${keyNode.value}`],
+  parent: (keyNode, fn) => [`    ${keyNode.name}: ${fn(keyNode.children)}`],
+};
+
+const formatter = (ast) => {
+  const rows = ast
+    .reduce((acc, keyNode) => {
+      const { type } = keyNode;
+      return type === 'parent'
+        ? [...acc, stringsMap[type](keyNode, formatter)]
+        : [...acc, ...stringsMap[type](keyNode)];
+    }, [])
+    .join('\n');
+
+  return `{\n${rows}\n}`;
+};
+
+const getKeysUnion = (obj1, obj2) => {
   const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
   const allKeys = [...obj1Keys, ...obj2Keys];
   const allKeysSet = new Set(allKeys);
-  const allUniqKeys = Array.from(allKeysSet);
 
-  allUniqKeys.sort((a, b) => a.localeCompare(b, 'en'));
+  return Array.from(allKeysSet);
+};
 
 const getObjsDifferenceAST = (obj1, obj2) => {
   const keysUnion = getKeysUnion(obj1, obj2);
