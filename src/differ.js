@@ -81,5 +81,7 @@ export default (fullPath1, fullPath2) => {
   const data1 = parsers[file1Extension](rawData1);
   const data2 = parsers[file2Extension](rawData2);
 
-  return calculateDifference(data1, data2);
+  const ast = getObjsDifferenceAST(data1, data2);
+
+  return formatter(ast);
 };
