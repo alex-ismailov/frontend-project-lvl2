@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFile(getFixturePath(filename), 'utf-8');
 
-describe('Main flow', async () => {
+describe('Main flow', () => {
   test('Filled JSON files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
@@ -37,7 +37,7 @@ describe('Main flow', async () => {
   });
 });
 
-describe('Paths tests', async () => {
+describe('Paths tests', () => {
   test('absolute paths', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
