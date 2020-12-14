@@ -99,17 +99,17 @@ const stringsMap = {
 
 // Зачем reduce если тут можно просто map
 const formatter = (ast) => {
-  const formatterInner = (ast, indent) => {
-    const rows = ast
+  const formatterInner = (currAst, currIndent) => {
+    const rows = currAst
       .reduce((acc, keyNode) => {
         const { type } = keyNode;
         return type === 'parent'
-          ? [...acc, stringsMap[type](keyNode, indent, formatterInner)]
-          : [...acc, ...stringsMap[type](keyNode, indent)];
+          ? [...acc, stringsMap[type](keyNode, currIndent, formatterInner)]
+          : [...acc, ...stringsMap[type](keyNode, currIndent)];
       }, [])
       .join('\n');
 
-    return `{\n${rows}\n${indent}}`;
+    return `{\n${rows}\n${currIndent}}`;
   };
 
   return formatterInner(ast, '');
