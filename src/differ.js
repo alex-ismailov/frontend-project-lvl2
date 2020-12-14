@@ -93,7 +93,7 @@ const stringsMap = {
     ];
   },
   parent: (keyNode, indent, fn) => [
-    `${indent}${actionPrefixMap['same']}${keyNode.name}: ${fn(keyNode.children, indent + ' '.repeat(4))}`,
+    `${indent}${actionPrefixMap.same}${keyNode.name}: ${fn(keyNode.children, indent + ' '.repeat(4))}`,
   ],
 };
 
