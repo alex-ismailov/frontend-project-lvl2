@@ -26,6 +26,26 @@ const actionPrefixMap = {
   deleted: '  - ',
 };
 
+const makeStringFromObjEntries = (obj, indent) => {
+  const iter = (obj, indent) => {
+    const keys = Object.keys(obj);
+    const res = keys.flatMap((key) => {
+      if (obj[key].constructor.name === 'Object') {
+        return [
+          `${indent}${actionPrefixMap['same']}${key}: {`,
+          ...iter(obj[key], indent + ' '.repeat(4)),
+          indent + ' '.repeat(4) + '}',
+        ];
+      }
+      return `${indent}${actionPrefixMap['same']}${key}: ${obj[key]}`;
+    })
+
+    return res;
+  };
+
+  return `{\n${iter(obj, indent).join('\n')}\n${indent}}`;
+};
+
 const stringsMap = {
   same: (keyNode, indent) => [
     `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
