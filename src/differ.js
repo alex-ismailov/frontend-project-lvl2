@@ -39,17 +39,22 @@ const stringsMap = {
   ],
 };
 
+// Зачем reduce если тут можно просто map
 const formatter = (ast) => {
-  const rows = ast
-    .reduce((acc, keyNode) => {
-      const { type } = keyNode;
-      return type === 'parent'
-        ? [...acc, stringsMap[type](keyNode, formatter)]
-        : [...acc, ...stringsMap[type](keyNode)];
-    }, [])
-    .join('\n');
+  const formatterInner = (ast, indent) => {
+    const rows = ast
+      .reduce((acc, keyNode) => {
+        const { type } = keyNode;
+        return type === 'parent'
+          ? [...acc, stringsMap[type](keyNode, indent, formatterInner)]
+          : [...acc, ...stringsMap[type](keyNode, indent)];
+      }, [])
+      .join('\n');
 
-  return `{\n${rows}\n}`;
+    return `{\n${rows}\n${indent}}`;
+  };
+
+  return formatterInner(ast, '');
 };
 
 const getKeysUnion = (obj1, obj2) => {
