@@ -79,7 +79,7 @@ const stringsMap = {
     }
     return [
       `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
-    ]
+    ];
   },
   deleted: (keyNode, indent) => {
     if (isObject(keyNode.value)) {
