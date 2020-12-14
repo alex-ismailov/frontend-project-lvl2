@@ -21,11 +21,22 @@ const actionPrefixMap = {
 };
 
 const stringsMap = {
-  same: (keyNode) => [`    ${keyNode.name}: ${keyNode.value}`],
-  changed: (keyNode) => [`  - ${keyNode.name}: ${keyNode.prevValue}`, `  + ${keyNode.name}: ${keyNode.value}`],
-  added: (keyNode) => [`  + ${keyNode.name}: ${keyNode.value}`],
-  deleted: (keyNode) => [`  - ${keyNode.name}: ${keyNode.value}`],
-  parent: (keyNode, fn) => [`    ${keyNode.name}: ${fn(keyNode.children)}`],
+  same: (keyNode, indent) => [
+    `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
+  ],
+  changed: (keyNode, indent) => [
+    `${indent}${actionPrefixMap['deleted']}${keyNode.name}: ${keyNode.prevValue}`,
+    `${indent}${actionPrefixMap['added']}${keyNode.name}: ${keyNode.value}`,
+  ],
+  added: (keyNode, indent) => [
+    `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
+  ],
+  deleted: (keyNode, indent) => [
+    `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
+  ],
+  parent: (keyNode, indent, fn) => [
+    `${indent}${actionPrefixMap['same']}${keyNode.name}: ${fn(keyNode.children, indent + _.repeat(' ', 4))}`,
+  ],
 };
 
 const formatter = (ast) => {
