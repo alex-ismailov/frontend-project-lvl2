@@ -33,7 +33,7 @@ describe('Main flow', () => {
     const filepath1 = getFixturePath('fileEmpty.json');
     const filepath2 = getFixturePath('fileEmpty.yaml');
     const expectedResult = await readFile('diff-emptyFiles.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedResul.trim());
+    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
 });
 
