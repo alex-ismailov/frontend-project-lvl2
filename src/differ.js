@@ -14,6 +14,12 @@ const readFile = (filePath) => {
   }
 };
 
+const actionPrefixMap = {
+  same: '    ',
+  added: '  + ',
+  deleted: '  - ',
+};
+
 const stringsMap = {
   same: (keyNode) => [`    ${keyNode.name}: ${keyNode.value}`],
   changed: (keyNode) => [`  - ${keyNode.name}: ${keyNode.prevValue}`, `  + ${keyNode.name}: ${keyNode.value}`],
