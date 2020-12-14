@@ -14,6 +14,12 @@ const readFile = (filePath) => {
   }
 };
 
+const isObject = (value) => (
+  value === null
+    ? false
+    : value.constructor.name === 'Object'
+);
+
 const actionPrefixMap = {
   same: '    ',
   added: '  + ',
