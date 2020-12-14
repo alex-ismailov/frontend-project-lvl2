@@ -27,18 +27,18 @@ const actionPrefixMap = {
 };
 
 const makeStringFromObjEntries = (obj, indent) => {
-  const iter = (obj, indent) => {
-    const keys = Object.keys(obj);
+  const iter = (currObj, currIndent) => {
+    const keys = Object.keys(currObj);
     const res = keys.flatMap((key) => {
-      if (obj[key].constructor.name === 'Object') {
+      if (isObject(currObj[key])) {
         return [
-          `${indent}${actionPrefixMap['same']}${key}: {`,
-          ...iter(obj[key], indent + ' '.repeat(4)),
-          indent + ' '.repeat(4) + '}',
+          `${currIndent}${actionPrefixMap.same}${key}: {`,
+          ...iter(currObj[key], currIndent + ' '.repeat(4)),
+          `${currIndent + ' '.repeat(4)}}`,
         ];
       }
-      return `${indent}${actionPrefixMap['same']}${key}: ${obj[key]}`;
-    })
+      return `${currIndent}${actionPrefixMap.same}${key}: ${currObj[key]}`;
+    });
 
     return res;
   };
