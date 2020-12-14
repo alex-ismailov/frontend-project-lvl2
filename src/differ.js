@@ -30,18 +30,50 @@ const stringsMap = {
   same: (keyNode, indent) => [
     `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
   ],
-  changed: (keyNode, indent) => [
-    `${indent}${actionPrefixMap['deleted']}${keyNode.name}: ${keyNode.prevValue}`,
-    `${indent}${actionPrefixMap['added']}${keyNode.name}: ${keyNode.value}`,
-  ],
-  added: (keyNode, indent) => [
-    `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
-  ],
-  deleted: (keyNode, indent) => [
-    `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
-  ],
+  changed: (keyNode, indent) => {
+    if (isObject(keyNode.value)) {
+      const res = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
+      return [
+        `${indent}${actionPrefixMap['deleted']}${keyNode.name}: ${keyNode.prevValue}`,
+        `${indent}${actionPrefixMap['added']}${keyNode.name}: ${res}`,
+      ];
+    }
+    if (isObject(keyNode.prevValue)) {
+      const res = makeStringFromObjEntries(keyNode.prevValue, indent + ' '.repeat(4));
+      return [
+        `${indent}${actionPrefixMap['deleted']}${keyNode.name}: ${res}`,
+        `${indent}${actionPrefixMap['added']}${keyNode.name}: ${keyNode.value}`,
+      ];
+    }
+    return [
+      `${indent}${actionPrefixMap['deleted']}${keyNode.name}: ${keyNode.prevValue}`,
+      `${indent}${actionPrefixMap['added']}${keyNode.name}: ${keyNode.value}`,
+    ]
+  },
+  added: (keyNode, indent) => {
+    if (isObject(keyNode.value)) {
+      const res = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
+      return [
+        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${res}`,
+      ];
+    }
+    return [
+      `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
+    ]
+  },
+  deleted: (keyNode, indent) => {
+    if (isObject(keyNode.value)) {
+      const res = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
+      return [
+        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${res}`,
+      ];
+    }
+    return [
+      `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
+    ]
+  },
   parent: (keyNode, indent, fn) => [
-    `${indent}${actionPrefixMap['same']}${keyNode.name}: ${fn(keyNode.children, indent + _.repeat(' ', 4))}`,
+    `${indent}${actionPrefixMap['same']}${keyNode.name}: ${fn(keyNode.children, indent + ' '.repeat(4))}`,
   ],
 };
 
