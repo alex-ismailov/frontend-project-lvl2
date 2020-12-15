@@ -54,22 +54,22 @@ const stringsMap = {
     if (isObject(keyNode.value)) {
       const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
       return [
-        `${indent}${actionPrefixMap.added}${keyNode.name}: ${nestedStructureStr}`,
+        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${nestedStructureStr}`,
       ];
     }
     return [
-      `${indent}${actionPrefixMap.added}${keyNode.name}: ${keyNode.value}`,
+      `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
     ];
   },
   deleted: (keyNode, indent) => {
     if (isObject(keyNode.value)) {
       const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
       return [
-        `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${nestedStructureStr}`,
+        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${nestedStructureStr}`,
       ];
     }
     return [
-      `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${keyNode.value}`,
+      `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
     ];
   },
   parent: (keyNode, indent, fn) => [
