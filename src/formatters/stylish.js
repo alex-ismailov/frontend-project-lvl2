@@ -37,53 +37,24 @@ const makeString = (indent, type, key, value) => {
 
 const stringsMap = {
   same: (keyNode, indent) => [
-    `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
+    makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   ],
-  changed: (keyNode, indent) => {
-    if (isObject(keyNode.value)) {
-      const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
-      return [
-        `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${keyNode.prevValue}`,
-        `${indent}${actionPrefixMap.added}${keyNode.name}: ${nestedStructureStr}`,
-      ];
-    }
-    if (isObject(keyNode.prevValue)) {
-      const nestedStructureStr = makeStringFromObjEntries(keyNode.prevValue, indent + ' '.repeat(4));
-      return [
-        `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${nestedStructureStr}`,
-        `${indent}${actionPrefixMap.added}${keyNode.name}: ${keyNode.value}`,
-      ];
-    }
-    return [
-      `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${keyNode.prevValue}`,
-      `${indent}${actionPrefixMap.added}${keyNode.name}: ${keyNode.value}`,
-    ];
-  },
-  added: (keyNode, indent) => {
-    if (isObject(keyNode.value)) {
-      const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
-      return [
-        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${nestedStructureStr}`,
-      ];
-    }
-    return [
-      `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
-    ];
-  },
-  deleted: (keyNode, indent) => {
-    if (isObject(keyNode.value)) {
-      const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
-      return [
-        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${nestedStructureStr}`,
-      ];
-    }
-    return [
-      `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
-    ];
-  },
-  parent: (keyNode, indent, fn) => [
-    `${indent}${actionPrefixMap.same}${keyNode.name}: ${fn(keyNode.children, indent + ' '.repeat(4))}`,
+  changed: (keyNode, indent) => [
+    makeString(indent, 'deleted', keyNode.name, keyNode.prevValue),
+    makeString(indent, 'added', keyNode.name, keyNode.value),
   ],
+  added: (keyNode, indent) => [
+    makeString(indent, keyNode.type, keyNode.name, keyNode.value),
+  ],
+  deleted: (keyNode, indent) => [
+    makeString(indent, keyNode.type, keyNode.name, keyNode.value),
+  ],
+  parent: (keyNode, indent, formatterIter) => {
+    const value = formatterIter(keyNode.children, indent + ' '.repeat(4));
+    return [
+      makeString(indent, 'same', keyNode.name, value),
+    ];
+  },
 };
 
 export default (ast) => {
