@@ -52,16 +52,16 @@ const stringsMap = {
   ],
   changed: (keyNode, indent) => {
     if (isObject(keyNode.value)) {
-      const res = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
+      const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
       return [
         `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${keyNode.prevValue}`,
-        `${indent}${actionPrefixMap.added}${keyNode.name}: ${res}`,
+        `${indent}${actionPrefixMap.added}${keyNode.name}: ${nestedStructureStr}`,
       ];
     }
     if (isObject(keyNode.prevValue)) {
-      const res = makeStringFromObjEntries(keyNode.prevValue, indent + ' '.repeat(4));
+      const nestedStructureStr = makeStringFromObjEntries(keyNode.prevValue, indent + ' '.repeat(4));
       return [
-        `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${res}`,
+        `${indent}${actionPrefixMap.deleted}${keyNode.name}: ${nestedStructureStr}`,
         `${indent}${actionPrefixMap.added}${keyNode.name}: ${keyNode.value}`,
       ];
     }
@@ -72,9 +72,9 @@ const stringsMap = {
   },
   added: (keyNode, indent) => {
     if (isObject(keyNode.value)) {
-      const res = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
+      const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
       return [
-        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${res}`,
+        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${nestedStructureStr}`,
       ];
     }
     return [
@@ -83,9 +83,9 @@ const stringsMap = {
   },
   deleted: (keyNode, indent) => {
     if (isObject(keyNode.value)) {
-      const res = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
+      const nestedStructureStr = makeStringFromObjEntries(keyNode.value, indent + ' '.repeat(4));
       return [
-        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${res}`,
+        `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${nestedStructureStr}`,
       ];
     }
     return [
