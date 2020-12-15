@@ -31,17 +31,3 @@ import { isObject, getKeysUnion } from './utils.js';
     }, []);
 };
 
-export default (fullPath1, fullPath2) => {
-  const rawData1 = readFile(fullPath1);
-  const rawData2 = readFile(fullPath2);
-
-  const file1Extension = path.extname(fullPath1).slice(1);
-  const file2Extension = path.extname(fullPath2).slice(1);
-
-  const data1 = parsers[file1Extension](rawData1);
-  const data2 = parsers[file2Extension](rawData2);
-
-  const ast = getObjsDifferenceAST(data1, data2);
-
-  return formatter(ast);
-};
