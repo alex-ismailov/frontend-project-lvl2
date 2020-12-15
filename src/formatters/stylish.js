@@ -26,6 +26,15 @@ const makeStringFromObjEntries = (obj, indent) => {
   return `{\n${iter(obj, indent).join('\n')}\n${indent}}`;
 };
 
+const makeString = (indent, type, key, value) => {
+  if (isObject(value)) {
+    const nestedStructureStr = makeStringFromObjEntries(value, indent + ' '.repeat(4));
+    return `${indent}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
+  }
+
+  return `${indent}${actionPrefixMap[type]}${key}: ${value}`;
+};
+
 const stringsMap = {
   same: (keyNode, indent) => [
     `${indent}${actionPrefixMap[keyNode.type]}${keyNode.name}: ${keyNode.value}`,
