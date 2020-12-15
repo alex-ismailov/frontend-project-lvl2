@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 export const isObject = (value) => (
   value === null
     ? false
