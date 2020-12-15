@@ -14,3 +14,11 @@ export const getKeysUnion = (obj1, obj2) => {
 
   return Array.from(allKeysSet);
 };
+
+export const readFile = (filePath) => {
+  try {
+    return fs.readFileSync(filePath).toString();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
