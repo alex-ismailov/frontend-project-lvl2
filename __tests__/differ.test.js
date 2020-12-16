@@ -13,19 +13,19 @@ describe('Main flow with stylish output format', () => {
   test('Filled JSON files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('stylishDiffOfFilledFiles.txt');
+    const expectedResult = await readFile('stylishDiffOfFile1AndFile2.txt');
     expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
   test('Filled JSON and YAML files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.yaml');
-    const expectedResult = await readFile('stylishDiffOfFilledFiles.txt');
+    const expectedResult = await readFile('stylishDiffOfFile1AndFile2.txt');
     expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
   test('Filled and empty files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('stylishDiffOfFilledFiles.txt');
+    const expectedResult = await readFile('stylishDiffOfFile1AndFile2.txt');
     expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
   });
   test('Empty files difference', async () => {
@@ -67,14 +67,14 @@ describe('Paths tests', () => {
   test('absolute paths', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
-    const expectedString = await readFile('stylishDiffOfFilledFiles.txt');
+    const expectedString = await readFile('stylishDiffOfFile1AndFile2.txt');
     expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
   });
 
   test('relative paths', async () => {
     const filepath1 = '__fixtures__/file1.json';
     const filepath2 = '__fixtures__/file2.json';
-    const expectedString = await readFile('stylishDiffOfFilledFiles.txt');
+    const expectedString = await readFile('stylishDiffOfFile1AndFile2.txt');
     expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
   });
 });
