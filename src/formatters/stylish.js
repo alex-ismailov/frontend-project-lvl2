@@ -3,7 +3,7 @@ import { isObject } from '../utils.js';
 const actionPrefixMap = {
   same: '    ',
   added: '  + ',
-  deleted: '  - ',
+  removed: '  - ',
 };
 
 const makeStringFromObjEntries = (obj, indent) => {
@@ -40,13 +40,13 @@ const stringsMap = {
     makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   ],
   changed: (keyNode, indent) => [
-    makeString(indent, 'deleted', keyNode.name, keyNode.prevValue),
+    makeString(indent, 'removed', keyNode.name, keyNode.prevValue),
     makeString(indent, 'added', keyNode.name, keyNode.value),
   ],
   added: (keyNode, indent) => [
     makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   ],
-  deleted: (keyNode, indent) => [
+  removed: (keyNode, indent) => [
     makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   ],
   parent: (keyNode, indent, formatterIter) => {
