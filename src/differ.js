@@ -9,7 +9,7 @@ AST представляет из себя массив узлов.
 * Если ключ встречается только в одном из объектов, то узел помечается соответсвующим типом:
   added или removed.
 * Если значения по ключам в обоих объектах не являются объектами, и их значения не равны, то
-  узел помечается типом 'changed'.
+  узел помечается типом 'updated'.
 * Если оба текущих значения по ключу являются объектами, то AST вычисляется рекурсивно,
   а полученное дерево помещается в св-во узла children
 */
@@ -28,7 +28,7 @@ const getObjectsDiffAST = (obj1, obj2) => {
         const currentAcc = obj1[key] === obj2[key]
           ? [...acc, { name: key, type: 'same', value: obj1[key] }]
           : [...acc, {
-            name: key, type: 'changed', value: obj2[key], prevValue: obj1[key],
+            name: key, type: 'updated', value: obj2[key], prevValue: obj1[key],
           }];
 
         return currentAcc;

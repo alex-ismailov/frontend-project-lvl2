@@ -39,7 +39,7 @@ const stringsMap = {
   same: (keyNode, indent) => [
     makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   ],
-  changed: (keyNode, indent) => [
+  updated: (keyNode, indent) => [
     makeString(indent, 'removed', keyNode.name, keyNode.prevValue),
     makeString(indent, 'added', keyNode.name, keyNode.value),
   ],
