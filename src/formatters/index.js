@@ -1,4 +1,4 @@
-import stylish from './formatters/stylish.js';
+import stylish from './stylish.js';
 
 export default (type = 'stylish') => (ast) => {
   switch (type) {
