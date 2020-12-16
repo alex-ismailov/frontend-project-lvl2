@@ -3,7 +3,7 @@ import path from 'path';
 import { readFile } from './src/utils.js';
 import parsers from './src/parsers.js';
 import getObjectsDiffAST from './src/differ.js';
-import getFormatter from './src/formatter.js';
+import getFormatter from './src/formatters/index.js';
 
 export default (file1Path, file2Path, outputFormat = 'stylish') => {
   const fullPath1 = path.resolve(process.cwd(), file1Path);
