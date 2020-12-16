@@ -37,7 +37,7 @@ describe('Main flow with stylish output format', () => {
 });
 
 describe('Main flow with plain output format', () => {
-  test('Filled JSON files difference', async () => {
+  test('Filled files difference', async () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
     const expectedResult = await readFile('plainDiffOfFilledFiles.txt');
