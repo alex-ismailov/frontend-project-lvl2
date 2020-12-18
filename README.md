@@ -11,4 +11,4 @@ Difference calculator a program that determines the difference between two data 
 ## Gendiff demo
 Calculating defference between two json files.
 
-[![asciicast](https://asciinema.org/a/379673.svg)](https://asciinema.org/a/379673)
+[![asciicast](https://asciinema.org/a/380066.svg)](https://asciinema.org/a/380066)
