@@ -9,7 +9,7 @@ const actionPrefixMap = {
 const makeStringFromObjEntries = (obj, indent) => {
   const iter = (currObj, currIndent) => {
     const keys = Object.keys(currObj);
-    const res = keys.flatMap((key) => {
+    const objString = keys.flatMap((key) => {
       if (isObject(currObj[key])) {
         return [
           `${currIndent}${actionPrefixMap.same}${key}: {`,
@@ -20,7 +20,7 @@ const makeStringFromObjEntries = (obj, indent) => {
       return `${currIndent}${actionPrefixMap.same}${key}: ${currObj[key]}`;
     });
 
-    return res;
+    return objString;
   };
 
   return `{\n${iter(obj, indent).join('\n')}\n${indent}}`;
