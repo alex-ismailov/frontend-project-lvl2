@@ -4,6 +4,7 @@ import { readFile } from './src/utils.js';
 import parsers from './src/parsers.js';
 import getObjectsDiffAST from './src/differ.js';
 import getFormatter from './src/formatters/index.js';
+import json from './src/formatters/json.js';
 
 export default (file1Path, file2Path, outputFormat = 'stylish') => {
   const fullPath1 = path.resolve(process.cwd(), file1Path);
@@ -21,5 +22,11 @@ export default (file1Path, file2Path, outputFormat = 'stylish') => {
   const ast = getObjectsDiffAST(data1, data2);
   const formatter = getFormatter(outputFormat);
 
-  return formatter(ast);
+  // return formatter(ast);
+  const res = outputFormat === 'json'
+    ? formatter(ast)
+    : formatter(ast, fullPath1, fullPath2);
+
+  console.log(res);
+  return res;
 };
