@@ -1,1 +1,1 @@
-{"firstFilePath":"/home/smile/code/frontend-project-lvl2/__fixtures__/file1.json","secondFilePath":"/home/smile/code/frontend-project-lvl2/__fixtures__/file1.json","messages":[],"updatedCount":0,"addedCount":0,"removedCount":0}
+{"differences":[],"updatedCount":0,"addedCount":0,"removedCount":0}
