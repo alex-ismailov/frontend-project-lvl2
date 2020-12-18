@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import has from 'lodash/has';
 import { isObject, getKeysUnion } from './utils.js';
 
 /*
@@ -20,7 +20,7 @@ const getObjectsDiffAST = (obj1, obj2) => {
 
   return keysUnion
     .reduce((acc, key) => {
-      if (_.has(obj1, key) && _.has(obj2, key)) {
+      if (has(obj1, key) && has(obj2, key)) {
         if (isObject(obj1[key]) && isObject(obj2[key])) {
           return [...acc, { name: key, type: 'parent', children: [...getObjectsDiffAST(obj1[key], obj2[key])] }];
         }
@@ -34,7 +34,7 @@ const getObjectsDiffAST = (obj1, obj2) => {
         return currentAcc;
       }
 
-      return _.has(obj1, key)
+      return has(obj1, key)
         ? [...acc, { name: key, type: 'removed', value: obj1[key] }]
         : [...acc, { name: key, type: 'added', value: obj2[key] }];
     }, []);
