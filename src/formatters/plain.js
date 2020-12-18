@@ -41,7 +41,6 @@ export default (ast) => {
       if (type === 'same') {
         return acc;
       }
-
       return type === 'parent'
         ? [...acc, formatterIter(keyNode.children, currentPath)]
         : [...acc, stringsMap[type](keyNode, currentPath)];
