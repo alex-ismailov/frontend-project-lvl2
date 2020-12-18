@@ -57,6 +57,27 @@ describe('Main flow with plain output format', () => {
   });
 });
 
+describe('Main flow with JSON output format', () => {
+  test('Filled files difference', async () => {
+    const filepath1 = getFixturePath('file1.json');
+    const filepath2 = getFixturePath('file2.json');
+    const expectedResult = await readFile('jsonDiffOfFile1AndFile2.txt');
+    expect(differ(filepath1, filepath2, 'json')).toEqual(expectedResult.trim());
+  });
+  test('Empty and Filed files difference', async () => {
+    const filepath1 = getFixturePath('fileEmpty.json');
+    const filepath2 = getFixturePath('file1.json');
+    const expectedResult = await readFile('jsonDiffOfFileEmptyAndFile1.txt');
+    expect(differ(filepath1, filepath2, 'json')).toEqual(expectedResult.trim());
+  });
+  test('Empty files difference', async () => {
+    const filepath1 = getFixturePath('fileEmpty.json');
+    const filepath2 = getFixturePath('fileEmpty.yaml');
+    const expectedResult = await readFile('plainDiffOfEmptyFiles.txt');
+    expect(differ(filepath1, filepath2, 'plain')).toEqual(expectedResult.trim());
+  });
+});
+
 describe('Paths tests', () => {
   test('absolute paths', async () => {
     const filepath1 = getFixturePath('file1.json');
