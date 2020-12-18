@@ -1,21 +1,12 @@
-const makeMessageItem = (actionId, message, propPath, value, prevValue) => {
-  if (actionId === 'updated') {
-    return {
-      actionId,
-      message,
-      propPath,
-      value,
-      prevValue,
-    };
-  }
-
-  return {
-    actionId,
-    message,
-    propPath,
-    value,
-  };
-};
+const makeDiffItem = (actionId, message, propPath, value, prevValue) => (
+  actionId === 'updated'
+    ? {
+      actionId, message, propPath, value, prevValue,
+    }
+    : {
+      actionId, message, propPath, value,
+    }
+);
 
 const textsMap = {
   updated: 'Property was updated',
@@ -23,23 +14,23 @@ const textsMap = {
   removed: 'Property was removed',
 };
 
-const messagesMap = {
+const differencesMap = {
   updated: (keyNode, path) => (
-    makeMessageItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value, keyNode.prevValue)
+    makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value, keyNode.prevValue)
   ),
   added: (keyNode, path) => (
-    makeMessageItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
+    makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
   ),
   removed: (keyNode, path) => (
-    makeMessageItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
+    makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
   ),
-  parent: (keyNode, path, makeMessagesIter) => (
-    makeMessagesIter(keyNode.children, path)
+  parent: (keyNode, path, makeDiffItemsIter) => (
+    makeDiffItemsIter(keyNode.children, path)
   ),
 };
 
-const makeMessages = (ast) => {
-  const makeMessagesIter = (currentAst, prevPath) => currentAst
+const makeDiffItems = (ast) => {
+  const makeDiffItemsIter = (currentAst, prevPath) => currentAst
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
       const currentPath = prevPath === null ? name : `${prevPath}.${name}`;
@@ -47,29 +38,21 @@ const makeMessages = (ast) => {
         return acc;
       }
       return type === 'parent'
-        ? [...acc, ...messagesMap[type](keyNode, currentPath, makeMessagesIter)]
-        : [...acc, messagesMap[type](keyNode, currentPath)];
+        ? [...acc, ...differencesMap[type](keyNode, currentPath, makeDiffItemsIter)]
+        : [...acc, differencesMap[type](keyNode, currentPath)];
     }, []);
 
-  return makeMessagesIter(ast, null);
+  return makeDiffItemsIter(ast, null);
 };
 
-const makeReport = (messages, firstFilePath, secondFilePath) => {
+export default (ast) => {
+  const differences = makeDiffItems(ast);
   const report = {
-    firstFilePath,
-    secondFilePath,
-    messages,
-    updatedCount: messages.filter(({ actionId }) => actionId === 'updated').length,
-    addedCount: messages.filter(({ actionId }) => actionId === 'added').length,
-    removedCount: messages.filter(({ actionId }) => actionId === 'removed').length,
+    differences,
+    updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
+    addedCount: differences.filter(({ actionId }) => actionId === 'added').length,
+    removedCount: differences.filter(({ actionId }) => actionId === 'removed').length,
   };
-
-  return report;
-};
-
-export default (ast, firstFilePath, secondFilePath) => {
-  const messages = makeMessages(ast);
-  const report = makeReport(messages, firstFilePath, secondFilePath);
 
   return JSON.stringify(report);
 };
