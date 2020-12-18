@@ -1,6 +1,6 @@
 import stylish from './stylish.js';
 import plain from './plain.js';
-import json from './json.js'
+import json from './json.js';
 
 export default (type = 'stylish') => (ast, firstFilePath, secondFilePath) => {
   switch (type) {
@@ -9,7 +9,7 @@ export default (type = 'stylish') => (ast, firstFilePath, secondFilePath) => {
     case 'plain':
       return plain(ast);
     case 'json':
-        return json(ast, firstFilePath, secondFilePath)
+      return json(ast, firstFilePath, secondFilePath);
 
     default:
       throw new Error(`Unknown formatter type: ! ---> ${type} <--- !`);
