@@ -44,4 +44,27 @@ $ gendiff filepath1.json filepath2.json
 ### Demo
 ---
 
+#### step 8
 [![asciicast](https://asciinema.org/a/380066.svg)](https://asciinema.org/a/380066)
+
+---
+
+#### step 7
+[![asciicast](https://asciinema.org/a/379673.svg)](https://asciinema.org/a/379673)
+
+---
+
+#### step 6
+[![asciicast](https://asciinema.org/a/379450.svg)](https://asciinema.org/a/379450)
+
+---
+
+#### step 5
+[![asciicast](https://asciinema.org/a/378306.svg)](https://asciinema.org/a/378306)
+
+---
+
+#### step 3
+[![asciicast](https://asciinema.org/a/377334.svg)](https://asciinema.org/a/377334)
+
+---
