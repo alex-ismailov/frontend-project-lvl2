@@ -2,14 +2,14 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 import json from './json.js';
 
-export default (type = 'stylish') => (ast) => {
+export default (type = 'stylish') => {
   switch (type) {
     case 'stylish':
-      return stylish(ast);
+      return stylish;
     case 'plain':
-      return plain(ast);
+      return plain;
     case 'json':
-      return json(ast);
+      return json;
 
     default:
       throw new Error(`Unknown formatter type: ! ---> ${type} <--- !`);
