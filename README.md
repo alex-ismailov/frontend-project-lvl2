@@ -15,15 +15,15 @@ Utility features:
 ### Usage
 ---
 
-```
-# plain format
+```javascript
+// plain format
 $ gendiff --format plain path/to/file.yml another/path/file.json
 
 Property 'common.follow' was added with value: false
 Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group2' was removed
 
-# stylish format
+// stylish format
 $ gendiff filepath1.json filepath2.json
 
 {
