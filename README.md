@@ -15,7 +15,7 @@ Utility features:
 ### Usage
 ---
 
-```
+```javascript
 # plain format
 $ gendiff --format plain path/to/file.yml another/path/file.json
 
