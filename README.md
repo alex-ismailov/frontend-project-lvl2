@@ -79,8 +79,8 @@ $ npm install path/to/hexlet-code-1.0.0.tgz
 // gendiff.js
 import gendiff from '@hexlet/code';
 
-const filepath1 = '/home/smile/Documents/data/file1.json';
-const filepath2 = '/home/smile/Documents/data/file2.yaml';
+const filepath1 = '/path/to/file1.json';
+const filepath2 = '/path/to/file2.yaml';
 
 const stylishOutput = gendiff(filepath1, filepath2); // stylish by default
 console.log(stylishOutput); // =>
