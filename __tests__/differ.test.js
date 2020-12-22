@@ -1,10 +1,6 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { promises as fs } from 'fs';
-import getObjectsDiffAST from '../src/differ';
-import obj1 from '../__fixtures__/obj1.js';
-import obj2 from '../__fixtures__/obj2.js';
-import diffAstOfFile1AndFile2 from '../__fixtures__/diffAstOfFile1AndFile2.js';
 import differ from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -109,11 +105,5 @@ describe('Edge cases', () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
     expect(() => differ(filepath1, filepath2, 'nonExistFormatterStyle')).toThrow();
-  });
-});
-
-describe('getting ast tests', () => {
-  test('diff ast of file1 and file2', () => {
-    expect(getObjectsDiffAST(obj1, obj2)).toEqual(diffAstOfFile1AndFile2);
   });
 });
