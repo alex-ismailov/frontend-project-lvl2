@@ -3,109 +3,85 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import noop from 'lodash/noop.js';
 import differ from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8').trim();
 
-describe('Main flow with stylish output format', () => {
-  test('Filled JSON files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('stylishDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
-  });
-  test('Filled JSON and YAML files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.yaml');
-    const expectedResult = await readFile('stylishDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
-  });
-  test('Filled and empty files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('stylishDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
-  });
-  test('Empty files difference', async () => {
-    const filepath1 = getFixturePath('fileEmpty.json');
-    const filepath2 = getFixturePath('fileEmpty.yaml');
-    const expectedResult = await readFile('stylishDiffOfEmptyFiles.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedResult.trim());
+let file1JsonPath;
+let file2JsonPath;
+let stylishDiffOfFile1AndFile2;
+
+beforeAll(() => {
+  file1JsonPath = getFixturePath('file1.json');
+  file2JsonPath = getFixturePath('file2.json');
+  stylishDiffOfFile1AndFile2 = readFile('stylishDiffOfFile1AndFile2.txt').trim();
+});
+
+describe.each([
+  [getFixturePath('file1.json'), getFixturePath('file2.json'), readFile('stylishDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.json'), getFixturePath('file2.yaml'), readFile('stylishDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.yaml'), getFixturePath('file2.yaml'), readFile('stylishDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.json'), getFixturePath('fileEmpty.yaml'), readFile('stylishDiffOfFile1AndFileEmpty.txt')],
+  [getFixturePath('fileEmpty.json'), getFixturePath('fileEmpty.yaml'), readFile('stylishDiffOfEmptyFiles.txt')],
+])('Test diff of %s %s', (filepath1, filepath2, expected) => {
+  test('Stylish output', () => {
+    expect(differ(filepath1, filepath2)).toEqual(expected.trim());
   });
 });
 
-describe('Main flow with plain output format', () => {
-  test('Filled files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('plainDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2, 'plain')).toEqual(expectedResult.trim());
-  });
-  test('Filled and empty files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('plainDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2, 'plain')).toEqual(expectedResult.trim());
-  });
-  test('Empty files difference', async () => {
-    const filepath1 = getFixturePath('fileEmpty.json');
-    const filepath2 = getFixturePath('fileEmpty.yaml');
-    const expectedResult = await readFile('plainDiffOfEmptyFiles.txt');
-    expect(differ(filepath1, filepath2, 'plain')).toEqual(expectedResult.trim());
+describe.each([
+  [getFixturePath('file1.json'), getFixturePath('file2.json'), readFile('plainDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.json'), getFixturePath('file2.yaml'), readFile('plainDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.yaml'), getFixturePath('file2.yaml'), readFile('plainDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.json'), getFixturePath('fileEmpty.yaml'), readFile('plainDiffOfFile1AndFileEmpty.txt')],
+  [getFixturePath('fileEmpty.json'), getFixturePath('fileEmpty.yaml'), readFile('plainDiffOfEmptyFiles.txt')],
+])('Test diff of %s %s', (filepath1, filepath2, expected) => {
+  test('Plain output', () => {
+    expect(differ(filepath1, filepath2, 'plain')).toEqual(expected.trim());
   });
 });
 
-describe('Main flow with JSON output format', () => {
-  test('Filled files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    const expectedResult = await readFile('jsonDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2, 'json')).toEqual(expectedResult.trim());
-  });
-  test('Empty and Filed files difference', async () => {
-    const filepath1 = getFixturePath('fileEmpty.json');
-    const filepath2 = getFixturePath('file1.json');
-    const expectedResult = await readFile('jsonDiffOfFileEmptyAndFile1.txt');
-    expect(differ(filepath1, filepath2, 'json')).toEqual(expectedResult.trim());
-  });
-  test('Same filled files difference', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file1.json');
-    const expectedResult = await readFile('jsonDiffOfFile1AndFile1.txt');
-    expect(differ(filepath1, filepath2, 'json')).toEqual(expectedResult.trim());
+describe.each([
+  [getFixturePath('file1.json'), getFixturePath('file2.json'), readFile('jsonDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.json'), getFixturePath('file2.yaml'), readFile('jsonDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.yaml'), getFixturePath('file2.yaml'), readFile('jsonDiffOfFile1AndFile2.txt')],
+  [getFixturePath('file1.json'), getFixturePath('fileEmpty.yaml'), readFile('jsonDiffOfFile1AndFileEmpty.txt')],
+  [getFixturePath('fileEmpty.json'), getFixturePath('fileEmpty.yaml'), readFile('jsonDiffOfEmptyFiles.txt')],
+])('Test diff of %s %s', (filepath1, filepath2, expected) => {
+  test('JSON output', () => {
+    expect(differ(filepath1, filepath2, 'json')).toEqual(expected.trim());
   });
 });
 
 describe('Paths tests', () => {
-  test('absolute paths', async () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    const expectedString = await readFile('stylishDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+  test('absolute paths', () => {
+    expect(differ(file1JsonPath, file2JsonPath)).toEqual(stylishDiffOfFile1AndFile2);
   });
 
-  test('relative paths', async () => {
+  test('relative paths', () => {
     const filepath1 = '__fixtures__/file1.json';
     const filepath2 = '__fixtures__/file2.json';
-    const expectedString = await readFile('stylishDiffOfFile1AndFile2.txt');
-    expect(differ(filepath1, filepath2)).toEqual(expectedString.trim());
+    expect(differ(filepath1, filepath2)).toEqual(stylishDiffOfFile1AndFile2);
   });
 });
 
 describe('Edge cases', () => {
-  test('non-existent file', async () => {
+  test('non-existent file', () => {
     const nonExistenPath = 'non-exist-file.json';
-    const filepath2 = getFixturePath('file2.json');
-    expect(() => differ(nonExistenPath, filepath2)).toThrow();
+    expect(() => differ(nonExistenPath, nonExistenPath)).toThrow('ENOENT');
+  });
+
+  test('File path is undefined', () => {
+    const filepath1 = noop();
+    expect(() => differ(filepath1, file2JsonPath)).toThrow('argument must be of type string');
   });
 
   test('Non exist formatter style', () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    expect(() => differ(filepath1, filepath2, 'nonExistFormatterStyle')).toThrow();
+    expect(() => differ(file1JsonPath, file2JsonPath, 'nonExistFormatterStyle')).toThrow('Unknown formatter type');
   });
 });
