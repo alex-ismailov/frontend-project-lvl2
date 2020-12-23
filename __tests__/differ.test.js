@@ -1,5 +1,3 @@
-/* eslint no-underscore-dangle: ["error", { "allow": ["__filename", "__dirname"] }] */
-
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
