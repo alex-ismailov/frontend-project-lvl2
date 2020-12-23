@@ -14,7 +14,7 @@ Utility features:
 * The package can be used as a library
 
 
-### Usage as CLI
+### Usage as console utility
 ---
 #### Installation
 ```
@@ -63,7 +63,7 @@ $ gendiff filepath1.json filepath2.json
 
 ### Usage as library
 ---
-#### Installation 
+#### Installation
 ```
 $ git clone git@github.com:alex-ismailov/frontend-project-lvl2.git
 $ cd frontend-project-lvl2
