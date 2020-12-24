@@ -1,1 +1,6 @@
-{"differences":[],"updatedCount":0,"addedCount":0,"removedCount":0}
+{
+  "differences": [],
+  "updatedCount": 0,
+  "addedCount": 0,
+  "removedCount": 0
+}
