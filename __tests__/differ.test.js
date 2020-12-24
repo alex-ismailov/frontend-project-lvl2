@@ -30,23 +30,26 @@ const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.txt').
 const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.txt').trim();
 
 describe('Main flow', () => {
-  test.each([
-    [file1JsonPath, file2JsonPath, noop(), stylishDiffOfFile1AndFile2],
-    [file1YamlPath, file2YamlPath, noop(), stylishDiffOfFile1AndFile2],
-    [file1JsonPath, file2YamlPath, noop(), stylishDiffOfFile1AndFile2],
-    [file1JsonPath, fileEmptyJsonPath, noop(), stylishDiffOfFile1AndFileEmpty],
-    [fileEmptyJsonPath, fileEmptyYamlPath, noop(), stylishDiffOfEmptyFiles],
-    [file1JsonPath, file2JsonPath, 'plain', plainDiffOfFile1AndFile2],
-    [file1YamlPath, file2YamlPath, 'plain', plainDiffOfFile1AndFile2],
-    [file1JsonPath, file2YamlPath, 'plain', plainDiffOfFile1AndFile2],
-    [file1JsonPath, fileEmptyJsonPath, 'plain', plainDiffOfFile1AndFileEmpty],
-    [fileEmptyJsonPath, fileEmptyYamlPath, 'plain', plainDiffOfEmptyFiles],
-    [file1JsonPath, file2JsonPath, 'json', jsonDiffOfFile1AndFile2],
-    [file1YamlPath, file2YamlPath, 'json', jsonDiffOfFile1AndFile2],
-    [file1JsonPath, file2YamlPath, 'json', jsonDiffOfFile1AndFile2],
-    [file1JsonPath, fileEmptyJsonPath, 'json', jsonDiffOfFile1AndFileEmpty],
-    [fileEmptyJsonPath, fileEmptyYamlPath, 'json', jsonDiffOfEmptyFiles],
-  ])('Test diff of: %s and %s', (filepath1, filepath2, outputStyle, expected) => {
+  test.each`
+        filepath1        |     filepath2        | outputStyle |           expected
+    ${file1JsonPath}     | ${file2JsonPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
+    ${file1YamlPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}    
+    ${file1JsonPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}    
+    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${noop()}   | ${stylishDiffOfFile1AndFileEmpty}
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${noop()}   | ${stylishDiffOfEmptyFiles}       
+    ${file1JsonPath}     | ${file2JsonPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}      
+    ${file1YamlPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}      
+    ${file1JsonPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}      
+    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'plain'}  | ${plainDiffOfFile1AndFileEmpty}  
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'plain'}  | ${plainDiffOfEmptyFiles}         
+    ${file1JsonPath}     | ${file2JsonPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}       
+    ${file1YamlPath}     | ${file2YamlPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}       
+    ${file1JsonPath}     | ${file2YamlPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}       
+    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'json'}   | ${jsonDiffOfFile1AndFileEmpty}   
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'json'}   | ${jsonDiffOfEmptyFiles}          
+  `('Test diff of: $filepath1 and $filepath2', ({
+    filepath1, filepath2, outputStyle, expected,
+  }) => {
     expect(differ(filepath1, filepath2, outputStyle)).toEqual(expected);
   });
 });
