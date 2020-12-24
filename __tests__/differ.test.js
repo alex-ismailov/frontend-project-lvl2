@@ -29,39 +29,25 @@ const jsonDiffOfFile1AndFile2 = readFile('jsonDiffOfFile1AndFile2.txt').trim();
 const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.txt').trim();
 const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.txt').trim();
 
-describe.each([
-  [file1JsonPath, file2JsonPath, stylishDiffOfFile1AndFile2],
-  [file1YamlPath, file2YamlPath, stylishDiffOfFile1AndFile2],
-  [file1JsonPath, file2YamlPath, stylishDiffOfFile1AndFile2],
-  [file1JsonPath, fileEmptyJsonPath, stylishDiffOfFile1AndFileEmpty],
-  [fileEmptyJsonPath, fileEmptyYamlPath, stylishDiffOfEmptyFiles],
-])('Test diff of %s %s', (filepath1, filepath2, expected) => {
-  test('Stylish output', () => {
-    expect(differ(filepath1, filepath2)).toEqual(expected.trim());
-  });
-});
-
-describe.each([
-  [file1JsonPath, file2JsonPath, plainDiffOfFile1AndFile2],
-  [file1YamlPath, file2YamlPath, plainDiffOfFile1AndFile2],
-  [file1JsonPath, file2YamlPath, plainDiffOfFile1AndFile2],
-  [file1JsonPath, fileEmptyJsonPath, plainDiffOfFile1AndFileEmpty],
-  [fileEmptyJsonPath, fileEmptyYamlPath, plainDiffOfEmptyFiles],
-])('Test diff of %s %s', (filepath1, filepath2, expected) => {
-  test('Plain output', () => {
-    expect(differ(filepath1, filepath2, 'plain')).toEqual(expected.trim());
-  });
-});
-
-describe.each([
-  [file1JsonPath, file2JsonPath, jsonDiffOfFile1AndFile2],
-  [file1YamlPath, file2YamlPath, jsonDiffOfFile1AndFile2],
-  [file1JsonPath, file2YamlPath, jsonDiffOfFile1AndFile2],
-  [file1JsonPath, fileEmptyJsonPath, jsonDiffOfFile1AndFileEmpty],
-  [fileEmptyJsonPath, fileEmptyYamlPath, jsonDiffOfEmptyFiles],
-])('Test diff of %s %s', (filepath1, filepath2, expected) => {
-  test('JSON output', () => {
-    expect(differ(filepath1, filepath2, 'json')).toEqual(expected.trim());
+describe('Main flow', () => {
+  test.each([
+    [file1JsonPath, file2JsonPath, noop(), stylishDiffOfFile1AndFile2],
+    [file1YamlPath, file2YamlPath, noop(), stylishDiffOfFile1AndFile2],
+    [file1JsonPath, file2YamlPath, noop(), stylishDiffOfFile1AndFile2],
+    [file1JsonPath, fileEmptyJsonPath, noop(), stylishDiffOfFile1AndFileEmpty],
+    [fileEmptyJsonPath, fileEmptyYamlPath, noop(), stylishDiffOfEmptyFiles],
+    [file1JsonPath, file2JsonPath, 'plain', plainDiffOfFile1AndFile2],
+    [file1YamlPath, file2YamlPath, 'plain', plainDiffOfFile1AndFile2],
+    [file1JsonPath, file2YamlPath, 'plain', plainDiffOfFile1AndFile2],
+    [file1JsonPath, fileEmptyJsonPath, 'plain', plainDiffOfFile1AndFileEmpty],
+    [fileEmptyJsonPath, fileEmptyYamlPath, 'plain', plainDiffOfEmptyFiles],
+    [file1JsonPath, file2JsonPath, 'json', jsonDiffOfFile1AndFile2],
+    [file1YamlPath, file2YamlPath, 'json', jsonDiffOfFile1AndFile2],
+    [file1JsonPath, file2YamlPath, 'json', jsonDiffOfFile1AndFile2],
+    [file1JsonPath, fileEmptyJsonPath, 'json', jsonDiffOfFile1AndFileEmpty],
+    [fileEmptyJsonPath, fileEmptyYamlPath, 'json', jsonDiffOfEmptyFiles],
+  ])('Test diff of: %s and %s', (filepath1, filepath2, outputStyle, expected) => {
+    expect(differ(filepath1, filepath2, outputStyle)).toEqual(expected);
   });
 });
 
