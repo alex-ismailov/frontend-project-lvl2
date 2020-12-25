@@ -7,7 +7,7 @@ export default (file1Path, file2Path, formatStyle = 'stylish') => {
   const data2 = parseFile(file2Path);
 
   const ast = getObjectsDiffAST(data1, data2);
-  const formatter = getFormatter(formatStyle);
+  const format = getFormatter(formatStyle);
 
-  return formatter(ast);
+  return format(ast);
 };
