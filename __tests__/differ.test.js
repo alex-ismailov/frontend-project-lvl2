@@ -33,23 +33,26 @@ describe('Main flow', () => {
   test.each`
         filepath1        |     filepath2        | outputStyle |           expected
     ${file1JsonPath}     | ${file2JsonPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
-    ${file1YamlPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}    
-    ${file1JsonPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}    
+    ${file1YamlPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${fileEmptyJsonPath} | ${noop()}   | ${stylishDiffOfFile1AndFileEmpty}
-    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${noop()}   | ${stylishDiffOfEmptyFiles}       
-    ${file1JsonPath}     | ${file2JsonPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}      
-    ${file1YamlPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}      
-    ${file1JsonPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}      
-    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'plain'}  | ${plainDiffOfFile1AndFileEmpty}  
-    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'plain'}  | ${plainDiffOfEmptyFiles}         
-    ${file1JsonPath}     | ${file2JsonPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}       
-    ${file1YamlPath}     | ${file2YamlPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}       
-    ${file1JsonPath}     | ${file2YamlPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}       
-    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'json'}   | ${jsonDiffOfFile1AndFileEmpty}   
-    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'json'}   | ${jsonDiffOfEmptyFiles}          
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${noop()}   | ${stylishDiffOfEmptyFiles}
+    ${file1JsonPath}     | ${file2JsonPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}
+    ${file1YamlPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'plain'}  | ${plainDiffOfFile1AndFileEmpty}
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'plain'}  | ${plainDiffOfEmptyFiles}
+    ${file1JsonPath}     | ${file2JsonPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}
+    ${file1YamlPath}     | ${file2YamlPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${file2YamlPath}     | ${'json'}   | ${jsonDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'json'}   | ${jsonDiffOfFile1AndFileEmpty}
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'json'}   | ${jsonDiffOfEmptyFiles}
   `('Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
+    /* This json result processing is necessary so that a person
+    can check manually if there is an error in the fixtures.
+    The minified json string is made readable. */
     const result = differ(filepath1, filepath2, outputStyle);
     const readableResult = outputStyle === 'json'
       ? JSON.stringify(JSON.parse(result), null, '  ')
