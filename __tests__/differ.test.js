@@ -50,7 +50,11 @@ describe('Main flow', () => {
   `('Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
-    expect(differ(filepath1, filepath2, outputStyle)).toEqual(expected);
+    const result = differ(filepath1, filepath2, outputStyle);
+    const readableResult = outputStyle === 'json'
+      ? JSON.stringify(JSON.parse(result), null, '  ')
+      : result;
+    expect(readableResult).toEqual(expected);
   });
 });
 
