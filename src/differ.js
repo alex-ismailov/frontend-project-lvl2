@@ -2,18 +2,18 @@ import has from 'lodash/has.js';
 import { isObject, getKeysUnion } from './utils.js';
 
 /*
-AST представляет из себя массив узлов.
-Узел описывает разницу между значениями по одноименным ключам в сравниваемых объектах.
-* Если значения по ключам в обоих объектах не являются объектами, но они равны, то
-  узел помечается типом 'same'.
-* Если ключ встречается только в одном из объектов, то узел помечается соответсвующим типом:
-  added или removed.
-* Если значения по ключам в обоих объектах не являются объектами, и их значения не равны, то
-  узел помечается типом 'updated'.
-* Если оба текущих значения по ключу являются объектами, то AST вычисляется рекурсивно,
-  а полученное дерево помещается в св-во узла children
+  diffTree is an array of nodes.
+  The node describes the difference between the values for the keys of the same name in
+  the compared objects.
+  * If the values by keys in both objects are not objects, but they are equal, then
+    the node is marked eith type 'same'.
+  * If the key is found only in one of the objects,
+    then the node is marked with the corresponding type: added or removed.
+  * If the values by keys in both objects are not objects, and their values are not equal,
+    then the node is marked with the 'update' type.
+  * If both current key values are objects, then diffTree is evaluated recursively,
+    and the resulting tree is placed in children property of node.
 */
-
 const buildDiffTree = (obj1, obj2) => {
   const keysUnion = getKeysUnion(obj1, obj2);
   keysUnion.sort((a, b) => a.localeCompare(b, 'en'));
