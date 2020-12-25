@@ -3,8 +3,6 @@
 import commander from 'commander';
 import app from '../index.js';
 
-const { argv } = process;
-
 commander
   .arguments('<filepath1> <filepath2>')
   .description('Compares two configuration files and shows a difference.')
@@ -12,4 +10,4 @@ commander
   .option('-f, --format [type]', 'output format', 'stylish')
   .action((filepath1, filepath2) => console.log(app(filepath1, filepath2, commander.format)));
 
-commander.parse(argv);
+commander.parse(process.argv);
