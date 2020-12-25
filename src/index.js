@@ -5,7 +5,7 @@ import format from './formatters/index.js';
 export default (file1Path, file2Path, formatStyle = 'stylish') => {
   const data1 = parseFile(file1Path);
   const data2 = parseFile(file2Path);
-  const ast = buildDiffTree(data1, data2);
+  const diffTree = buildDiffTree(data1, data2);
 
-  return format(ast, formatStyle);
+  return format(diffTree, formatStyle);
 };
