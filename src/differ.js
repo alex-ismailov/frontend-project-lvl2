@@ -14,7 +14,7 @@ AST представляет из себя массив узлов.
   а полученное дерево помещается в св-во узла children
 */
 
-const getObjectsDiffAST = (obj1, obj2) => {
+const buildDiffTree = (obj1, obj2) => {
   const keysUnion = getKeysUnion(obj1, obj2);
   keysUnion.sort((a, b) => a.localeCompare(b, 'en'));
 
@@ -22,7 +22,7 @@ const getObjectsDiffAST = (obj1, obj2) => {
     .reduce((acc, key) => {
       if (has(obj1, key) && has(obj2, key)) {
         if (isObject(obj1[key]) && isObject(obj2[key])) {
-          return [...acc, { name: key, type: 'parent', children: [...getObjectsDiffAST(obj1[key], obj2[key])] }];
+          return [...acc, { name: key, type: 'parent', children: [...buildDiffTree(obj1[key], obj2[key])] }];
         }
 
         const currentAcc = obj1[key] === obj2[key]
@@ -40,4 +40,4 @@ const getObjectsDiffAST = (obj1, obj2) => {
     }, []);
 };
 
-export default getObjectsDiffAST;
+export default buildDiffTree;
