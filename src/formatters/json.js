@@ -54,5 +54,5 @@ export default (ast) => {
     removedCount: differences.filter(({ actionId }) => actionId === 'removed').length,
   };
 
-  return JSON.stringify(report, null, '  ');
+  return JSON.stringify(report);
 };
