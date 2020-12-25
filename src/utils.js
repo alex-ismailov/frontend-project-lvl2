@@ -1,4 +1,6 @@
 import fs from 'fs';
+import path from 'path';
+import parseData from './parsers.js';
 
 export const isObject = (value) => (
   value === null
@@ -21,4 +23,12 @@ export const readFile = (filePath) => {
   } catch (error) {
     throw new Error(error);
   }
+};
+
+export const parseFile = (filePath) => {
+  const fullPath = path.resolve(process.cwd(), filePath);
+  const rawData = readFile(fullPath);
+  const fileExtension = path.extname(fullPath).slice(1);
+
+  return parseData[fileExtension](rawData);
 };
