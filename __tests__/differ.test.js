@@ -72,17 +72,14 @@ describe('Paths tests', () => {
 });
 
 describe('Edge cases', () => {
-  test('non-existent file', () => {
-    const nonExistenPath = 'non-exist-file.json';
-    expect(() => differ(nonExistenPath, nonExistenPath)).toThrow('ENOENT');
-  });
-
-  test('File path is undefined', () => {
-    const filepath1 = undefined;
-    expect(() => differ(filepath1, file2JsonPath)).toThrow('argument must be of type string');
-  });
-
-  test('Non exist formatter style', () => {
-    expect(() => differ(file1JsonPath, file2JsonPath, 'nonExistFormatterStyle')).toThrow('Unknown formatter type');
+  test.each`
+          filepath1     |      filepath2      |     outputStyle    |            expected
+    ${'non-exist-file'} | ${'non-exist-file'} | ${'stylish'}       | ${'ENOENT'}
+    ${undefined}        | ${undefined}        | ${'stylish'}       | ${'argument must be of type string'}
+    ${file1JsonPath}    | ${file2JsonPath}    | ${'nonExistStyle'} | ${'Unknown formatter type'}
+  `('Test diff of: $filepath1 and $filepath2', ({
+    filepath1, filepath2, outputStyle, expected,
+  }) => {
+    expect(() => differ(filepath1, filepath2, outputStyle)).toThrow(expected);
   });
 });
