@@ -24,9 +24,9 @@ const plainDiffOfFile1AndFile2 = readFile('plainDiffOfFile1AndFile2.txt').trim()
 const plainDiffOfFile1AndFileEmpty = readFile('plainDiffOfFile1AndFileEmpty.txt').trim();
 const plainDiffOfEmptyFiles = readFile('plainDiffOfEmptyFiles.txt').trim();
 
-const jsonDiffOfFile1AndFile2 = readFile('jsonDiffOfFile1AndFile2.txt').trim();
-const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.txt').trim();
-const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.txt').trim();
+const jsonDiffOfFile1AndFile2 = readFile('jsonDiffOfFile1AndFile2.json').trim();
+const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.json').trim();
+const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json').trim();
 
 describe('Main flow', () => {
   test.each`
