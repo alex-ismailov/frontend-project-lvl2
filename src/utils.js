@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import parseData from './parsers.js';
+import parse from './parsers.js';
 
 export const isObject = (value) => (
   value === null
@@ -22,5 +22,5 @@ export const parseFile = (filePath) => {
   const rawData = fs.readFileSync(filePath, 'utf-8').toString();
   const fileExtension = path.extname(fullPath).slice(1);
 
-  return parseData[fileExtension](rawData);
+  return parse(rawData, fileExtension);
 };
