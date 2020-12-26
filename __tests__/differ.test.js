@@ -1,7 +1,6 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
-import noop from 'lodash/noop.js';
 import differ from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,11 +31,11 @@ const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.txt').trim();
 describe('Main flow', () => {
   test.each`
         filepath1        |     filepath2        | outputStyle |           expected
-    ${file1JsonPath}     | ${file2JsonPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
-    ${file1YamlPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
-    ${file1JsonPath}     | ${file2YamlPath}     | ${noop()}   | ${stylishDiffOfFile1AndFile2}
-    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${noop()}   | ${stylishDiffOfFile1AndFileEmpty}
-    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${noop()}   | ${stylishDiffOfEmptyFiles}
+    ${file1JsonPath}     | ${file2JsonPath}     | ${undefined}   | ${stylishDiffOfFile1AndFile2}
+    ${file1YamlPath}     | ${file2YamlPath}     | ${undefined}   | ${stylishDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${file2YamlPath}     | ${undefined}   | ${stylishDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${fileEmptyJsonPath} | ${undefined}   | ${stylishDiffOfFile1AndFileEmpty}
+    ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${undefined}   | ${stylishDiffOfEmptyFiles}
     ${file1JsonPath}     | ${file2JsonPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}
     ${file1YamlPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${file2YamlPath}     | ${'plain'}  | ${plainDiffOfFile1AndFile2}
@@ -80,7 +79,7 @@ describe('Edge cases', () => {
   });
 
   test('File path is undefined', () => {
-    const filepath1 = noop();
+    const filepath1 = undefined;
     expect(() => differ(filepath1, file2JsonPath)).toThrow('argument must be of type string');
   });
 
