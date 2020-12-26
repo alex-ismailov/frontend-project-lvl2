@@ -49,9 +49,8 @@ describe('Main flow', () => {
   `('Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
-    /* This json result processing is necessary so that a person
-    can check manually if there is an error in the fixtures.
-    The minified json string is made readable. */
+    /* result is stringified for clearer visual output when tests fail.
+    The second benefit is that the fixtures are readable. */
     const result = differ(filepath1, filepath2, outputStyle);
     const readableResult = outputStyle === 'json'
       ? JSON.stringify(JSON.parse(result), null, '  ')
