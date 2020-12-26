@@ -11,6 +11,8 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 
 const file1JsonPath = getFixturePath('file1.json');
 const file2JsonPath = getFixturePath('file2.json');
+const file1JsonRelPath = '__fixtures__/file1.json';
+const file2JsonRelPath = '__fixtures__/file2.json';
 const fileEmptyJsonPath = getFixturePath('fileEmpty.json');
 const file1YamlPath = getFixturePath('file1.yaml');
 const file2YamlPath = getFixturePath('file2.yaml');
@@ -46,6 +48,7 @@ describe('Main flow', () => {
     ${file1JsonPath}     | ${file2YamlPath}     | ${'json'}    | ${jsonDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'json'}    | ${jsonDiffOfFile1AndFileEmpty}
     ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'json'}    | ${jsonDiffOfEmptyFiles}
+    ${file1JsonRelPath}  | ${file2JsonRelPath}  | ${undefined} | ${stylishDiffOfFile1AndFile2}
   `('Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
@@ -56,14 +59,6 @@ describe('Main flow', () => {
       ? JSON.stringify(JSON.parse(result), null, '  ')
       : result;
     expect(readableResult).toEqual(expected);
-  });
-});
-
-describe('Paths tests', () => {
-  test('relative paths', () => {
-    const filepath1 = '__fixtures__/file1.json';
-    const filepath2 = '__fixtures__/file2.json';
-    expect(differ(filepath1, filepath2)).toEqual(stylishDiffOfFile1AndFile2);
   });
 });
 
