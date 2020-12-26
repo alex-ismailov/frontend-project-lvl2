@@ -60,10 +60,6 @@ describe('Main flow', () => {
 });
 
 describe('Paths tests', () => {
-  test('absolute paths', () => {
-    expect(differ(file1JsonPath, file2JsonPath)).toEqual(stylishDiffOfFile1AndFile2);
-  });
-
   test('relative paths', () => {
     const filepath1 = '__fixtures__/file1.json';
     const filepath2 = '__fixtures__/file2.json';
