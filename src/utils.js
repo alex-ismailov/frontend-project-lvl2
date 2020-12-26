@@ -19,7 +19,7 @@ export const getKeysUnion = (obj1, obj2) => {
 
 export const parseFile = (filePath) => {
   const fullPath = path.resolve(process.cwd(), filePath);
-  const rawData = fs.readFileSync(filePath).toString();
+  const rawData = fs.readFileSync(filePath, 'utf-8').toString();
   const fileExtension = path.extname(fullPath).slice(1);
 
   return parseData[fileExtension](rawData);
