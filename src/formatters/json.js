@@ -29,7 +29,7 @@ const differencesMap = {
   ),
 };
 
-const makeDiffItems = (ast) => {
+const makeDiffItems = (diffTree) => {
   const makeDiffItemsIter = (currentAst, prevPath) => currentAst
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
@@ -42,11 +42,11 @@ const makeDiffItems = (ast) => {
         : [...acc, differencesMap[type](keyNode, currentPath)];
     }, []);
 
-  return makeDiffItemsIter(ast, null);
+  return makeDiffItemsIter(diffTree, null);
 };
 
-export default (ast) => {
-  const differences = makeDiffItems(ast);
+export default (diffTree) => {
+  const differences = makeDiffItems(diffTree);
   const report = {
     differences,
     updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
