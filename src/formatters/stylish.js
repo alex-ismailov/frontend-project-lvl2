@@ -6,7 +6,7 @@ const actionPrefixMap = {
   removed: '  - ',
 };
 
-const makeStringFromObjEntries = (obj, indent) => {
+const buildStringFromObj = (obj, indent) => {
   const iter = (currObj, currIndent) => {
     const keys = Object.keys(currObj);
     const objString = keys.flatMap((key) => {
@@ -28,7 +28,7 @@ const makeStringFromObjEntries = (obj, indent) => {
 
 const makeString = (indent, type, key, value) => {
   if (isObject(value)) {
-    const nestedStructureStr = makeStringFromObjEntries(value, indent + ' '.repeat(4));
+    const nestedStructureStr = buildStringFromObj(value, indent + ' '.repeat(4));
     return `${indent}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
   }
 
