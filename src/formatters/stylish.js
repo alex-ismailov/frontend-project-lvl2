@@ -58,8 +58,8 @@ const stringsMap = {
 };
 
 export default (diffTree) => {
-  const formatterIter = (currAst, currIndent) => {
-    const rows = currAst
+  const formatterIter = (currDiffTree, currIndent) => {
+    const rows = currDiffTree
       .reduce((acc, keyNode) => {
         const { type } = keyNode;
         return type === 'parent'
