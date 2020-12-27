@@ -18,30 +18,40 @@ import { isObject } from './utils.js';
   * If both current key values are objects, then diffTree is evaluated recursively,
     and the resulting tree is placed in children property of node.
 */
-const buildDiffTree = (obj1, obj2) => {
-  const keysUnion = union(keys(obj1), keys(obj2));
-  const sortedKeysUnion = sortBy(keysUnion, identity);
+const buildDiffTree = (data1, data2) => {
+  const getDiffTreeChildren = (obj1, obj2) => {
+    const keysUnion = union(keys(obj1), keys(obj2));
+    const sortedKeysUnion = sortBy(keysUnion, identity);
 
-  return sortedKeysUnion
-    .flatMap((key) => {
-      if (has(obj1, key) && has(obj2, key)) {
-        if (isObject(obj1[key]) && isObject(obj2[key])) {
-          return { name: key, type: 'parent', children: [...buildDiffTree(obj1[key], obj2[key])] };
+    const children = sortedKeysUnion
+      .flatMap((key) => {
+        if (has(obj1, key) && has(obj2, key)) {
+          if (isObject(obj1[key]) && isObject(obj2[key])) {
+            return { name: key, type: 'parent', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
+          }
+
+          const currentAcc = obj1[key] === obj2[key]
+            ? { name: key, type: 'same', value: obj1[key] }
+            : {
+              name: key, type: 'updated', value: obj2[key], prevValue: obj1[key],
+            };
+
+          return currentAcc;
         }
 
-        const currentAcc = obj1[key] === obj2[key]
-          ? { name: key, type: 'same', value: obj1[key] }
-          : {
-            name: key, type: 'updated', value: obj2[key], prevValue: obj1[key],
-          };
+        return has(obj1, key)
+          ? { name: key, type: 'removed', value: obj1[key] }
+          : { name: key, type: 'added', value: obj2[key] };
+      });
 
-        return currentAcc;
-      }
+    return children;
+  };
 
-      return has(obj1, key)
-        ? { name: key, type: 'removed', value: obj1[key] }
-        : { name: key, type: 'added', value: obj2[key] };
-    });
+  return {
+    name: 'root',
+    type: 'root',
+    children: getDiffTreeChildren(data1, data2),
+  };
 };
 
 export default buildDiffTree;
