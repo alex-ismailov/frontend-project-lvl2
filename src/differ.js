@@ -1,5 +1,7 @@
 import has from 'lodash/has.js';
-import { isObject, getKeysUnion } from './utils.js';
+import union from 'lodash/union.js';
+import keys from 'lodash/keys.js';
+import { isObject } from './utils.js';
 
 /*
   diffTree is an array of nodes.
@@ -15,7 +17,7 @@ import { isObject, getKeysUnion } from './utils.js';
     and the resulting tree is placed in children property of node.
 */
 const buildDiffTree = (obj1, obj2) => {
-  const keysUnion = getKeysUnion(obj1, obj2);
+  const keysUnion = union(keys(obj1), keys(obj2));
   keysUnion.sort((a, b) => a.localeCompare(b, 'en'));
 
   return keysUnion
