@@ -26,22 +26,22 @@ const buildDiffTree = (data1, data2) => {
     return sortedKeysUnion
       .flatMap((key) => {
         if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
-          return { name: key, type: 'parent', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
+          return { key, type: 'parent', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
         }
 
         if (has(obj1, key) && has(obj2, key)) {
           const currentAcc = obj1[key] === obj2[key]
-            ? { name: key, type: 'same', value: obj1[key] }
+            ? { key, type: 'same', value: obj1[key] }
             : {
-              name: key, type: 'updated', value: obj2[key], prevValue: obj1[key],
+              key, type: 'updated', value: obj2[key], prevValue: obj1[key],
             };
 
           return currentAcc;
         }
 
         return has(obj1, key)
-          ? { name: key, type: 'removed', value: obj1[key] }
-          : { name: key, type: 'added', value: obj2[key] };
+          ? { key, type: 'removed', value: obj1[key] }
+          : { key, type: 'added', value: obj2[key] };
       });
   };
 
