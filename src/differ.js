@@ -1,6 +1,8 @@
 import has from 'lodash/has.js';
 import union from 'lodash/union.js';
 import keys from 'lodash/keys.js';
+import sortBy from 'lodash/sortBy.js';
+import identity from 'lodash/identity.js';
 import { isObject } from './utils.js';
 
 /*
@@ -18,9 +20,9 @@ import { isObject } from './utils.js';
 */
 const buildDiffTree = (obj1, obj2) => {
   const keysUnion = union(keys(obj1), keys(obj2));
-  keysUnion.sort((a, b) => a.localeCompare(b, 'en'));
+  const sortedKeysUnion = sortBy(keysUnion, identity);
 
-  return keysUnion
+  return sortedKeysUnion
     .reduce((acc, key) => {
       if (has(obj1, key) && has(obj2, key)) {
         if (isObject(obj1[key]) && isObject(obj2[key])) {
