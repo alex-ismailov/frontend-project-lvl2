@@ -26,7 +26,7 @@ const buildStringFromObj = (obj, indent) => {
   return `{\n${iter(obj, indent).join('\n')}\n${indent}}`;
 };
 
-const makeString = (indent, type, key, value) => {
+const buildString = (indent, type, key, value) => {
   if (isObject(value)) {
     const nestedStructureStr = buildStringFromObj(value, indent + ' '.repeat(4));
     return `${indent}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
@@ -36,16 +36,16 @@ const makeString = (indent, type, key, value) => {
 };
 
 const stringsMap = {
-  same: (keyNode, indent) => makeString(indent, keyNode.type, keyNode.name, keyNode.value),
+  same: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.name, keyNode.value),
   updated: (keyNode, indent) => [
-    makeString(indent, 'removed', keyNode.name, keyNode.prevValue),
-    makeString(indent, 'added', keyNode.name, keyNode.value),
+    buildString(indent, 'removed', keyNode.name, keyNode.prevValue),
+    buildString(indent, 'added', keyNode.name, keyNode.value),
   ],
-  added: (keyNode, indent) => makeString(indent, keyNode.type, keyNode.name, keyNode.value),
-  removed: (keyNode, indent) => makeString(indent, keyNode.type, keyNode.name, keyNode.value),
+  added: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.name, keyNode.value),
+  removed: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.name, keyNode.value),
   parent: (keyNode, indent, format) => {
     const value = format(keyNode.children, indent + ' '.repeat(4));
-    return makeString(indent, 'same', keyNode.name, value);
+    return buildString(indent, 'same', keyNode.name, value);
   },
 };
 
