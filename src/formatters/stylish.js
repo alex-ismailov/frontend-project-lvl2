@@ -60,12 +60,12 @@ const stringsMap = {
 export default (diffTree) => {
   const format = (currDiffTree, currIndent) => {
     const rows = currDiffTree
-      .reduce((acc, keyNode) => {
+      .flatMap((keyNode) => {
         const { type } = keyNode;
         return type === 'parent'
-          ? [...acc, stringsMap[type](keyNode, currIndent, format)]
-          : [...acc, ...stringsMap[type](keyNode, currIndent)];
-      }, [])
+          ? stringsMap[type](keyNode, currIndent, format)
+          : stringsMap[type](keyNode, currIndent);
+      })
       .join('\n');
 
     return `{\n${rows}\n${currIndent}}`;
