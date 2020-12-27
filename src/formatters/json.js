@@ -34,8 +34,8 @@ const differencesMap = {
 const buildDiffItems = (diffTree) => {
   const buildDiffItemsIter = (currDiffTree, prevPath) => currDiffTree
     .reduce((acc, keyNode) => {
-      const { type, name } = keyNode;
-      const currentPath = prevPath === null ? name : `${prevPath}.${name}`;
+      const { type, key } = keyNode;
+      const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
       if (type === 'same') {
         return acc;
       }
