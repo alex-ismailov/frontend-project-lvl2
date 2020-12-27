@@ -71,5 +71,5 @@ export default (diffTree) => {
     return `{\n${rows}\n${currIndent}}`;
   };
 
-  return formatterIter(diffTree, '');
+  return formatterIter(diffTree.children, '');
 };
