@@ -1,4 +1,4 @@
-import { isObject } from '../utils.js';
+import isPlainObject from 'lodash/isPlainObject.js';
 
 const actionsMap = {
   added: 'was added with value:',
@@ -13,7 +13,7 @@ const stringTypesMap = {
 };
 
 const normalizeValue = (value) => {
-  if (isObject(value)) {
+  if (isPlainObject(value)) {
     return '[complex value]';
   }
   return typeof value === 'string'
