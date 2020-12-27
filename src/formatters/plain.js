@@ -21,11 +21,13 @@ const normalizeValue = (value) => {
     : value;
 };
 
-const buildString = (path, type, value, prevValue) => (
-  type === 'updated'
+const buildString = (path, type, value, prevValue) => {
+  const string = type === 'updated'
     ? stringTypesMap[type](path, type, normalizeValue(prevValue), normalizeValue(value))
-    : stringTypesMap[type](path, type, normalizeValue(value))
-);
+    : stringTypesMap[type](path, type, normalizeValue(value));
+
+  return string;
+};
 
 const stringsMap = {
   updated: (keyNode, path) => buildString(path, keyNode.type, keyNode.value, keyNode.prevValue),
