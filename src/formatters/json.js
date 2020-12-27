@@ -46,7 +46,7 @@ const buildDiffItems = (diffTree) => {
 };
 
 export default (diffTree) => {
-  const differences = buildDiffItems(diffTree);
+  const differences = buildDiffItems(diffTree.children);
   const report = {
     differences,
     updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
