@@ -23,25 +23,25 @@ const buildDiffTree = (obj1, obj2) => {
   const sortedKeysUnion = sortBy(keysUnion, identity);
 
   return sortedKeysUnion
-    .reduce((acc, key) => {
+    .flatMap((key) => {
       if (has(obj1, key) && has(obj2, key)) {
         if (isObject(obj1[key]) && isObject(obj2[key])) {
-          return [...acc, { name: key, type: 'parent', children: [...buildDiffTree(obj1[key], obj2[key])] }];
+          return { name: key, type: 'parent', children: [...buildDiffTree(obj1[key], obj2[key])] };
         }
 
         const currentAcc = obj1[key] === obj2[key]
-          ? [...acc, { name: key, type: 'same', value: obj1[key] }]
-          : [...acc, {
+          ? { name: key, type: 'same', value: obj1[key] }
+          : {
             name: key, type: 'updated', value: obj2[key], prevValue: obj1[key],
-          }];
+          };
 
         return currentAcc;
       }
 
       return has(obj1, key)
-        ? [...acc, { name: key, type: 'removed', value: obj1[key] }]
-        : [...acc, { name: key, type: 'added', value: obj2[key] }];
-    }, []);
+        ? { name: key, type: 'removed', value: obj1[key] }
+        : { name: key, type: 'added', value: obj2[key] };
+    });
 };
 
 export default buildDiffTree;
