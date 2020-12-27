@@ -30,7 +30,7 @@ const differencesMap = {
 };
 
 const makeDiffItems = (diffTree) => {
-  const makeDiffItemsIter = (currentAst, prevPath) => currentAst
+  const makeDiffItemsIter = (currDiffTree, prevPath) => currDiffTree
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
       const currentPath = prevPath === null ? name : `${prevPath}.${name}`;
