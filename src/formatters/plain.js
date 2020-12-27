@@ -34,7 +34,7 @@ const stringsMap = {
 };
 
 export default (diffTree) => {
-  const formatterIter = (currentAst, prevPath) => currentAst
+  const formatterIter = (currDiffTree, prevPath) => currDiffTree
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
       const currentPath = prevPath === null ? name : `${prevPath}.${name}`;
