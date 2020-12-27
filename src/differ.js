@@ -23,7 +23,7 @@ const buildDiffTree = (data1, data2) => {
     const keysUnion = union(keys(obj1), keys(obj2));
     const sortedKeysUnion = sortBy(keysUnion, identity);
 
-    const children = sortedKeysUnion
+    return sortedKeysUnion
       .flatMap((key) => {
         if (has(obj1, key) && has(obj2, key)) {
           if (isObject(obj1[key]) && isObject(obj2[key])) {
@@ -43,8 +43,6 @@ const buildDiffTree = (data1, data2) => {
           ? { name: key, type: 'removed', value: obj1[key] }
           : { name: key, type: 'added', value: obj2[key] };
       });
-
-    return children;
   };
 
   return {
