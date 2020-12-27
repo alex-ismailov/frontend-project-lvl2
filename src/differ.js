@@ -3,7 +3,7 @@ import union from 'lodash/union.js';
 import keys from 'lodash/keys.js';
 import sortBy from 'lodash/sortBy.js';
 import identity from 'lodash/identity.js';
-import { isObject } from './utils.js';
+import isPlainObject from 'lodash/isPlainObject.js';
 
 /*
   diffTree is an array of nodes.
@@ -26,7 +26,7 @@ const buildDiffTree = (data1, data2) => {
     return sortedKeysUnion
       .flatMap((key) => {
         if (has(obj1, key) && has(obj2, key)) {
-          if (isObject(obj1[key]) && isObject(obj2[key])) {
+          if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
             return { name: key, type: 'parent', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
           }
 
