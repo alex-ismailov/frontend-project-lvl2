@@ -24,13 +24,13 @@ const differencesMap = {
   removed: (keyNode, path) => (
     makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
   ),
-  parent: (keyNode, path, makeDiffItemsIter) => (
-    makeDiffItemsIter(keyNode.children, path)
+  parent: (keyNode, path, buildDiffItemsIter) => (
+    buildDiffItemsIter(keyNode.children, path)
   ),
 };
 
-const makeDiffItems = (diffTree) => {
-  const makeDiffItemsIter = (currDiffTree, prevPath) => currDiffTree
+const buildDiffItems = (diffTree) => {
+  const buildDiffItemsIter = (currDiffTree, prevPath) => currDiffTree
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
       const currentPath = prevPath === null ? name : `${prevPath}.${name}`;
@@ -38,15 +38,15 @@ const makeDiffItems = (diffTree) => {
         return acc;
       }
       return type === 'parent'
-        ? [...acc, ...differencesMap[type](keyNode, currentPath, makeDiffItemsIter)]
+        ? [...acc, ...differencesMap[type](keyNode, currentPath, buildDiffItemsIter)]
         : [...acc, differencesMap[type](keyNode, currentPath)];
     }, []);
 
-  return makeDiffItemsIter(diffTree, null);
+  return buildDiffItemsIter(diffTree, null);
 };
 
 export default (diffTree) => {
-  const differences = makeDiffItems(diffTree);
+  const differences = buildDiffItems(diffTree);
   const report = {
     differences,
     updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
