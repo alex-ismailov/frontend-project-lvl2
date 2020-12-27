@@ -2,14 +2,14 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 import json from './json.js';
 
-export default (ast, type) => {
+export default (diffTree, type) => {
   switch (type) {
     case 'stylish':
-      return stylish(ast);
+      return stylish(diffTree);
     case 'plain':
-      return plain(ast);
+      return plain(diffTree);
     case 'json':
-      return json(ast);
+      return json(diffTree);
 
     default:
       throw new Error(`Unknown formatter type: ! ---> ${type} <--- !`);
