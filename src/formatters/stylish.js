@@ -36,24 +36,16 @@ const makeString = (indent, type, key, value) => {
 };
 
 const stringsMap = {
-  same: (keyNode, indent) => [
-    makeString(indent, keyNode.type, keyNode.name, keyNode.value),
-  ],
+  same: (keyNode, indent) => makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   updated: (keyNode, indent) => [
     makeString(indent, 'removed', keyNode.name, keyNode.prevValue),
     makeString(indent, 'added', keyNode.name, keyNode.value),
   ],
-  added: (keyNode, indent) => [
-    makeString(indent, keyNode.type, keyNode.name, keyNode.value),
-  ],
-  removed: (keyNode, indent) => [
-    makeString(indent, keyNode.type, keyNode.name, keyNode.value),
-  ],
+  added: (keyNode, indent) => makeString(indent, keyNode.type, keyNode.name, keyNode.value),
+  removed: (keyNode, indent) => makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   parent: (keyNode, indent, format) => {
     const value = format(keyNode.children, indent + ' '.repeat(4));
-    return [
-      makeString(indent, 'same', keyNode.name, value),
-    ];
+    return makeString(indent, 'same', keyNode.name, value);
   },
 };
 
