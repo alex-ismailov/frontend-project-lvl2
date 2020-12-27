@@ -34,7 +34,7 @@ const stringsMap = {
 };
 
 export default (diffTree) => {
-  const formatterIter = (currDiffTree, prevPath) => currDiffTree
+  const format = (currDiffTree, prevPath) => currDiffTree
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
       const currentPath = prevPath === null ? name : `${prevPath}.${name}`;
@@ -42,10 +42,10 @@ export default (diffTree) => {
         return acc;
       }
       return type === 'parent'
-        ? [...acc, formatterIter(keyNode.children, currentPath)]
+        ? [...acc, format(keyNode.children, currentPath)]
         : [...acc, stringsMap[type](keyNode, currentPath)];
     }, [])
     .join('\n');
 
-  return formatterIter(diffTree, null);
+  return format(diffTree.children, null);
 };
