@@ -1,4 +1,4 @@
-const makeDiffItem = (actionId, message, propPath, value, prevValue) => (
+const buildDiffItem = (actionId, message, propPath, value, prevValue) => (
   actionId === 'updated'
     ? {
       actionId, message, propPath, value, prevValue,
@@ -16,13 +16,13 @@ const textsMap = {
 
 const differencesMap = {
   updated: (keyNode, path) => (
-    makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value, keyNode.prevValue)
+    buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value, keyNode.prevValue)
   ),
   added: (keyNode, path) => (
-    makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
+    buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
   ),
   removed: (keyNode, path) => (
-    makeDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
+    buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
   ),
   parent: (keyNode, path, buildDiffItemsIter) => (
     buildDiffItemsIter(keyNode.children, path)
