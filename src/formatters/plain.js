@@ -21,16 +21,16 @@ const normalizeValue = (value) => {
     : value;
 };
 
-const makeString = (path, type, value, prevValue) => (
+const buildString = (path, type, value, prevValue) => (
   type === 'updated'
     ? stringTypesMap[type](path, type, normalizeValue(prevValue), normalizeValue(value))
     : stringTypesMap[type](path, type, normalizeValue(value))
 );
 
 const stringsMap = {
-  updated: (keyNode, path) => makeString(path, keyNode.type, keyNode.value, keyNode.prevValue),
-  added: (keyNode, path) => makeString(path, keyNode.type, keyNode.value),
-  removed: (keyNode, path) => makeString(path, keyNode.type, keyNode.value),
+  updated: (keyNode, path) => buildString(path, keyNode.type, keyNode.value, keyNode.prevValue),
+  added: (keyNode, path) => buildString(path, keyNode.type, keyNode.value),
+  removed: (keyNode, path) => buildString(path, keyNode.type, keyNode.value),
 };
 
 export default (diffTree) => {
