@@ -1,4 +1,4 @@
-import { isObject } from '../utils.js';
+import isPlainObject from 'lodash/isPlainObject.js';
 
 const actionPrefixMap = {
   same: '    ',
@@ -10,7 +10,7 @@ const buildStringFromObj = (obj, indent) => {
   const iter = (currObj, currIndent) => {
     const keys = Object.keys(currObj);
     const objString = keys.flatMap((key) => {
-      if (isObject(currObj[key])) {
+      if (isPlainObject(currObj[key])) {
         return [
           `${currIndent}${actionPrefixMap.same}${key}: {`,
           ...iter(currObj[key], currIndent + ' '.repeat(4)),
@@ -27,7 +27,7 @@ const buildStringFromObj = (obj, indent) => {
 };
 
 const buildString = (indent, type, key, value) => {
-  if (isObject(value)) {
+  if (isPlainObject(value)) {
     const nestedStructureStr = buildStringFromObj(value, indent + ' '.repeat(4));
     return `${indent}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
   }
