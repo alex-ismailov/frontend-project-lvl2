@@ -33,7 +33,7 @@ const stringsMap = {
   removed: (keyNode, path) => makeString(path, keyNode.type, keyNode.value),
 };
 
-export default (ast) => {
+export default (diffTree) => {
   const formatterIter = (currentAst, prevPath) => currentAst
     .reduce((acc, keyNode) => {
       const { type, name } = keyNode;
@@ -47,5 +47,5 @@ export default (ast) => {
     }, [])
     .join('\n');
 
-  return formatterIter(ast, null);
+  return formatterIter(diffTree, null);
 };
