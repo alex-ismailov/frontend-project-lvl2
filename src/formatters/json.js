@@ -1,12 +1,14 @@
-const buildDiffItem = (actionId, message, propPath, value, prevValue) => (
-  actionId === 'updated'
+const buildDiffItem = (actionId, message, propPath, value, prevValue) => {
+  const diffItem = actionId === 'updated'
     ? {
       actionId, message, propPath, value, prevValue,
     }
     : {
       actionId, message, propPath, value,
-    }
-);
+    };
+
+  return diffItem;
+};
 
 const textsMap = {
   updated: 'Property was updated',
