@@ -57,7 +57,7 @@ const stringsMap = {
   },
 };
 
-export default (ast) => {
+export default (diffTree) => {
   const formatterIter = (currAst, currIndent) => {
     const rows = currAst
       .reduce((acc, keyNode) => {
@@ -71,5 +71,5 @@ export default (ast) => {
     return `{\n${rows}\n${currIndent}}`;
   };
 
-  return formatterIter(ast, '');
+  return formatterIter(diffTree, '');
 };
