@@ -6,8 +6,9 @@ import identity from 'lodash/identity.js';
 import isPlainObject from 'lodash/isPlainObject.js';
 
 /*
-  diffTree is an array of nodes.
-  The node describes the difference between the values for the keys of the same name in
+  diffTree is an object tree of nodes.
+  The root node is called root, its children property contains an array of nodes
+  which describes the difference between the values for the keys of the same name in
   the compared objects.
   * If the values by keys in both objects are not objects, but they are equal, then
     the node is marked eith type 'same'.
