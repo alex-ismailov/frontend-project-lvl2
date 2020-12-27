@@ -49,8 +49,8 @@ const stringsMap = {
   removed: (keyNode, indent) => [
     makeString(indent, keyNode.type, keyNode.name, keyNode.value),
   ],
-  parent: (keyNode, indent, formatterIter) => {
-    const value = formatterIter(keyNode.children, indent + ' '.repeat(4));
+  parent: (keyNode, indent, format) => {
+    const value = format(keyNode.children, indent + ' '.repeat(4));
     return [
       makeString(indent, 'same', keyNode.name, value),
     ];
@@ -58,12 +58,12 @@ const stringsMap = {
 };
 
 export default (diffTree) => {
-  const formatterIter = (currDiffTree, currIndent) => {
+  const format = (currDiffTree, currIndent) => {
     const rows = currDiffTree
       .reduce((acc, keyNode) => {
         const { type } = keyNode;
         return type === 'parent'
-          ? [...acc, stringsMap[type](keyNode, currIndent, formatterIter)]
+          ? [...acc, stringsMap[type](keyNode, currIndent, format)]
           : [...acc, ...stringsMap[type](keyNode, currIndent)];
       }, [])
       .join('\n');
@@ -71,5 +71,5 @@ export default (diffTree) => {
     return `{\n${rows}\n${currIndent}}`;
   };
 
-  return formatterIter(diffTree.children, '');
+  return format(diffTree.children, '');
 };
