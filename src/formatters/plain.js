@@ -30,22 +30,24 @@ const buildString = (path, type, value, valueBefore) => {
 };
 
 const stringsMap = {
-  updated: (keyNode, path) => buildString(path, keyNode.type, keyNode.value, keyNode.valueBefore),
-  added: (keyNode, path) => buildString(path, keyNode.type, keyNode.value),
-  removed: (keyNode, path) => buildString(path, keyNode.type, keyNode.value),
+  updated: (diffNode, path) => buildString(
+    path, diffNode.type, diffNode.value, diffNode.valueBefore,
+  ),
+  added: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
+  removed: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
 };
 
 export default (diffTree) => {
   const format = (currDiffTree, prevPath) => currDiffTree
-    .reduce((acc, keyNode) => {
-      const { type, key } = keyNode;
+    .reduce((acc, diffNode) => {
+      const { type, key } = diffNode;
       const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
       if (type === 'unchanged') {
         return acc;
       }
       return type === 'nested'
-        ? [...acc, format(keyNode.children, currentPath)]
-        : [...acc, stringsMap[type](keyNode, currentPath)];
+        ? [...acc, format(diffNode.children, currentPath)]
+        : [...acc, stringsMap[type](diffNode, currentPath)];
     }, [])
     .join('\n');
 
