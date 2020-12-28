@@ -17,7 +17,8 @@ import isPlainObject from 'lodash/isPlainObject.js';
   * If the values by keys in both objects are not objects, and their values are not equal,
     then the node is marked with the 'update' type.
   * If both current key values are objects, then diffTree is evaluated recursively,
-    and the resulting tree is placed in children property of node.
+    and the resulting tree is placed in the children property of the node.
+    The node is marked as 'nested'
 */
 const buildDiffTree = (data1, data2) => {
   const getDiffTreeChildren = (obj1, obj2) => {
@@ -27,7 +28,7 @@ const buildDiffTree = (data1, data2) => {
     return sortedKeysUnion
       .flatMap((key) => {
         if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
-          return { key, type: 'parent', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
+          return { key, type: 'nested', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
         }
 
         if (has(obj1, key) && has(obj2, key)) {
