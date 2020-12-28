@@ -6,25 +6,25 @@ const actionPrefixMap = {
   removed: '  - ',
 };
 
-const buildStringFromObj = (obj, indent) => {
-  const iter = (currObj, currIndent) => {
-    const keys = Object.keys(currObj);
-    const objString = keys.flatMap((key) => {
-      if (isPlainObject(currObj[key])) {
-        return [
-          `${currIndent}${actionPrefixMap.unchanged}${key}: {`,
-          ...iter(currObj[key], currIndent + ' '.repeat(4)),
-          `${currIndent + ' '.repeat(4)}}`,
-        ];
-      }
-      return `${currIndent}${actionPrefixMap.unchanged}${key}: ${currObj[key]}`;
-    });
+const buildStringRows = (currObj, currIndent) => {
+  const keys = Object.keys(currObj);
+  const objString = keys.flatMap((key) => {
+    if (isPlainObject(currObj[key])) {
+      return [
+        `${currIndent}${actionPrefixMap.unchanged}${key}: {`,
+        ...buildStringRows(currObj[key], currIndent + ' '.repeat(4)),
+        `${currIndent + ' '.repeat(4)}}`,
+      ];
+    }
+    return `${currIndent}${actionPrefixMap.unchanged}${key}: ${currObj[key]}`;
+  });
 
-    return objString;
-  };
-
-  return `{\n${iter(obj, indent).join('\n')}\n${indent}}`;
+  return objString;
 };
+
+const buildStringFromObj = (obj, indent) => (
+  `{\n${buildStringRows(obj, indent).join('\n')}\n${indent}}`
+);
 
 const buildString = (indent, type, key, value) => {
   if (isPlainObject(value)) {
