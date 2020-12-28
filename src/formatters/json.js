@@ -36,7 +36,7 @@ const buildDiffItems = (diffTree) => {
     .reduce((acc, keyNode) => {
       const { type, key } = keyNode;
       const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
-      if (type === 'same') {
+      if (type === 'repeated') {
         return acc;
       }
       return type === 'parent'
