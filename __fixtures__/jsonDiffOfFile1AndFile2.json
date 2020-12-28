@@ -17,7 +17,7 @@
       "message": "Property was updated",
       "propPath": "common.setting3",
       "value": null,
-      "prevValue": true
+      "valueBefore": true
     },
     {
       "actionId": "added",
@@ -38,7 +38,7 @@
       "message": "Property was updated",
       "propPath": "common.setting6.doge.wow",
       "value": "so much",
-      "prevValue": ""
+      "valueBefore": ""
     },
     {
       "actionId": "added",
@@ -51,14 +51,14 @@
       "message": "Property was updated",
       "propPath": "group1.baz",
       "value": "bars",
-      "prevValue": "bas"
+      "valueBefore": "bas"
     },
     {
       "actionId": "updated",
       "message": "Property was updated",
       "propPath": "group1.nest",
       "value": "str",
-      "prevValue": {
+      "valueBefore": {
         "key": "value"
       }
     },
