@@ -77,5 +77,3 @@ describe('Edge cases', () => {
     expect(() => differ(filepath1, filepath2, outputStyle)).toThrow(expected);
   });
 });
-
-test.todo('unknown file extension');
