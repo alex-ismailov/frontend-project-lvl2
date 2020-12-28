@@ -36,27 +36,27 @@ const buildString = (indent, type, key, value) => {
 };
 
 const stringsMap = {
-  unchanged: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
-  updated: (keyNode, indent) => [
-    buildString(indent, 'removed', keyNode.key, keyNode.valueBefore),
-    buildString(indent, 'added', keyNode.key, keyNode.value),
+  unchanged: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
+  updated: (diffNode, indent) => [
+    buildString(indent, 'removed', diffNode.key, diffNode.valueBefore),
+    buildString(indent, 'added', diffNode.key, diffNode.value),
   ],
-  added: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
-  removed: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
-  nested: (keyNode, indent, format) => {
-    const value = format(keyNode.children, indent + ' '.repeat(4));
-    return buildString(indent, 'unchanged', keyNode.key, value);
+  added: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
+  removed: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
+  nested: (diffNode, indent, format) => {
+    const value = format(diffNode.children, indent + ' '.repeat(4));
+    return buildString(indent, 'unchanged', diffNode.key, value);
   },
 };
 
 export default (diffTree) => {
   const format = (currDiffTree, currIndent) => {
     const rows = currDiffTree
-      .flatMap((keyNode) => {
-        const { type } = keyNode;
+      .flatMap((diffNode) => {
+        const { type } = diffNode;
         return type === 'nested'
-          ? stringsMap[type](keyNode, currIndent, format)
-          : stringsMap[type](keyNode, currIndent);
+          ? stringsMap[type](diffNode, currIndent, format)
+          : stringsMap[type](diffNode, currIndent);
       })
       .join('\n');
 
