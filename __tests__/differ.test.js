@@ -30,6 +30,8 @@ const jsonDiffOfFile1AndFile2 = readFile('jsonDiffOfFile1AndFile2.json').trim();
 const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.json').trim();
 const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json').trim();
 
+const file1TxtPath = getFixturePath('file1.txt');
+
 describe('Main flow', () => {
   test.each`
         filepath1        |     filepath2        | outputStyle  |          expected
@@ -68,6 +70,7 @@ describe('Edge cases', () => {
     ${'non-exist-file'} | ${'non-exist-file'} | ${'stylish'}       | ${'ENOENT'}
     ${undefined}        | ${undefined}        | ${'stylish'}       | ${'argument must be of type string'}
     ${file1JsonPath}    | ${file2JsonPath}    | ${'nonExistStyle'} | ${'Unknown formatter type'}
+    ${file1TxtPath}     | ${file2JsonPath}    | ${'stylish'}       | ${'Unknown file extension'}
   `('Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
