@@ -26,7 +26,7 @@ const differencesMap = {
   removed: (keyNode, path) => (
     buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
   ),
-  parent: (keyNode, path, buildDiffItemsIter) => (
+  nested: (keyNode, path, buildDiffItemsIter) => (
     buildDiffItemsIter(keyNode.children, path)
   ),
 };
@@ -39,7 +39,7 @@ const buildDiffItems = (diffTree) => {
       if (type === 'repeated') {
         return acc;
       }
-      return type === 'parent'
+      return type === 'nested'
         ? [...acc, ...differencesMap[type](keyNode, currentPath, buildDiffItemsIter)]
         : [...acc, differencesMap[type](keyNode, currentPath)];
     }, []);
