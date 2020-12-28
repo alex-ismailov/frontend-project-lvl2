@@ -35,7 +35,7 @@ const buildDiffTree = (data1, data2) => {
           const currentAcc = obj1[key] === obj2[key]
             ? { key, type: 'repeated', value: obj1[key] }
             : {
-              key, type: 'updated', value: obj2[key], prevValue: obj1[key],
+              key, type: 'updated', value: obj2[key], valueBefore: obj1[key],
             };
 
           return currentAcc;
