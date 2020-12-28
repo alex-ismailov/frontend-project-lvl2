@@ -6,17 +6,17 @@ const actionPrefixMap = {
   removed: '  - ',
 };
 
-const buildStringRows = (currObj, currIndent) => {
-  const keys = Object.keys(currObj);
+const buildStringRows = (obj, indent) => {
+  const keys = Object.keys(obj);
   const objString = keys.flatMap((key) => {
-    if (isPlainObject(currObj[key])) {
+    if (isPlainObject(obj[key])) {
       return [
-        `${currIndent}${actionPrefixMap.unchanged}${key}: {`,
-        ...buildStringRows(currObj[key], currIndent + ' '.repeat(4)),
-        `${currIndent + ' '.repeat(4)}}`,
+        `${indent}${actionPrefixMap.unchanged}${key}: {`,
+        ...buildStringRows(obj[key], indent + ' '.repeat(4)),
+        `${indent + ' '.repeat(4)}}`,
       ];
     }
-    return `${currIndent}${actionPrefixMap.unchanged}${key}: ${currObj[key]}`;
+    return `${indent}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
   });
 
   return objString;
@@ -49,17 +49,17 @@ const stringsMap = {
   },
 };
 
-const format = (currDiffTree, currIndent) => {
+const format = (currDiffTree, indent) => {
   const rows = currDiffTree
     .flatMap((diffNode) => {
       const { type } = diffNode;
       return type === 'nested'
-        ? stringsMap[type](diffNode, currIndent, format)
-        : stringsMap[type](diffNode, currIndent);
+        ? stringsMap[type](diffNode, indent, format)
+        : stringsMap[type](diffNode, indent);
     })
     .join('\n');
 
-  return `{\n${rows}\n${currIndent}}`;
+  return `{\n${rows}\n${indent}}`;
 };
 
 export default (diffTree) => format(diffTree.children, '');
