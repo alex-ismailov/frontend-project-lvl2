@@ -33,7 +33,8 @@ const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json').trim();
 describe('Main flow', () => {
   test.each`
         filepath1        |     filepath2        | outputStyle  |          expected
-    ${file1JsonPath}     | ${file2JsonPath}     | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
+    ${file1JsonPath}     | ${file2JsonPath}     | ${undefined} | ${stylishDiffOfFile1AndFile2}
+    ${file1JsonRelPath}  | ${file2JsonRelPath}  | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
     ${file1YamlPath}     | ${file2YamlPath}     | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${file2YamlPath}     | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'stylish'} | ${stylishDiffOfFile1AndFileEmpty}
@@ -48,7 +49,6 @@ describe('Main flow', () => {
     ${file1JsonPath}     | ${file2YamlPath}     | ${'json'}    | ${jsonDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'json'}    | ${jsonDiffOfFile1AndFileEmpty}
     ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'json'}    | ${jsonDiffOfEmptyFiles}
-    ${file1JsonRelPath}  | ${file2JsonRelPath}  | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
   `('Output style: $outputStyle; Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
