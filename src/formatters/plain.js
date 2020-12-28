@@ -38,10 +38,10 @@ const stringsMap = {
   removed: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
 };
 
-const format = (currDiffTree, prevPath) => currDiffTree
+const format = (currDiffTree, pathBefore) => currDiffTree
   .reduce((acc, diffNode) => {
     const { type, key } = diffNode;
-    const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
+    const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
     if (type === 'unchanged') {
       return acc;
     }
