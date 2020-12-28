@@ -30,7 +30,6 @@ const buildDiffTree = (data1, data2) => {
         if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
           return { key, type: 'nested', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
         }
-
         if (has(obj1, key) && has(obj2, key)) {
           const currentAcc = obj1[key] === obj2[key]
             ? { key, type: 'repeated', value: obj1[key] }
