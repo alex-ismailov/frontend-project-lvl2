@@ -16,6 +16,8 @@ const file2JsonRelPath = '__fixtures__/file2.json';
 const fileEmptyJsonPath = getFixturePath('fileEmpty.json');
 const file1YamlPath = getFixturePath('file1.yaml');
 const file2YamlPath = getFixturePath('file2.yaml');
+const file1YmlPath = getFixturePath('file1.yml');
+const file2YmlPath = getFixturePath('file2.yml');
 const fileEmptyYamlPath = getFixturePath('fileEmpty.yaml');
 
 const stylishDiffOfFile1AndFile2 = readFile('stylishDiffOfFile1AndFile2.txt').trim();
@@ -39,6 +41,7 @@ describe('Main flow', () => {
     ${file1JsonRelPath}  | ${file2JsonRelPath}  | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
     ${file1YamlPath}     | ${file2YamlPath}     | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${file2YamlPath}     | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
+    ${file1YmlPath}      | ${file2YmlPath}      | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'stylish'} | ${stylishDiffOfFile1AndFileEmpty}
     ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'stylish'} | ${stylishDiffOfEmptyFiles}
     ${file1JsonPath}     | ${file2JsonPath}     | ${'plain'}   | ${plainDiffOfFile1AndFile2}
