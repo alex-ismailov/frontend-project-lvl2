@@ -6,6 +6,8 @@ export default (data, extension) => {
       return JSON.parse(data);
     case 'yaml':
       return yaml.safeLoad(data) ?? {};
+    case 'yml':
+      return yaml.safeLoad(data) ?? {};
 
     default:
       throw new Error(`Unknown file extension: ! ---> ${extension} <--- !`);
