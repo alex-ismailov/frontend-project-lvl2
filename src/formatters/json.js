@@ -26,27 +26,23 @@ const differencesMap = {
   removed: (diffNode, path) => buildDiffItem(
     diffNode.type, textsMap[diffNode.type], path, diffNode.value,
   ),
-  nested: (diffNode, path, buildDiffItemsIter) => buildDiffItemsIter(diffNode.children, path),
+  nested: (diffNode, path, buildDiffItems) => buildDiffItems(diffNode.children, path),
 };
 
-const buildDiffItems = (diffTree) => {
-  const buildDiffItemsIter = (currDiffTree, prevPath) => currDiffTree
-    .reduce((acc, diffNode) => {
-      const { type, key } = diffNode;
-      const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
-      if (type === 'unchanged') {
-        return acc;
-      }
-      return type === 'nested'
-        ? [...acc, ...differencesMap[type](diffNode, currentPath, buildDiffItemsIter)]
-        : [...acc, differencesMap[type](diffNode, currentPath)];
-    }, []);
-
-  return buildDiffItemsIter(diffTree, null);
-};
+const buildDiffItems = (currDiffTree, pathBefore) => currDiffTree
+  .reduce((acc, diffNode) => {
+    const { type, key } = diffNode;
+    const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
+    if (type === 'unchanged') {
+      return acc;
+    }
+    return type === 'nested'
+      ? [...acc, ...differencesMap[type](diffNode, currentPath, buildDiffItems)]
+      : [...acc, differencesMap[type](diffNode, currentPath)];
+  }, []);
 
 export default (diffTree) => {
-  const differences = buildDiffItems(diffTree.children);
+  const differences = buildDiffItems(diffTree.children, null);
   const report = {
     differences,
     updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
