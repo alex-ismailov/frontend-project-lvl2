@@ -38,7 +38,7 @@ const buildString = (indent, type, key, value) => {
 const stringsMap = {
   repeated: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
   updated: (keyNode, indent) => [
-    buildString(indent, 'removed', keyNode.key, keyNode.prevValue),
+    buildString(indent, 'removed', keyNode.key, keyNode.valueBefore),
     buildString(indent, 'added', keyNode.key, keyNode.value),
   ],
   added: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
