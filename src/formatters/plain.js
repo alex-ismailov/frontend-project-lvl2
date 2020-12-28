@@ -43,7 +43,7 @@ export default (diffTree) => {
       if (type === 'repeated') {
         return acc;
       }
-      return type === 'parent'
+      return type === 'nested'
         ? [...acc, format(keyNode.children, currentPath)]
         : [...acc, stringsMap[type](keyNode, currentPath)];
     }, [])
