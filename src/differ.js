@@ -30,7 +30,7 @@ const getDiffTreeChildren = (obj1, obj2) => {
       }
       if (has(obj1, key) && has(obj2, key)) {
         const currentAcc = obj1[key] === obj2[key]
-          ? { key, type: 'repeated', value: obj1[key] }
+          ? { key, type: 'unchanged', value: obj1[key] }
           : {
             key, type: 'updated', value: obj2[key], valueBefore: obj1[key],
           };
