@@ -10,8 +10,8 @@ import isPlainObject from 'lodash/isPlainObject.js';
   The root node is called root, its children property contains an array of nodes
   which describes the difference between the values for the keys of the same name in
   the compared objects.
-  * If the values by keys in both objects are not objects, but they are equal, then
-    the node is marked eith type 'same'.
+  * If the values by keys in both objects are not objects, but they are equal,
+    then the node is marked with type 'repeated'.
   * If the key is found only in one of the objects,
     then the node is marked with the corresponding type: added or removed.
   * If the values by keys in both objects are not objects, and their values are not equal,
@@ -32,7 +32,7 @@ const buildDiffTree = (data1, data2) => {
 
         if (has(obj1, key) && has(obj2, key)) {
           const currentAcc = obj1[key] === obj2[key]
-            ? { key, type: 'same', value: obj1[key] }
+            ? { key, type: 'repeated', value: obj1[key] }
             : {
               key, type: 'updated', value: obj2[key], prevValue: obj1[key],
             };
