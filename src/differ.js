@@ -19,37 +19,32 @@ import isPlainObject from 'lodash/isPlainObject.js';
     and the resulting tree is placed in the children property of the node.
     The node is marked as 'nested'
 */
-const buildDiffTree = (data1, data2) => {
-  const getDiffTreeChildren = (obj1, obj2) => {
-    const keysUnion = union(Object.keys(obj1), Object.keys(obj2));
-    const sortedKeysUnion = sortBy(keysUnion, identity);
+const getDiffTreeChildren = (obj1, obj2) => {
+  const keysUnion = union(Object.keys(obj1), Object.keys(obj2));
+  const sortedKeysUnion = sortBy(keysUnion, identity);
 
-    return sortedKeysUnion
-      .flatMap((key) => {
-        if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
-          return { key, type: 'nested', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
-        }
-        if (has(obj1, key) && has(obj2, key)) {
-          const currentAcc = obj1[key] === obj2[key]
-            ? { key, type: 'repeated', value: obj1[key] }
-            : {
-              key, type: 'updated', value: obj2[key], valueBefore: obj1[key],
-            };
+  return sortedKeysUnion
+    .flatMap((key) => {
+      if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
+        return { key, type: 'nested', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
+      }
+      if (has(obj1, key) && has(obj2, key)) {
+        const currentAcc = obj1[key] === obj2[key]
+          ? { key, type: 'repeated', value: obj1[key] }
+          : {
+            key, type: 'updated', value: obj2[key], valueBefore: obj1[key],
+          };
 
-          return currentAcc;
-        }
+        return currentAcc;
+      }
 
-        return has(obj1, key)
-          ? { key, type: 'removed', value: obj1[key] }
-          : { key, type: 'added', value: obj2[key] };
-      });
-  };
-
-  return {
-    name: 'root',
-    type: 'root',
-    children: getDiffTreeChildren(data1, data2),
-  };
+      return has(obj1, key)
+        ? { key, type: 'removed', value: obj1[key] }
+        : { key, type: 'added', value: obj2[key] };
+    });
 };
 
-export default buildDiffTree;
+export default (data1, data2) => ({
+  type: 'root',
+  children: getDiffTreeChildren(data1, data2),
+});
