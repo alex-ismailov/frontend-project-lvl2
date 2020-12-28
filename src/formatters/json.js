@@ -17,31 +17,29 @@ const textsMap = {
 };
 
 const differencesMap = {
-  updated: (keyNode, path) => (
-    buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value, keyNode.valueBefore)
+  updated: (diffNode, path) => buildDiffItem(
+    diffNode.type, textsMap[diffNode.type], path, diffNode.value, diffNode.valueBefore,
   ),
-  added: (keyNode, path) => (
-    buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
+  added: (diffNode, path) => buildDiffItem(
+    diffNode.type, textsMap[diffNode.type], path, diffNode.value,
   ),
-  removed: (keyNode, path) => (
-    buildDiffItem(keyNode.type, textsMap[keyNode.type], path, keyNode.value)
+  removed: (diffNode, path) => buildDiffItem(
+    diffNode.type, textsMap[diffNode.type], path, diffNode.value,
   ),
-  nested: (keyNode, path, buildDiffItemsIter) => (
-    buildDiffItemsIter(keyNode.children, path)
-  ),
+  nested: (diffNode, path, buildDiffItemsIter) => buildDiffItemsIter(diffNode.children, path),
 };
 
 const buildDiffItems = (diffTree) => {
   const buildDiffItemsIter = (currDiffTree, prevPath) => currDiffTree
-    .reduce((acc, keyNode) => {
-      const { type, key } = keyNode;
+    .reduce((acc, diffNode) => {
+      const { type, key } = diffNode;
       const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
       if (type === 'unchanged') {
         return acc;
       }
       return type === 'nested'
-        ? [...acc, ...differencesMap[type](keyNode, currentPath, buildDiffItemsIter)]
-        : [...acc, differencesMap[type](keyNode, currentPath)];
+        ? [...acc, ...differencesMap[type](diffNode, currentPath, buildDiffItemsIter)]
+        : [...acc, differencesMap[type](diffNode, currentPath)];
     }, []);
 
   return buildDiffItemsIter(diffTree, null);
