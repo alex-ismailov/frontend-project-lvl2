@@ -9,7 +9,7 @@ const actionsMap = {
 const stringTypesMap = {
   added: (path, type, value) => `Property '${path}' ${actionsMap[type]} ${value}`,
   removed: (path, type) => `Property '${path}' ${actionsMap[type]}`,
-  updated: (path, type, prevValue, value) => `Property '${path}' ${actionsMap[type]} From ${prevValue} to ${value}`,
+  updated: (path, type, valueBefore, value) => `Property '${path}' ${actionsMap[type]} From ${valueBefore} to ${value}`,
 };
 
 const normalizeValue = (value) => {
@@ -21,16 +21,16 @@ const normalizeValue = (value) => {
     : value;
 };
 
-const buildString = (path, type, value, prevValue) => {
+const buildString = (path, type, value, valueBefore) => {
   const string = type === 'updated'
-    ? stringTypesMap[type](path, type, normalizeValue(prevValue), normalizeValue(value))
+    ? stringTypesMap[type](path, type, normalizeValue(valueBefore), normalizeValue(value))
     : stringTypesMap[type](path, type, normalizeValue(value));
 
   return string;
 };
 
 const stringsMap = {
-  updated: (keyNode, path) => buildString(path, keyNode.type, keyNode.value, keyNode.prevValue),
+  updated: (keyNode, path) => buildString(path, keyNode.type, keyNode.value, keyNode.valueBefore),
   added: (keyNode, path) => buildString(path, keyNode.type, keyNode.value),
   removed: (keyNode, path) => buildString(path, keyNode.type, keyNode.value),
 };
