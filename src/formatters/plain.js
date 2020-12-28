@@ -40,7 +40,7 @@ export default (diffTree) => {
     .reduce((acc, keyNode) => {
       const { type, key } = keyNode;
       const currentPath = prevPath === null ? key : `${prevPath}.${key}`;
-      if (type === 'repeated') {
+      if (type === 'unchanged') {
         return acc;
       }
       return type === 'nested'
