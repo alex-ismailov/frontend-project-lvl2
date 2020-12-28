@@ -1,7 +1,7 @@
 import isPlainObject from 'lodash/isPlainObject.js';
 
 const actionPrefixMap = {
-  repeated: '    ',
+  unchanged: '    ',
   added: '  + ',
   removed: '  - ',
 };
@@ -12,12 +12,12 @@ const buildStringFromObj = (obj, indent) => {
     const objString = keys.flatMap((key) => {
       if (isPlainObject(currObj[key])) {
         return [
-          `${currIndent}${actionPrefixMap.repeated}${key}: {`,
+          `${currIndent}${actionPrefixMap.unchanged}${key}: {`,
           ...iter(currObj[key], currIndent + ' '.repeat(4)),
           `${currIndent + ' '.repeat(4)}}`,
         ];
       }
-      return `${currIndent}${actionPrefixMap.repeated}${key}: ${currObj[key]}`;
+      return `${currIndent}${actionPrefixMap.unchanged}${key}: ${currObj[key]}`;
     });
 
     return objString;
@@ -36,7 +36,7 @@ const buildString = (indent, type, key, value) => {
 };
 
 const stringsMap = {
-  repeated: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
+  unchanged: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
   updated: (keyNode, indent) => [
     buildString(indent, 'removed', keyNode.key, keyNode.valueBefore),
     buildString(indent, 'added', keyNode.key, keyNode.value),
@@ -45,7 +45,7 @@ const stringsMap = {
   removed: (keyNode, indent) => buildString(indent, keyNode.type, keyNode.key, keyNode.value),
   nested: (keyNode, indent, format) => {
     const value = format(keyNode.children, indent + ' '.repeat(4));
-    return buildString(indent, 'repeated', keyNode.key, value);
+    return buildString(indent, 'unchanged', keyNode.key, value);
   },
 };
 
