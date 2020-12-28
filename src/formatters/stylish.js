@@ -49,19 +49,17 @@ const stringsMap = {
   },
 };
 
-export default (diffTree) => {
-  const format = (currDiffTree, currIndent) => {
-    const rows = currDiffTree
-      .flatMap((diffNode) => {
-        const { type } = diffNode;
-        return type === 'nested'
-          ? stringsMap[type](diffNode, currIndent, format)
-          : stringsMap[type](diffNode, currIndent);
-      })
-      .join('\n');
+const format = (currDiffTree, currIndent) => {
+  const rows = currDiffTree
+    .flatMap((diffNode) => {
+      const { type } = diffNode;
+      return type === 'nested'
+        ? stringsMap[type](diffNode, currIndent, format)
+        : stringsMap[type](diffNode, currIndent);
+    })
+    .join('\n');
 
-    return `{\n${rows}\n${currIndent}}`;
-  };
-
-  return format(diffTree.children, '');
+  return `{\n${rows}\n${currIndent}}`;
 };
+
+export default (diffTree) => format(diffTree.children, '');
