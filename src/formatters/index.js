@@ -12,6 +12,6 @@ export default (diffTree, type) => {
       return json(diffTree);
 
     default:
-      throw new Error(`Unknown formatter type: ! ---> ${type} <--- !`);
+      throw new Error(`Unknown formatter type: ${type}`);
   }
 };
