@@ -28,13 +28,13 @@ const getDiffTreeChildren = (obj1, obj2) => {
         return { key, type: 'nested', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
       }
       if (has(obj1, key) && has(obj2, key)) {
-        const currentAcc = obj1[key] === obj2[key]
+        const diffNode = obj1[key] === obj2[key]
           ? { key, type: 'unchanged', value: obj1[key] }
           : {
             key, type: 'updated', value: obj2[key], valueBefore: obj1[key],
           };
 
-        return currentAcc;
+        return diffNode;
       }
 
       return has(obj1, key)
