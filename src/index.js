@@ -7,9 +7,9 @@ import parse from './parsers.js';
 const parseFile = (filePath) => {
   const fullPath = path.resolve(process.cwd(), filePath);
   const rawData = fs.readFileSync(fullPath, 'utf-8').toString();
-  const fileExtension = path.extname(fullPath).slice(1);
+  const fileFormat = path.extname(fullPath).slice(1);
 
-  return parse(rawData, fileExtension);
+  return parse(rawData, fileFormat);
 };
 
 export default (filepath1, filepath2, formatStyle = 'stylish') => {
