@@ -39,17 +39,16 @@ const stringsMap = {
 };
 
 const format = (diffTree, pathBefore) => diffTree.children
-  .flatMap((diffNode) => {
+  .reduce((acc, diffNode) => {
     const { type, key } = diffNode;
-    if (type === 'unchanged') {
-      return [];
-    }
-
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
+    if (type === 'unchanged') {
+      return acc;
+    }
     return type === 'nested'
-      ? format(diffNode, currentPath)
-      : stringsMap[type](diffNode, currentPath);
-  })
+      ? [...acc, format(diffNode, currentPath)]
+      : [...acc, stringsMap[type](diffNode, currentPath)];
+  }, [])
   .join('\n');
 
 export default (diffTree) => format(diffTree, null);
