@@ -32,7 +32,7 @@ const buildString = (indent, type, key, value) => {
   return `${indent}${actionPrefixMap[type]}${key}: ${value}`;
 };
 
-const stringsMap = {
+const nodeHandlers = {
   unchanged: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
   updated: (diffNode, indent) => [
     buildString(indent, 'removed', diffNode.key, diffNode.previousValue),
@@ -51,8 +51,8 @@ const format = (diffTree, indent) => {
     .flatMap((diffNode) => {
       const { type } = diffNode;
       return type === 'nested'
-        ? stringsMap[type](diffNode, indent, format)
-        : stringsMap[type](diffNode, indent);
+        ? nodeHandlers[type](diffNode, indent, format)
+        : nodeHandlers[type](diffNode, indent);
     })
     .join('\n');
 
