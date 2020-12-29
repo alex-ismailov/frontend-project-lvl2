@@ -30,7 +30,7 @@ const buildString = (path, type, value, previousValue) => {
   return string;
 };
 
-const stringsMap = {
+const nodeHandlers = {
   updated: (diffNode, path) => buildString(
     path, diffNode.type, diffNode.currentValue, diffNode.previousValue,
   ),
@@ -45,7 +45,7 @@ const format = (diffTree, pathBefore) => diffTree.children
     const { type, key } = diffNode;
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
 
-    return stringsMap[type](diffNode, currentPath, format);
+    return nodeHandlers[type](diffNode, currentPath, format);
   })
   .join('\n');
 
