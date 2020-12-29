@@ -6,24 +6,20 @@ const actionPrefixMap = {
   removed: '  - ',
 };
 
-const buildStringRows = (obj, indent) => {
-  const keys = Object.keys(obj);
-  const objString = keys.flatMap((key) => {
+const buildRows = (obj, indent) => Object.keys(obj)
+  .flatMap((key) => {
     if (isPlainObject(obj[key])) {
       return [
         `${indent}${actionPrefixMap.unchanged}${key}: {`,
-        ...buildStringRows(obj[key], indent + ' '.repeat(4)),
+        ...buildRows(obj[key], indent + ' '.repeat(4)),
         `${indent + ' '.repeat(4)}}`,
       ];
     }
     return `${indent}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
   });
 
-  return objString;
-};
-
 const buildStringFromObj = (obj, indent) => (
-  `{\n${buildStringRows(obj, indent).join('\n')}\n${indent}}`
+  `{\n${buildRows(obj, indent).join('\n')}\n${indent}}`
 );
 
 const buildString = (indent, type, key, value) => {
