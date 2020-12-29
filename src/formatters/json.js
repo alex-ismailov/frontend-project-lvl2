@@ -29,7 +29,7 @@ const differencesMap = {
   nested: (diffNode, path, buildDiffItems) => buildDiffItems(diffNode.children, path),
 };
 
-const buildDiffItems = (currDiffTree, pathBefore) => currDiffTree
+const buildDiffItems = (diffTree, pathBefore) => diffTree
   .reduce((acc, diffNode) => {
     const { type, key } = diffNode;
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
