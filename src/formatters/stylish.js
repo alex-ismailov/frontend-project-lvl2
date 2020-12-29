@@ -15,6 +15,7 @@ const buildRows = (obj, indent) => Object.keys(obj)
         `${indent + ' '.repeat(4)}}`,
       ];
     }
+
     return `${indent}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
   });
 
