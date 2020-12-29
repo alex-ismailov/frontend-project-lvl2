@@ -1,7 +1,6 @@
 import has from 'lodash/has.js';
 import union from 'lodash/union.js';
 import sortBy from 'lodash/sortBy.js';
-import identity from 'lodash/identity.js';
 import isPlainObject from 'lodash/isPlainObject.js';
 
 /*
@@ -21,7 +20,7 @@ import isPlainObject from 'lodash/isPlainObject.js';
 */
 const getDiffTreeChildren = (obj1, obj2) => {
   const keysUnion = union(Object.keys(obj1), Object.keys(obj2));
-  const sortedKeysUnion = sortBy(keysUnion, identity);
+  const sortedKeysUnion = sortBy(keysUnion);
 
   return sortedKeysUnion
     .flatMap((key) => {
