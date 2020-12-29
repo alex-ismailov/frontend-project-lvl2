@@ -31,16 +31,14 @@ const differencesMap = {
 };
 
 const buildDiffItems = (diffTree, pathBefore) => diffTree.children
-  .reduce((acc, diffNode) => {
+  .flatMap((diffNode) => {
     const { type, key } = diffNode;
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
-    if (type === 'unchanged') {
-      return acc;
-    }
+
     return type === 'nested'
-      ? [...acc, ...differencesMap[type](diffNode, currentPath, buildDiffItems)]
-      : [...acc, differencesMap[type](diffNode, currentPath)];
-  }, []);
+      ? differencesMap[type](diffNode, currentPath, buildDiffItems)
+      : differencesMap[type](diffNode, currentPath);
+  });
 
 export default (diffTree) => {
   const differences = buildDiffItems(diffTree, null);
