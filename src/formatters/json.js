@@ -26,10 +26,10 @@ const differencesMap = {
   removed: (diffNode, path) => buildDiffItem(
     diffNode.type, textsMap[diffNode.type], path, diffNode.value,
   ),
-  nested: (diffNode, path, buildDiffItems) => buildDiffItems(diffNode.children, path),
+  nested: (diffNode, path, buildDiffItems) => buildDiffItems(diffNode, path),
 };
 
-const buildDiffItems = (diffTree, pathBefore) => diffTree
+const buildDiffItems = (diffTree, pathBefore) => diffTree.children
   .reduce((acc, diffNode) => {
     const { type, key } = diffNode;
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
@@ -42,7 +42,7 @@ const buildDiffItems = (diffTree, pathBefore) => diffTree
   }, []);
 
 export default (diffTree) => {
-  const differences = buildDiffItems(diffTree.children, null);
+  const differences = buildDiffItems(diffTree, null);
   const report = {
     differences,
     updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
