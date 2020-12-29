@@ -31,7 +31,7 @@ const getDiffTreeChildren = (obj1, obj2) => {
         const diffNode = obj1[key] === obj2[key]
           ? { key, type: 'unchanged', value: obj1[key] }
           : {
-            key, type: 'updated', value: obj2[key], valueBefore: obj1[key],
+            key, type: 'updated', value: obj2[key], previousValue: obj1[key],
           };
 
         return diffNode;
