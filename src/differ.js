@@ -25,7 +25,7 @@ const getDiffTreeChildren = (obj1, obj2) => {
   return sortedKeysUnion
     .flatMap((key) => {
       if (isPlainObject(obj1[key]) && isPlainObject(obj2[key])) {
-        return { key, type: 'nested', children: [...getDiffTreeChildren(obj1[key], obj2[key])] };
+        return { key, type: 'nested', children: getDiffTreeChildren(obj1[key], obj2[key]) };
       }
       if (has(obj1, key) && has(obj2, key)) {
         const diffNode = obj1[key] === obj2[key]
