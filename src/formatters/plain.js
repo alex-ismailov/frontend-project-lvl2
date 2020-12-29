@@ -38,7 +38,7 @@ const stringsMap = {
   removed: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
 };
 
-const format = (diffTree, pathBefore) => diffTree
+const format = (diffTree, pathBefore) => diffTree.children
   .reduce((acc, diffNode) => {
     const { type, key } = diffNode;
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
@@ -46,9 +46,9 @@ const format = (diffTree, pathBefore) => diffTree
       return acc;
     }
     return type === 'nested'
-      ? [...acc, format(diffNode.children, currentPath)]
+      ? [...acc, format(diffNode, currentPath)]
       : [...acc, stringsMap[type](diffNode, currentPath)];
   }, [])
   .join('\n');
 
-export default (diffTree) => format(diffTree.children, null);
+export default (diffTree) => format(diffTree, null);
