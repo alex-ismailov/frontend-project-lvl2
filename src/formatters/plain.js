@@ -32,7 +32,7 @@ const buildString = (path, type, value, previousValue) => {
 
 const stringsMap = {
   updated: (diffNode, path) => buildString(
-    path, diffNode.type, diffNode.value, diffNode.previousValue,
+    path, diffNode.type, diffNode.currentValue, diffNode.previousValue,
   ),
   added: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
   removed: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
