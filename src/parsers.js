@@ -5,7 +5,6 @@ export default (data, format) => {
     case 'json':
       return JSON.parse(data);
     case 'yaml':
-      return yaml.safeLoad(data) ?? {};
     case 'yml':
       return yaml.safeLoad(data) ?? {};
 
