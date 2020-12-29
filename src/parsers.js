@@ -6,7 +6,7 @@ export default (data, format) => {
       return JSON.parse(data);
     case 'yaml':
     case 'yml':
-      return yaml.safeLoad(data) ?? {};
+      return yaml.safeLoad(data) ?? '';
 
     default:
       throw new Error(`Unknown data format: ! ---> ${format} <--- !`);
