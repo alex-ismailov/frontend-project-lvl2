@@ -41,22 +41,15 @@ const nodeHandlers = {
   added: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
   removed: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
   nested: (diffNode, indent, format) => {
-    const value = format(diffNode, indent + ' '.repeat(4));
-    return buildString(indent, 'unchanged', diffNode.key, value);
+    const rows = diffNode.children.flatMap((node) => format(node, indent + ' '.repeat(4))).join('\n');
+    return buildString(indent, 'unchanged', diffNode.key, `{\n${rows}\n${indent + ' '.repeat(4)}}`);
+  },
+  root: (diffNode, indent, format) => {
+    const rows = diffNode.children.map((node) => format(node, indent)).join('\n');
+    return `{\n${rows}\n}`;
   },
 };
 
-const format = (diffTree, indent) => {
-  const rows = diffTree.children
-    .flatMap((diffNode) => {
-      const { type } = diffNode;
-      return type === 'nested'
-        ? nodeHandlers[type](diffNode, indent, format)
-        : nodeHandlers[type](diffNode, indent);
-    })
-    .join('\n');
-
-  return `{\n${rows}\n${indent}}`;
-};
+const format = (diffNode, indent) => nodeHandlers[diffNode.type](diffNode, indent, format);
 
 export default (diffTree) => format(diffTree, '');
