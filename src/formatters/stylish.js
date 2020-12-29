@@ -41,13 +41,13 @@ const stringsMap = {
   added: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
   removed: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
   nested: (diffNode, indent, format) => {
-    const value = format(diffNode.children, indent + ' '.repeat(4));
+    const value = format(diffNode, indent + ' '.repeat(4));
     return buildString(indent, 'unchanged', diffNode.key, value);
   },
 };
 
-const format = (currDiffTree, indent) => {
-  const rows = currDiffTree
+const format = (diffTree, indent) => {
+  const rows = diffTree.children
     .flatMap((diffNode) => {
       const { type } = diffNode;
       return type === 'nested'
@@ -59,4 +59,4 @@ const format = (currDiffTree, indent) => {
   return `{\n${rows}\n${indent}}`;
 };
 
-export default (diffTree) => format(diffTree.children, '');
+export default (diffTree) => format(diffTree, '');
