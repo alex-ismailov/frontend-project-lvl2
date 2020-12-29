@@ -2,6 +2,7 @@ import has from 'lodash/has.js';
 import union from 'lodash/union.js';
 import sortBy from 'lodash/sortBy.js';
 import isPlainObject from 'lodash/isPlainObject.js';
+import isEqual from 'lodash/isEqual.js';
 
 /*
   diffTree is an object tree of nodes.
@@ -28,7 +29,7 @@ const getDiffTreeChildren = (obj1, obj2) => {
         return { key, type: 'nested', children: getDiffTreeChildren(obj1[key], obj2[key]) };
       }
       if (has(obj1, key) && has(obj2, key)) {
-        const diffNode = obj1[key] === obj2[key]
+        const diffNode = isEqual(obj1[key], obj2[key])
           ? { key, type: 'unchanged', value: obj1[key] }
           : {
             key, type: 'updated', currentValue: obj2[key], previousValue: obj1[key],
