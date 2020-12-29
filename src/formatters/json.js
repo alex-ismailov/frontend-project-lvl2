@@ -16,7 +16,7 @@ const textsMap = {
   removed: 'Property was removed',
 };
 
-const differencesMap = {
+const nodeHandlers = {
   updated: (diffNode, path) => buildDiffItem(
     diffNode.type, textsMap[diffNode.type], path, diffNode.currentValue, diffNode.previousValue,
   ),
@@ -36,8 +36,8 @@ const buildDiffItems = (diffTree, pathBefore) => diffTree.children
     const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
 
     return type === 'nested'
-      ? differencesMap[type](diffNode, currentPath, buildDiffItems)
-      : differencesMap[type](diffNode, currentPath);
+      ? nodeHandlers[type](diffNode, currentPath, buildDiffItems)
+      : nodeHandlers[type](diffNode, currentPath);
   });
 
 export default (diffTree) => {
