@@ -35,7 +35,7 @@ const buildString = (indent, type, key, value) => {
 const stringsMap = {
   unchanged: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
   updated: (diffNode, indent) => [
-    buildString(indent, 'removed', diffNode.key, diffNode.valueBefore),
+    buildString(indent, 'removed', diffNode.key, diffNode.previousValue),
     buildString(indent, 'added', diffNode.key, diffNode.value),
   ],
   added: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
