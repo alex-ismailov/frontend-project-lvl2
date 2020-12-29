@@ -27,6 +27,7 @@ const differencesMap = {
     diffNode.type, textsMap[diffNode.type], path, diffNode.value,
   ),
   nested: (diffNode, path, buildDiffItems) => buildDiffItems(diffNode, path),
+  unchanged: () => [],
 };
 
 const buildDiffItems = (diffTree, pathBefore) => diffTree.children
