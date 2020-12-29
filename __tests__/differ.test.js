@@ -73,7 +73,7 @@ describe('Edge cases', () => {
     ${'non-exist-file'} | ${'non-exist-file'} | ${'stylish'}       | ${'ENOENT'}
     ${undefined}        | ${undefined}        | ${'stylish'}       | ${'argument must be of type string'}
     ${file1JsonPath}    | ${file2JsonPath}    | ${'nonExistStyle'} | ${'Unknown formatter type'}
-    ${file1TxtPath}     | ${file2JsonPath}    | ${'stylish'}       | ${'Unknown file extension'}
+    ${file1TxtPath}     | ${file2JsonPath}    | ${'stylish'}       | ${'Unknown data format'}
   `('Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
