@@ -1,8 +1,8 @@
-import has from 'lodash/has.js';
-import union from 'lodash/union.js';
-import sortBy from 'lodash/sortBy.js';
-import isPlainObject from 'lodash/isPlainObject.js';
-import isEqual from 'lodash/isEqual.js';
+import _ from 'lodash';
+
+const {
+  has, union, sortBy, isPlainObject, isEqual,
+} = _;
 
 /*
   diffTree is an object tree of nodes.
