@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 
-export default (data, extension) => {
-  switch (extension) {
+export default (data, format) => {
+  switch (format) {
     case 'json':
       return JSON.parse(data);
     case 'yaml':
@@ -10,6 +10,6 @@ export default (data, extension) => {
       return yaml.safeLoad(data) ?? {};
 
     default:
-      throw new Error(`Unknown file extension: ! ---> ${extension} <--- !`);
+      throw new Error(`Unknown data format: ! ---> ${format} <--- !`);
   }
 };
