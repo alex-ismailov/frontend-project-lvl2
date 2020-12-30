@@ -1,55 +1,56 @@
 import isPlainObject from 'lodash/isPlainObject.js';
 
+const indent = '    '; // 4 spaces
 const actionPrefixMap = {
   unchanged: '    ',
   added: '  + ',
   removed: '  - ',
 };
 
-const buildRows = (obj, indent) => Object.keys(obj)
+const buildRows = (obj, depth) => Object.keys(obj)
   .flatMap((key) => {
     if (isPlainObject(obj[key])) {
       return [
-        `${indent}${actionPrefixMap.unchanged}${key}: {`,
-        ...buildRows(obj[key], indent + ' '.repeat(4)),
-        `${indent + ' '.repeat(4)}}`,
+        `${indent.repeat(depth)}${actionPrefixMap.unchanged}${key}: {`,
+        ...buildRows(obj[key], depth + 1),
+        `${indent.repeat(depth + 1)}}`,
       ];
     }
 
-    return `${indent}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
+    return `${indent.repeat(depth)}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
   });
 
-const buildStringFromObj = (obj, indent) => (
-  `{\n${buildRows(obj, indent).join('\n')}\n${indent}}`
+const buildStringFromObj = (obj, depth) => (
+  `{\n${buildRows(obj, depth).join('\n')}\n${indent.repeat(depth)}}`
 );
 
-const buildString = (indent, type, key, value) => {
+const buildString = (depth, type, key, value) => {
   if (isPlainObject(value)) {
-    const nestedStructureStr = buildStringFromObj(value, indent + ' '.repeat(4));
-    return `${indent}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
+    const nestedStructureStr = buildStringFromObj(value, depth + 1);
+    return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
   }
 
-  return `${indent}${actionPrefixMap[type]}${key}: ${value}`;
+  return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: ${value}`;
 };
 
 const nodeHandlers = {
-  unchanged: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
-  updated: (diffNode, indent) => [
-    buildString(indent, 'removed', diffNode.key, diffNode.previousValue),
-    buildString(indent, 'added', diffNode.key, diffNode.currentValue),
+  unchanged: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
+  updated: (diffNode, depth) => [
+    buildString(depth, 'removed', diffNode.key, diffNode.previousValue),
+    buildString(depth, 'added', diffNode.key, diffNode.currentValue),
   ],
-  added: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
-  removed: (diffNode, indent) => buildString(indent, diffNode.type, diffNode.key, diffNode.value),
-  nested: (diffNode, indent, format) => {
-    const rows = diffNode.children.flatMap((node) => format(node, indent + ' '.repeat(4))).join('\n');
-    return buildString(indent, 'unchanged', diffNode.key, `{\n${rows}\n${indent + ' '.repeat(4)}}`);
+  added: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
+  removed: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
+  nested: (diffNode, depth, format) => {
+    const rows = diffNode.children.flatMap((node) => format(node, depth + 1)).join('\n');
+    return buildString(depth, 'unchanged', diffNode.key, `{\n${rows}\n${indent.repeat(depth + 1)}}`);
   },
-  root: (diffNode, indent, format) => {
-    const rows = diffNode.children.map((node) => format(node, indent)).join('\n');
+  root: (diffNode, depth, format) => {
+    const rows = diffNode.children.map((node) => format(node, depth)).join('\n');
     return `{\n${rows}\n}`;
   },
 };
 
-const format = (diffNode, indent) => nodeHandlers[diffNode.type](diffNode, indent, format);
+const format = (diffNode, depth) => nodeHandlers[diffNode.type](diffNode, depth, format);
 
-export default (diffTree) => format(diffTree, '');
+export default (diffTree) => format(diffTree, 0);
