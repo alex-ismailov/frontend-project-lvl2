@@ -34,7 +34,7 @@ const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json').trim();
 
 const file1TxtPath = getFixturePath('file1.txt');
 
-describe.skip('Main flow', () => {
+describe('Main flow', () => {
   test.each`
         filepath1        |     filepath2        | outputStyle  |          expected
     ${file1JsonPath}     | ${file2JsonPath}     | ${undefined} | ${stylishDiffOfFile1AndFile2}
@@ -54,23 +54,6 @@ describe.skip('Main flow', () => {
     ${file1JsonPath}     | ${file2YamlPath}     | ${'json'}    | ${jsonDiffOfFile1AndFile2}
     ${file1JsonPath}     | ${fileEmptyJsonPath} | ${'json'}    | ${jsonDiffOfFile1AndFileEmpty}
     ${fileEmptyJsonPath} | ${fileEmptyYamlPath} | ${'json'}    | ${jsonDiffOfEmptyFiles}
-  `('Output style: $outputStyle; Test diff of: $filepath1 and $filepath2', ({
-    filepath1, filepath2, outputStyle, expected,
-  }) => {
-    /* result is stringified for clearer visual output when tests fail.
-    The second benefit is that the fixtures are readable. */
-    const result = differ(filepath1, filepath2, outputStyle);
-    const readableResult = outputStyle === 'json'
-      ? JSON.stringify(JSON.parse(result), null, '  ')
-      : result;
-    expect(readableResult).toEqual(expected);
-  });
-});
-
-describe('Main flow, short tests', () => {
-  test.each`
-        filepath1        |     filepath2        | outputStyle  |          expected
-    ${file1YamlPath}     | ${file2YamlPath}     | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
   `('Output style: $outputStyle; Test diff of: $filepath1 and $filepath2', ({
     filepath1, filepath2, outputStyle, expected,
   }) => {
