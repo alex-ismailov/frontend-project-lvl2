@@ -16,7 +16,7 @@ const normalizeValue = (value) => {
     : value;
 };
 
-const stringTypesMap = {
+const stringsMap = {
   added: (path, type, value) => `Property '${path}' ${actionsMap[type]} ${value}`,
   removed: (path, type) => `Property '${path}' ${actionsMap[type]}`,
   updated: (path, type, previousValue, currentValue) => (
@@ -31,10 +31,10 @@ const buildString = (diffNode, previousPath) => {
   const currentPath = previousPath === null ? key : `${previousPath}.${key}`;
 
   return type === 'updated'
-    ? stringTypesMap[type](
+    ? stringsMap[type](
       currentPath, type, normalizeValue(previousValue), normalizeValue(currentValue),
     )
-    : stringTypesMap[type](currentPath, type, normalizeValue(value));
+    : stringsMap[type](currentPath, type, normalizeValue(value));
 };
 
 const nodeHandlers = {
