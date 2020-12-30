@@ -51,6 +51,8 @@ const nodeHandlers = {
   ),
 };
 
-const format = (diffNode, pathBefore) => nodeHandlers[diffNode.type](diffNode, pathBefore, format);
+const format = (diffNode, previousPath) => (
+  nodeHandlers[diffNode.type](diffNode, previousPath, format)
+);
 
 export default (diffTree) => format(diffTree, null);
