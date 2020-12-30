@@ -2,7 +2,7 @@ import isPlainObject from 'lodash/isPlainObject.js';
 
 const indent = '    '; // 4 spaces
 const actionPrefixMap = {
-  unchanged: '    ',
+  unchanged: '    ', // 4 spaces
   added: '  + ',
   removed: '  - ',
 };
@@ -20,14 +20,16 @@ const buildRows = (obj, depth) => Object.keys(obj)
     return `${indent.repeat(depth)}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
   });
 
-const buildStringFromObj = (obj, depth) => (
-  `{\n${buildRows(obj, depth).join('\n')}\n${indent.repeat(depth)}}`
-);
+const buildStringFromObj = (obj, depth) => {
+  const rows = buildRows(obj, depth);
+
+  return `{\n${rows.join('\n')}\n${indent.repeat(depth)}}`;
+};
 
 const buildString = (depth, type, key, value) => {
   if (isPlainObject(value)) {
-    const nestedStructureStr = buildStringFromObj(value, depth + 1);
-    return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: ${nestedStructureStr}`;
+    const nestedString = buildStringFromObj(value, depth + 1);
+    return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: ${nestedString}`;
   }
 
   return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: ${value}`;
