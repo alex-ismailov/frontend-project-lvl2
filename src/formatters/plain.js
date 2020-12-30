@@ -44,9 +44,7 @@ const nodeHandlers = {
   unchanged: () => [],
   nested: (diffNode, previousPath, format) => {
     const currentPath = previousPath === null ? diffNode.key : `${previousPath}.${diffNode.key}`;
-    const rows = diffNode.children.flatMap((node) => format(node, currentPath));
-
-    return rows;
+    return diffNode.children.flatMap((node) => format(node, currentPath));
   },
   root: (diffNode, previousPath, format) => (
     diffNode.children.flatMap((node) => format(node, previousPath)).join('\n')
