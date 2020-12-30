@@ -19,32 +19,28 @@ const normalizeValue = (value) => {
 const stringTypesMap = {
   added: (path, type, value) => `Property '${path}' ${actionsMap[type]} ${value}`,
   removed: (path, type) => `Property '${path}' ${actionsMap[type]}`,
-  updated: (path, type, previousValue, value) => `Property '${path}' ${actionsMap[type]} From ${previousValue} to ${value}`,
+  updated: (path, type, previousValue, currentValue) => (
+    `Property '${path}' ${actionsMap[type]} From ${previousValue} to ${currentValue}`
+  ),
 };
 
-const buildString = (path, type, value, previousValue) => {
-  const string = type === 'updated'
-    ? stringTypesMap[type](path, type, normalizeValue(previousValue), normalizeValue(value))
-    : stringTypesMap[type](path, type, normalizeValue(value));
+const buildString = (diffNode, previousPath) => {
+  const {
+    key, type, value, previousValue, currentValue,
+  } = diffNode;
+  const currentPath = previousPath === null ? key : `${previousPath}.${key}`;
 
-  return string;
+  return type === 'updated'
+    ? stringTypesMap[type](
+      currentPath, type, normalizeValue(previousValue), normalizeValue(currentValue),
+    )
+    : stringTypesMap[type](currentPath, type, normalizeValue(value));
 };
 
 const nodeHandlers = {
-  updated: (diffNode, path) => {
-    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
-    return buildString(
-      currentPath, diffNode.type, diffNode.currentValue, diffNode.previousValue,
-    );
-  },
-  added: (diffNode, path) => {
-    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
-    return buildString(currentPath, diffNode.type, diffNode.value);
-  },
-  removed: (diffNode, path) => {
-    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
-    return buildString(currentPath, diffNode.type, diffNode.value);
-  },
+  updated: (diffNode, previousPath) => buildString(diffNode, previousPath),
+  added: (diffNode, previousPath) => buildString(diffNode, previousPath),
+  removed: (diffNode, previousPath) => buildString(diffNode, previousPath),
   unchanged: () => [],
   nested: (diffNode, path, format) => {
     const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
@@ -52,13 +48,9 @@ const nodeHandlers = {
 
     return rows;
   },
-  root: (diffNode, path, format) => {
-    // const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
-    const rows = diffNode.children
-      .flatMap((node) => format(node, path)).join('\n');
-
-    return rows;
-  },
+  root: (diffNode, path, format) => (
+    diffNode.children.flatMap((node) => format(node, path)).join('\n')
+  ),
 };
 
 const format = (diffNode, pathBefore) => nodeHandlers[diffNode.type](diffNode, pathBefore, format);
