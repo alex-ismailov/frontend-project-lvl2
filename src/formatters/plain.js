@@ -7,12 +7,6 @@ const actionsMap = {
   updated: 'was updated.',
 };
 
-const stringTypesMap = {
-  added: (path, type, value) => `Property '${path}' ${actionsMap[type]} ${value}`,
-  removed: (path, type) => `Property '${path}' ${actionsMap[type]}`,
-  updated: (path, type, previousValue, value) => `Property '${path}' ${actionsMap[type]} From ${previousValue} to ${value}`,
-};
-
 const normalizeValue = (value) => {
   if (isPlainObject(value)) {
     return '[complex value]';
@@ -20,6 +14,12 @@ const normalizeValue = (value) => {
   return isString(value)
     ? `'${value}'`
     : value;
+};
+
+const stringTypesMap = {
+  added: (path, type, value) => `Property '${path}' ${actionsMap[type]} ${value}`,
+  removed: (path, type) => `Property '${path}' ${actionsMap[type]}`,
+  updated: (path, type, previousValue, value) => `Property '${path}' ${actionsMap[type]} From ${previousValue} to ${value}`,
 };
 
 const buildString = (path, type, value, previousValue) => {
@@ -31,22 +31,36 @@ const buildString = (path, type, value, previousValue) => {
 };
 
 const nodeHandlers = {
-  updated: (diffNode, path) => buildString(
-    path, diffNode.type, diffNode.currentValue, diffNode.previousValue,
-  ),
-  added: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
-  removed: (diffNode, path) => buildString(path, diffNode.type, diffNode.value),
-  nested: (diffNode, path, format) => format(diffNode, path),
+  updated: (diffNode, path) => {
+    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
+    return buildString(
+      currentPath, diffNode.type, diffNode.currentValue, diffNode.previousValue,
+    );
+  },
+  added: (diffNode, path) => {
+    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
+    return buildString(currentPath, diffNode.type, diffNode.value);
+  },
+  removed: (diffNode, path) => {
+    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
+    return buildString(currentPath, diffNode.type, diffNode.value);
+  },
   unchanged: () => [],
+  nested: (diffNode, path, format) => {
+    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
+    const rows = diffNode.children.flatMap((node) => format(node, currentPath));
+
+    return rows;
+  },
+  root: (diffNode, path, format) => {
+    // const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
+    const rows = diffNode.children
+      .flatMap((node) => format(node, path)).join('\n');
+
+    return rows;
+  },
 };
 
-const format = (diffTree, pathBefore) => diffTree.children
-  .flatMap((diffNode) => {
-    const { type, key } = diffNode;
-    const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
-
-    return nodeHandlers[type](diffNode, currentPath, format);
-  })
-  .join('\n');
+const format = (diffNode, pathBefore) => nodeHandlers[diffNode.type](diffNode, pathBefore, format);
 
 export default (diffTree) => format(diffTree, null);
