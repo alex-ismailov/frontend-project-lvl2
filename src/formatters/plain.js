@@ -42,14 +42,14 @@ const nodeHandlers = {
   added: (diffNode, previousPath) => buildString(diffNode, previousPath),
   removed: (diffNode, previousPath) => buildString(diffNode, previousPath),
   unchanged: () => [],
-  nested: (diffNode, path, format) => {
-    const currentPath = path === null ? diffNode.key : `${path}.${diffNode.key}`;
+  nested: (diffNode, previousPath, format) => {
+    const currentPath = previousPath === null ? diffNode.key : `${previousPath}.${diffNode.key}`;
     const rows = diffNode.children.flatMap((node) => format(node, currentPath));
 
     return rows;
   },
-  root: (diffNode, path, format) => (
-    diffNode.children.flatMap((node) => format(node, path)).join('\n')
+  root: (diffNode, previousPath, format) => (
+    diffNode.children.flatMap((node) => format(node, previousPath)).join('\n')
   ),
 };
 
