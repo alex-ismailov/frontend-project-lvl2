@@ -1,52 +1,51 @@
-const buildDiffItem = (actionId, message, propPath, currentValue, previousValue) => {
-  const diffItem = actionId === 'updated'
-    ? {
-      actionId, message, propPath, currentValue, previousValue,
-    }
-    : {
-      actionId, message, propPath, currentValue,
-    };
-
-  return diffItem;
-};
-
 const textsMap = {
   updated: 'Property was updated',
   added: 'Property was added',
   removed: 'Property was removed',
 };
 
-const nodeHandlers = {
-  updated: (diffNode, path) => buildDiffItem(
-    diffNode.type, textsMap[diffNode.type], path, diffNode.currentValue, diffNode.previousValue,
-  ),
-  added: (diffNode, path) => buildDiffItem(
-    diffNode.type, textsMap[diffNode.type], path, diffNode.value,
-  ),
-  removed: (diffNode, path) => buildDiffItem(
-    diffNode.type, textsMap[diffNode.type], path, diffNode.value,
-  ),
-  nested: (diffNode, path, buildDiffItems) => buildDiffItems(diffNode, path),
-  unchanged: () => [],
+const buildDiffItem = (diffNode, previousPath) => {
+  const {
+    key, type, value, previousValue, currentValue,
+  } = diffNode;
+
+  const currentPath = previousPath === null ? key : `${previousPath}.${key}`;
+  const message = textsMap[type];
+
+  return type === 'updated'
+    ? {
+      type, message, path: currentPath, currentValue, previousValue,
+    }
+    : {
+      type, message, path: currentPath, value,
+    };
 };
 
-const buildDiffItems = (diffTree, pathBefore) => diffTree.children
-  .flatMap((diffNode) => {
-    const { type, key } = diffNode;
-    const currentPath = pathBefore === null ? key : `${pathBefore}.${key}`;
+const nodeHandlers = {
+  updated: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
+  added: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
+  removed: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
+  unchanged: () => [],
+  nested: (diffNode, previousPath, format) => {
+    const currentPath = previousPath === null ? diffNode.key : `${previousPath}.${diffNode.key}`;
+    return diffNode.children.flatMap((node) => format(node, currentPath));
+  },
+  root: (diffNode, previousPath, format) => (
+    diffNode.children.flatMap((node) => format(node, previousPath))
+  ),
+};
 
-    return type === 'nested'
-      ? nodeHandlers[type](diffNode, currentPath, buildDiffItems)
-      : nodeHandlers[type](diffNode, currentPath);
-  });
+const format = (diffNode, previousPath) => (
+  nodeHandlers[diffNode.type](diffNode, previousPath, format)
+);
 
 export default (diffTree) => {
-  const differences = buildDiffItems(diffTree, null);
+  const differences = format(diffTree, null);
   const report = {
     differences,
-    updatedCount: differences.filter(({ actionId }) => actionId === 'updated').length,
-    addedCount: differences.filter(({ actionId }) => actionId === 'added').length,
-    removedCount: differences.filter(({ actionId }) => actionId === 'removed').length,
+    updatedCount: differences.filter(({ type }) => type === 'updated').length,
+    addedCount: differences.filter(({ type }) => type === 'added').length,
+    removedCount: differences.filter(({ type }) => type === 'removed').length,
   };
 
   return JSON.stringify(report);
