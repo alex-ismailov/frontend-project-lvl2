@@ -26,21 +26,21 @@ const nodeHandlers = {
   added: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
   removed: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
   unchanged: () => [],
-  nested: (diffNode, previousPath, format) => {
+  nested: (diffNode, previousPath, buildDiffs) => {
     const currentPath = previousPath === null ? diffNode.key : `${previousPath}.${diffNode.key}`;
-    return diffNode.children.flatMap((node) => format(node, currentPath));
+    return diffNode.children.flatMap((node) => buildDiffs(node, currentPath));
   },
-  root: (diffNode, previousPath, format) => (
-    diffNode.children.flatMap((node) => format(node, previousPath))
+  root: (diffNode, previousPath, buildDiffs) => (
+    diffNode.children.flatMap((node) => buildDiffs(node, previousPath))
   ),
 };
 
-const format = (diffNode, previousPath) => (
-  nodeHandlers[diffNode.type](diffNode, previousPath, format)
+const buildDiffs = (diffNode, previousPath) => (
+  nodeHandlers[diffNode.type](diffNode, previousPath, buildDiffs)
 );
 
 export default (diffTree) => {
-  const differences = format(diffTree, null);
+  const differences = buildDiffs(diffTree, null);
   const report = {
     differences,
     updatedCount: differences.filter(({ type }) => type === 'updated').length,
