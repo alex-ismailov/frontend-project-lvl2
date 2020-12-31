@@ -1,72 +1,72 @@
 {
   "differences": [
     {
-      "actionId": "added",
+      "type": "added",
       "message": "Property was added",
-      "propPath": "common.follow",
-      "currentValue": false
+      "path": "common.follow",
+      "value": false
     },
     {
-      "actionId": "removed",
+      "type": "removed",
       "message": "Property was removed",
-      "propPath": "common.setting2",
-      "currentValue": 200
+      "path": "common.setting2",
+      "value": 200
     },
     {
-      "actionId": "updated",
+      "type": "updated",
       "message": "Property was updated",
-      "propPath": "common.setting3",
+      "path": "common.setting3",
       "currentValue": null,
       "previousValue": true
     },
     {
-      "actionId": "added",
+      "type": "added",
       "message": "Property was added",
-      "propPath": "common.setting4",
-      "currentValue": "blah blah"
+      "path": "common.setting4",
+      "value": "blah blah"
     },
     {
-      "actionId": "added",
+      "type": "added",
       "message": "Property was added",
-      "propPath": "common.setting5",
-      "currentValue": {
+      "path": "common.setting5",
+      "value": {
         "key5": "value5"
       }
     },
     {
-      "actionId": "updated",
+      "type": "updated",
       "message": "Property was updated",
-      "propPath": "common.setting6.doge.wow",
+      "path": "common.setting6.doge.wow",
       "currentValue": "so much",
       "previousValue": ""
     },
     {
-      "actionId": "added",
+      "type": "added",
       "message": "Property was added",
-      "propPath": "common.setting6.ops",
-      "currentValue": "vops"
+      "path": "common.setting6.ops",
+      "value": "vops"
     },
     {
-      "actionId": "updated",
+      "type": "updated",
       "message": "Property was updated",
-      "propPath": "group1.baz",
+      "path": "group1.baz",
       "currentValue": "bars",
       "previousValue": "bas"
     },
     {
-      "actionId": "updated",
+      "type": "updated",
       "message": "Property was updated",
-      "propPath": "group1.nest",
+      "path": "group1.nest",
       "currentValue": "str",
       "previousValue": {
         "key": "value"
       }
     },
     {
-      "actionId": "removed",
+      "type": "removed",
       "message": "Property was removed",
-      "propPath": "group2",
-      "currentValue": {
+      "path": "group2",
+      "value": {
         "abc": 12345,
         "deep": {
           "id": 45
@@ -74,10 +74,10 @@
       }
     },
     {
-      "actionId": "added",
+      "type": "added",
       "message": "Property was added",
-      "propPath": "group3",
-      "currentValue": {
+      "path": "group3",
+      "value": {
         "fee": 100500,
         "deep": {
           "id": {
