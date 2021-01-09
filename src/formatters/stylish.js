@@ -44,12 +44,14 @@ const nodeHandlers = {
   added: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
   removed: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
   nested: (diffNode, depth, format) => {
-    const rows = diffNode.children.flatMap((node) => format(node, depth + 1)).join('\n');
-    return buildString(depth, 'unchanged', diffNode.key, `{\n${rows}\n${indent.repeat(depth + 1)}}`);
+    const rows = diffNode.children.flatMap((node) => format(node, depth + 1));
+    const row = rows.join('\n');
+    return buildString(depth, 'unchanged', diffNode.key, `{\n${row}\n${indent.repeat(depth + 1)}}`);
   },
   root: (diffNode, depth, format) => {
-    const rows = diffNode.children.map((node) => format(node, depth)).join('\n');
-    return `{\n${rows}\n}`;
+    const rows = diffNode.children.map((node) => format(node, depth));
+    const row = rows.join('\n');
+    return `{\n${row}\n}`;
   },
 };
 
