@@ -1,15 +1,15 @@
-import stylish from './stylish.js';
-import plain from './plain.js';
-import json from './json.js';
+import formatStylish from './stylish.js';
+import formatPlain from './plain.js';
+import formatJson from './json.js';
 
 export default (diffTree, type) => {
   switch (type) {
     case 'stylish':
-      return stylish(diffTree);
+      return formatStylish(diffTree);
     case 'plain':
-      return plain(diffTree);
+      return formatPlain(diffTree);
     case 'json':
-      return json(diffTree);
+      return formatJson(diffTree);
 
     default:
       throw new Error(`Unknown formatter type: ${type}`);
