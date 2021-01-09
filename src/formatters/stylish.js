@@ -1,6 +1,6 @@
 import isPlainObject from 'lodash/isPlainObject.js';
 
-const indent = '    '; // 4 spaces
+const indent = ' '.repeat(4); // 4 spaces
 const actionPrefixMap = {
   unchanged: '    ', // 4 spaces
   added: '  + ',
