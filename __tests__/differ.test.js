@@ -34,7 +34,7 @@ const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json').trim();
 
 const file1TxtPath = getFixturePath('file1.txt');
 
-describe('Main flow', () => {
+describe.skip('Main flow', () => {
   test.each`
         filepath1        |     filepath2        | outputStyle  |          expected
     ${file1JsonPath}     | ${file2JsonPath}     | ${undefined} | ${stylishDiffOfFile1AndFile2}
@@ -67,7 +67,24 @@ describe('Main flow', () => {
   });
 });
 
-describe('Edge cases', () => {
+describe('Main flow short test', () => {
+  test.each`
+        filepath1        |     filepath2        | outputStyle  |          expected
+    ${file1JsonRelPath}  | ${file2JsonRelPath}  | ${'stylish'} | ${stylishDiffOfFile1AndFile2}
+  `('Output style: $outputStyle; Test diff of: $filepath1 and $filepath2', ({
+    filepath1, filepath2, outputStyle, expected,
+  }) => {
+    /* result is stringified for clearer visual output when tests fail.
+    The second benefit is that the fixtures are readable. */
+    const result = differ(filepath1, filepath2, outputStyle);
+    const readableResult = outputStyle === 'json'
+      ? JSON.stringify(JSON.parse(result), null, '  ')
+      : result;
+    expect(readableResult).toEqual(expected);
+  });
+});
+
+describe.skip('Edge cases', () => {
   test.each`
           filepath1     |      filepath2      |     outputStyle    |            expected
     ${'non-exist-file'} | ${'non-exist-file'} | ${'stylish'}       | ${'ENOENT'}
