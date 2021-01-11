@@ -1,72 +1,88 @@
 import isPlainObject from 'lodash/isPlainObject.js';
 
-const indent = ' '.repeat(2); // 4 spaces
-const actionPrefixMap = {
-  unchanged: '  ', // 4 spaces
-  added: '+ ',
-  removed: '- ',
+const tab = ' '.repeat(2);
+const unchangedPrefix = ' '.repeat(2);
+const nestedPrefix = ' '.repeat(2);
+const addedPrefix = '+ ';
+const removedPrefix = '- ';
+
+// (2n-1)*tab
+const getCurrentTab = (depth) => {
+  const level = (2 * depth - 1) * 1;
+  return tab.repeat(level);
 };
 
-/* Сurrent Indent is calculated using
-the arithmetic progression formula */
-const getCurrentIndent = (depth) => {
-  const first = 1;
-  const diff = 2;
-  const level = first + diff * (Number(depth) - 1);
-
-  return indent.repeat(level);
-};
-
-// const getCurrentIndent2 = (depth) => {
-//   const level = 2 * Number(depth) - 1;
-//   return indent.repeat(level);
-// };
-// Рассмотреть еще вот эту формулу
-// yn = 2n – 1 – последовательность нечетных чисел: 1, 3, 5, 7, 9,
-
-const buildRows = (obj, depth) => Object.keys(obj)
-  .flatMap((key) => {
-    const currentIndent = getCurrentIndent(depth);
-    if (isPlainObject(obj[key])) {
-      return [
-        `${currentIndent}${actionPrefixMap.unchanged}${key}: {`,
-        ...buildRows(obj[key], depth + 1),
-        `${currentIndent}${actionPrefixMap.unchanged}}`,
-      ];
-    }
-
-    return `${currentIndent}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
-  });
-
-const buildStringFromObj = (obj, depth) => {
-  const rows = buildRows(obj, depth);
-
-  return `${rows.join('\n')}`;
-};
-
-const buildString = (depth, type, key, value) => {
-  const currentIndent = getCurrentIndent(depth);
-  if (isPlainObject(value)) {
-    const nestedString = buildStringFromObj(value, depth + 1);
-    return `${currentIndent}${actionPrefixMap[type]}${key}: {\n${nestedString}\n${currentIndent}${actionPrefixMap.unchanged}}`;
+const stringifyValue = (value, depth) => {
+  if (!isPlainObject(value)) {
+    return value;
   }
 
-  return `${currentIndent}${actionPrefixMap[type]}${key}: ${value}`;
+  const rows = Object.keys(value)
+    .flatMap((key) => {
+      const currentTab = getCurrentTab(depth + 1);
+      if (!isPlainObject(value[key])) {
+        return `${currentTab}${unchangedPrefix}${key}: ${value[key]}`
+      }
+      const row = stringifyValue(value[key], depth + 1);
+      return `${currentTab}${unchangedPrefix}${key}: ${row}`
+    });
+
+  const row = rows.join('\n');
+  const currentTab = getCurrentTab(depth);
+
+  return `{\n${row}\n${currentTab}${unchangedPrefix}}`;
+}
+
+const buildStringValues = (diffNode, depth) => {
+  const currentTab = getCurrentTab(depth);
+  const { key, type, value } = diffNode;
+
+  if (type === 'updated') {
+    const { previousValue, currentValue } = diffNode;
+    const previousValueRow = stringifyValue(previousValue, depth);
+    const currentValueRow = stringifyValue(currentValue, depth);
+    return {
+      currentTab,
+      key,
+      previousValueRow,
+      currentValueRow,
+    }
+  }
+
+  const row = stringifyValue(value, depth);
+  return {
+    currentTab,
+    key,
+    row,
+  }
 };
 
 const nodeHandlers = {
-  unchanged: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
-  updated: (diffNode, depth) => [
-    buildString(depth, 'removed', diffNode.key, diffNode.previousValue),
-    buildString(depth, 'added', diffNode.key, diffNode.currentValue),
-  ],
-  added: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
-  removed: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
+  unchanged: (diffNode, depth) => {
+    const { currentTab, key, row } = buildStringValues(diffNode, depth);
+    return `${currentTab}${unchangedPrefix}${key}: ${row}`;
+  },
+  updated: (diffNode, depth) => {
+    const { currentTab, key, previousValueRow, currentValueRow } = buildStringValues(diffNode, depth)
+    return [
+      `${currentTab}${removedPrefix}${key}: ${previousValueRow}`,
+      `${currentTab}${addedPrefix}${key}: ${currentValueRow}`,
+    ];
+  },
+  added: (diffNode, depth) => {
+    const { currentTab, key, row } = buildStringValues(diffNode, depth);
+    return `${currentTab}${addedPrefix}${key}: ${row}`;
+  },
+  removed: (diffNode, depth) => {
+    const { currentTab, key, row } = buildStringValues(diffNode, depth);
+    return `${currentTab}${removedPrefix}${key}: ${row}`;
+  },
   nested: (diffNode, depth, format) => {
-    const rows = diffNode.children.flatMap((node) => format(node, depth + 1));
+    const { key, children } = diffNode;
+    const rows = children.flatMap((node) => format(node, depth + 1));
     const row = rows.join('\n');
-    const currentIndent = getCurrentIndent(depth);
-    return buildString(depth, 'unchanged', diffNode.key, `{\n${row}\n${currentIndent}${actionPrefixMap.unchanged}}`);
+    const currentTab = getCurrentTab(depth);
+    return `${currentTab}${nestedPrefix}${key}: {\n${row}\n${currentTab}${nestedPrefix}}`;
   },
   root: (diffNode, depth, format) => {
     const rows = diffNode.children.map((node) => format(node, depth + 1));
