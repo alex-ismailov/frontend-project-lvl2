@@ -7,17 +7,35 @@ const actionPrefixMap = {
   removed: '- ',
 };
 
+/* Сurrent Indent is calculated using
+the arithmetic progression formula */
+const getCurrentIndent = (depth) => {
+  const first = 1;
+  const diff = 2;
+  const level = first + diff * (Number(depth) - 1);
+
+  return indent.repeat(level);
+};
+
+// const getCurrentIndent2 = (depth) => {
+//   const level = 2 * Number(depth) - 1;
+//   return indent.repeat(level);
+// };
+// Рассмотреть еще вот эту формулу
+// yn = 2n – 1 – последовательность нечетных чисел: 1, 3, 5, 7, 9,
+
 const buildRows = (obj, depth) => Object.keys(obj)
   .flatMap((key) => {
+    const currentIndent = getCurrentIndent(depth);
     if (isPlainObject(obj[key])) {
       return [
-        `${indent.repeat(depth)}${actionPrefixMap.unchanged}${key}: {`,
-        ...buildRows(obj[key], depth + 2),
-        `${indent.repeat(depth)}${actionPrefixMap.unchanged}}`,
+        `${currentIndent}${actionPrefixMap.unchanged}${key}: {`,
+        ...buildRows(obj[key], depth + 1),
+        `${currentIndent}${actionPrefixMap.unchanged}}`,
       ];
     }
 
-    return `${indent.repeat(depth)}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
+    return `${currentIndent}${actionPrefixMap.unchanged}${key}: ${obj[key]}`;
   });
 
 const buildStringFromObj = (obj, depth) => {
@@ -27,12 +45,13 @@ const buildStringFromObj = (obj, depth) => {
 };
 
 const buildString = (depth, type, key, value) => {
+  const currentIndent = getCurrentIndent(depth);
   if (isPlainObject(value)) {
-    const nestedString = buildStringFromObj(value, depth + 2);
-    return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: {\n${nestedString}\n${indent.repeat(depth)}${actionPrefixMap['unchanged']}}`;
+    const nestedString = buildStringFromObj(value, depth + 1);
+    return `${currentIndent}${actionPrefixMap[type]}${key}: {\n${nestedString}\n${currentIndent}${actionPrefixMap.unchanged}}`;
   }
 
-  return `${indent.repeat(depth)}${actionPrefixMap[type]}${key}: ${value}`;
+  return `${currentIndent}${actionPrefixMap[type]}${key}: ${value}`;
 };
 
 const nodeHandlers = {
@@ -44,9 +63,10 @@ const nodeHandlers = {
   added: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
   removed: (diffNode, depth) => buildString(depth, diffNode.type, diffNode.key, diffNode.value),
   nested: (diffNode, depth, format) => {
-    const rows = diffNode.children.flatMap((node) => format(node, depth + 2));
+    const rows = diffNode.children.flatMap((node) => format(node, depth + 1));
     const row = rows.join('\n');
-    return buildString(depth, 'unchanged', diffNode.key, `{\n${row}\n${indent.repeat(depth + 1)}}`);
+    const currentIndent = getCurrentIndent(depth);
+    return buildString(depth, 'unchanged', diffNode.key, `{\n${row}\n${currentIndent}${actionPrefixMap.unchanged}}`);
   },
   root: (diffNode, depth, format) => {
     const rows = diffNode.children.map((node) => format(node, depth + 1));
