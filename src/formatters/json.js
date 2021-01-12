@@ -1,43 +1,36 @@
-const textsMap = {
+const textMap = {
   updated: 'Property was updated',
   added: 'Property was added',
   removed: 'Property was removed',
 };
 
-const buildDiffItem = (diffNode, previousPath) => {
+const buildDiffs = (diffNode, previousPath) => {
   const {
-    key, type, value, previousValue, currentValue,
+    key, type, value, previousValue, currentValue, children,
   } = diffNode;
+  const path = previousPath === null ? key : `${previousPath}.${key}`;
+  const message = textMap[type];
 
-  const currentPath = previousPath === null ? key : `${previousPath}.${key}`;
-  const message = textsMap[type];
-
-  return type === 'updated'
-    ? {
-      type, message, path: currentPath, currentValue, previousValue,
-    }
-    : {
-      type, message, path: currentPath, value,
-    };
+  switch (type) {
+    case 'added':
+    case 'removed':
+      return {
+        type, message, path, value,
+      };
+    case 'updated':
+      return {
+        type, message, path, currentValue, previousValue,
+      };
+    case 'unchanged':
+      return [];
+    case 'nested':
+      return children.flatMap((node) => buildDiffs(node, path));
+    case 'root':
+      return children.flatMap((node) => buildDiffs(node, previousPath));
+    default:
+      throw new Error(`unknown diffNode type: ${type}`);
+  }
 };
-
-const nodeHandlers = {
-  updated: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
-  added: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
-  removed: (diffNode, previousPath) => buildDiffItem(diffNode, previousPath),
-  unchanged: () => [],
-  nested: (diffNode, previousPath, buildDiffs) => {
-    const currentPath = previousPath === null ? diffNode.key : `${previousPath}.${diffNode.key}`;
-    return diffNode.children.flatMap((node) => buildDiffs(node, currentPath));
-  },
-  root: (diffNode, previousPath, buildDiffs) => (
-    diffNode.children.flatMap((node) => buildDiffs(node, previousPath))
-  ),
-};
-
-const buildDiffs = (diffNode, previousPath) => (
-  nodeHandlers[diffNode.type](diffNode, previousPath, buildDiffs)
-);
 
 export default (diffTree) => {
   const differences = buildDiffs(diffTree, null);
