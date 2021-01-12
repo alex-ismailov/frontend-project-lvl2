@@ -8,9 +8,6 @@ const actionPrefixMap = {
   removed: '- ',
 };
 
-// (2n-1)*tab - смещение 2tab на каждый уровень кроме root
-// На root именно 2tab - 1tab, потому что перед ним нет ключа
-// Запись “n * tab” Упрощенная версия tab.repeat(n)
 const getCurrentTab = (depth) => tab.repeat(2 * depth - 1);
 
 const stringifyValue = (value, depth, format) => {
