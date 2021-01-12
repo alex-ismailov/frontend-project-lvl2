@@ -29,7 +29,7 @@ const stringifyValue = (value, depth, format) => {
   return `{\n${row}\n${currentTab}${actionPrefixMap.unchanged}}`;
 };
 
-const handleDiffNode = (diffNode, depth, format) => {
+const format = (diffNode, depth) => {
   const { key, type, value, previousValue, currentValue } = diffNode;
   const currentTab = type === 'root' ? tab.repeat(1) : getCurrentTab(depth);
 
@@ -62,45 +62,4 @@ const handleDiffNode = (diffNode, depth, format) => {
   }
 };
 
-// const format = (diffNode, depth) => nodeHandlers[diffNode.type](diffNode, depth, format);
-const format = (diffNode, depth) => handleDiffNode(diffNode, depth, format);
-
 export default (diffTree) => format(diffTree, 0);
-
-
-
-// const nodeHandlers = {
-//   unchanged: (diffNode, depth, format) => {
-//     const { currentTab, key, value } = buildStringValues(diffNode, depth, format);
-//     return `${currentTab}${unchangedPrefix}${key}: ${value}`;
-//   },
-//   updated: (diffNode, depth, format) => {
-//     const {
-//       currentTab, key, previousValue, currentValue,
-//     } = buildStringValues(diffNode, depth, format);
-//     return [
-//       `${currentTab}${removedPrefix}${key}: ${previousValue}`,
-//       `${currentTab}${addedPrefix}${key}: ${currentValue}`,
-//     ];
-//   },
-//   added: (diffNode, depth, format) => {
-//     const { currentTab, key, value } = buildStringValues(diffNode, depth, format);
-//     return `${currentTab}${addedPrefix}${key}: ${value}`;
-//   },
-//   removed: (diffNode, depth, format) => {
-//     const { currentTab, key, value } = buildStringValues(diffNode, depth, format);
-//     return `${currentTab}${removedPrefix}${key}: ${value}`;
-//   },
-//   nested: (diffNode, depth, format) => {
-//     const currentTab = getCurrentTab(depth);
-//     const { key, children } = diffNode;
-//     const rows = children.flatMap((node) => format(node, depth + 1));
-//     const row = rows.join('\n');
-//     return `${currentTab}${nestedPrefix}${key}: {\n${row}\n${currentTab}${nestedPrefix}}`;
-//   },
-//   root: (diffNode, depth, format) => {
-//     const rows = diffNode.children.map((node) => format(node, depth + 1));
-//     const row = rows.join('\n');
-//     return `{\n${row}\n}`;
-//   },
-// };
