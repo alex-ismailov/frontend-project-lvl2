@@ -16,12 +16,12 @@ const stringifyValue = (value, depth, format) => {
   if (!isPlainObject(value)) {
     return value;
   }
-  const rows = Object.keys(value).flatMap((key) => {
-    const unchangedDiffNode = { key, type: 'unchanged', value: value[key] };
 
-    return format(unchangedDiffNode, depth + 1);
-  });
-
+  const rows = Object.keys(value)
+    .flatMap((key) => {
+      const unchangedDiffNode = { key, type: 'unchanged', value: value[key] };
+      return format(unchangedDiffNode, depth + 1);
+    });
   const row = rows.join('\n');
   const currentTab = getCurrentTab(depth);
 
@@ -30,55 +30,51 @@ const stringifyValue = (value, depth, format) => {
 
 const buildStringValues = (diffNode, depth, format) => {
   const currentTab = getCurrentTab(depth);
-  const { key, type, value } = diffNode;
+  const {
+    key, type, value, previousValue, currentValue,
+  } = diffNode;
 
-  if (type === 'updated') {
-    const { previousValue, currentValue } = diffNode;
-    const previousValueRow = stringifyValue(previousValue, depth, format);
-    const currentValueRow = stringifyValue(currentValue, depth, format);
-    return {
+  return type === 'updated'
+    ? {
       currentTab,
       key,
-      previousValueRow,
-      currentValueRow,
+      previousValue: stringifyValue(previousValue, depth, format),
+      currentValue: stringifyValue(currentValue, depth, format),
+    }
+    : {
+      currentTab,
+      key,
+      value: stringifyValue(value, depth, format),
     };
-  }
-
-  const row = stringifyValue(value, depth, format);
-  return {
-    currentTab,
-    key,
-    row,
-  };
 };
 
 const nodeHandlers = {
   unchanged: (diffNode, depth, format) => {
-    const { currentTab, key, row } = buildStringValues(diffNode, depth, format);
-    return `${currentTab}${unchangedPrefix}${key}: ${row}`;
+    const { currentTab, key, value } = buildStringValues(diffNode, depth, format);
+    return `${currentTab}${unchangedPrefix}${key}: ${value}`;
   },
   updated: (diffNode, depth, format) => {
     const {
-      currentTab, key, previousValueRow, currentValueRow,
+      currentTab, key, previousValue, currentValue,
     } = buildStringValues(diffNode, depth, format);
     return [
-      `${currentTab}${removedPrefix}${key}: ${previousValueRow}`,
-      `${currentTab}${addedPrefix}${key}: ${currentValueRow}`,
+      `${currentTab}${removedPrefix}${key}: ${previousValue}`,
+      `${currentTab}${addedPrefix}${key}: ${currentValue}`,
     ];
   },
   added: (diffNode, depth, format) => {
-    const { currentTab, key, row } = buildStringValues(diffNode, depth, format);
-    return `${currentTab}${addedPrefix}${key}: ${row}`;
+    const { currentTab, key, value } = buildStringValues(diffNode, depth, format);
+    return `${currentTab}${addedPrefix}${key}: ${value}`;
   },
   removed: (diffNode, depth, format) => {
-    const { currentTab, key, row } = buildStringValues(diffNode, depth, format);
-    return `${currentTab}${removedPrefix}${key}: ${row}`;
+    const { currentTab, key, value } = buildStringValues(diffNode, depth, format);
+    return `${currentTab}${removedPrefix}${key}: ${value}`;
   },
   nested: (diffNode, depth, format) => {
+    const currentTab = getCurrentTab(depth);
     const { key, children } = diffNode;
     const rows = children.flatMap((node) => format(node, depth + 1));
     const row = rows.join('\n');
-    const currentTab = getCurrentTab(depth);
     return `${currentTab}${nestedPrefix}${key}: {\n${row}\n${currentTab}${nestedPrefix}}`;
   },
   root: (diffNode, depth, format) => {
