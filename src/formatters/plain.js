@@ -16,43 +16,28 @@ const normalizeValue = (value) => {
     : value;
 };
 
-const stringsMap = {
-  added: (path, type, value) => `Property '${path}' ${actionsMap[type]} ${value}`,
-  removed: (path, type) => `Property '${path}' ${actionsMap[type]}`,
-  updated: (path, type, previousValue, currentValue) => (
-    `Property '${path}' ${actionsMap[type]} From ${previousValue} to ${currentValue}`
-  ),
-};
-
-const buildString = (diffNode, previousPath) => {
+const format = (diffNode, previousPath) => {
   const {
-    key, type, value, previousValue, currentValue,
+    key, type, value, previousValue, currentValue, children,
   } = diffNode;
   const currentPath = previousPath === null ? key : `${previousPath}.${key}`;
 
-  return type === 'updated'
-    ? stringsMap[type](
-      currentPath, type, normalizeValue(previousValue), normalizeValue(currentValue),
-    )
-    : stringsMap[type](currentPath, type, normalizeValue(value));
+  switch (type) {
+    case 'added':
+      return `Property '${currentPath}' was added with value: ${normalizeValue(value)}`;
+    case 'removed':
+      return `Property '${currentPath}' was removed`;
+    case 'updated':
+      return `Property '${currentPath}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
+    case 'unchanged':
+      return [];
+    case 'nested':
+      return children.flatMap((node) => format(node, currentPath));
+    case 'root':
+      return children.flatMap((node) => format(node, previousPath)).join('\n');
+    default:
+      throw new Error(`unknown diffNode type: ${type}`);
+  }
 };
-
-const nodeHandlers = {
-  updated: (diffNode, previousPath) => buildString(diffNode, previousPath),
-  added: (diffNode, previousPath) => buildString(diffNode, previousPath),
-  removed: (diffNode, previousPath) => buildString(diffNode, previousPath),
-  unchanged: () => [],
-  nested: (diffNode, previousPath, format) => {
-    const currentPath = previousPath === null ? diffNode.key : `${previousPath}.${diffNode.key}`;
-    return diffNode.children.flatMap((node) => format(node, currentPath));
-  },
-  root: (diffNode, previousPath, format) => (
-    diffNode.children.flatMap((node) => format(node, previousPath)).join('\n')
-  ),
-};
-
-const format = (diffNode, previousPath) => (
-  nodeHandlers[diffNode.type](diffNode, previousPath, format)
-);
 
 export default (diffTree) => format(diffTree, null);
