@@ -30,8 +30,10 @@ const stringifyValue = (value, depth, format) => {
 };
 
 const format = (diffNode, depth) => {
-  const { key, type, value, previousValue, currentValue } = diffNode;
-  const currentTab = type === 'root' ? tab.repeat(1) : getCurrentTab(depth);
+  const {
+    key, type, value, previousValue, currentValue, children,
+  } = diffNode;
+  const currentTab = type !== 'root' ? getCurrentTab(depth) : tab.repeat(0);
 
   switch (type) {
     case 'added':
@@ -46,8 +48,6 @@ const format = (diffNode, depth) => {
       ];
     }
     case 'nested': {
-      const currentTab = getCurrentTab(depth);
-      const { key, children } = diffNode;
       const rows = children.flatMap((node) => format(node, depth + 1));
       const row = rows.join('\n');
       return `${currentTab}${actionPrefixMap[type]}${key}: {\n${row}\n${currentTab}${actionPrefixMap[type]}}`;
@@ -58,7 +58,7 @@ const format = (diffNode, depth) => {
       return `{\n${row}\n}`;
     }
     default:
-      throw new Error(`unknown diffNode type: ${type}`);;
+      throw new Error(`unknown diffNode type: ${type}`);
   }
 };
 
