@@ -1,12 +1,6 @@
 import isPlainObject from 'lodash/isPlainObject.js';
 import isString from 'lodash/isString.js';
 
-const actionsMap = {
-  added: 'was added with value:',
-  removed: 'was removed',
-  updated: 'was updated.',
-};
-
 const normalizeValue = (value) => {
   if (isPlainObject(value)) {
     return '[complex value]';
