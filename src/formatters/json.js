@@ -25,13 +25,7 @@ const buildDiffs = (diffNode, previousPath) => {
 };
 
 export default (diffTree) => {
-  const differences = buildDiffs(diffTree, null);
-  const report = {
-    differences,
-    updatedCount: differences.filter(({ type }) => type === 'updated').length,
-    addedCount: differences.filter(({ type }) => type === 'added').length,
-    removedCount: differences.filter(({ type }) => type === 'removed').length,
-  };
+  const diffs = buildDiffs(diffTree, null);
 
-  return JSON.stringify(report);
+  return JSON.stringify(diffs);
 };
