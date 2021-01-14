@@ -42,11 +42,13 @@ const format = (diffNode, depth) => {
         `${currentTab}${actionPrefixMap.added}${key}: ${stringifyValue(currentValue, depth, format)}`,
       ];
     case 'nested': {
-      const row = children.flatMap((node) => format(node, depth + 1)).join('\n');
+      const rows = children.flatMap((node) => format(node, depth + 1));
+      const row = rows.join('\n');
       return `${currentTab}${actionPrefixMap[type]}${key}: {\n${row}\n${currentTab}${actionPrefixMap[type]}}`;
     }
     case 'root': {
-      const row = diffNode.children.map((node) => format(node, depth + 1)).join('\n');
+      const rows = diffNode.children.map((node) => format(node, depth + 1));
+      const row = rows.join('\n');
       return `{\n${row}\n}`;
     }
     default:
