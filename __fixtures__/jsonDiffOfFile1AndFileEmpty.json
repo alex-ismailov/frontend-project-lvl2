@@ -2,7 +2,6 @@
   "differences": [
     {
       "type": "removed",
-      "message": "Property was removed",
       "path": "common",
       "value": {
         "setting1": "Value 1",
@@ -18,7 +17,6 @@
     },
     {
       "type": "removed",
-      "message": "Property was removed",
       "path": "group1",
       "value": {
         "baz": "bas",
@@ -30,7 +28,6 @@
     },
     {
       "type": "removed",
-      "message": "Property was removed",
       "path": "group2",
       "value": {
         "abc": 12345,
