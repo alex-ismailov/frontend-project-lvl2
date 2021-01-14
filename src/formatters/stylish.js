@@ -8,7 +8,7 @@ const diffPrefixesMap = {
   removed: '- ',
 };
 
-const getCurrentTab = (depth) => tab.repeat(2 * depth - 1);
+const getIndent = (depth) => tab.repeat(2 * depth - 1);
 
 const stringifyValue = (value, depth, format) => {
   if (!isPlainObject(value)) {
@@ -21,7 +21,7 @@ const stringifyValue = (value, depth, format) => {
       return format(unchangedDiffNode, depth + 1);
     });
   const row = rows.join('\n');
-  const currentTab = getCurrentTab(depth);
+  const currentTab = getIndent(depth);
 
   return `{\n${row}\n${currentTab}${diffPrefixesMap.unchanged}}`;
 };
@@ -30,7 +30,7 @@ const format = (diffNode, depth) => {
   const {
     key, type, value, previousValue, currentValue, children,
   } = diffNode;
-  const currentTab = type !== 'root' ? getCurrentTab(depth) : tab.repeat(0);
+  const currentTab = type !== 'root' ? getIndent(depth) : tab.repeat(0);
   switch (type) {
     case 'added':
     case 'removed':
