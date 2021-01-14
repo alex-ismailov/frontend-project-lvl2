@@ -34,8 +34,10 @@ const format = (diffNode, previousPath) => {
       const currentPath = buildPath(previousPath, key);
       return children.flatMap((node) => format(node, currentPath));
     }
-    case 'root':
-      return children.flatMap((node) => format(node, previousPath)).join('\n');
+    case 'root': {
+      const rows = children.flatMap((node) => format(node, previousPath));
+      return rows.join('\n');
+    }
     default:
       throw new Error(`unknown diffNode type: ${type}`);
   }
