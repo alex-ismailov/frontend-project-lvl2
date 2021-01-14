@@ -10,23 +10,30 @@ const normalizeValue = (value) => {
     : value;
 };
 
+const buildPath = (previousPath, currentPath) => {
+  if (previousPath) {
+    return `${previousPath}.${currentPath}`;
+  }
+  return currentPath;
+};
+
 const format = (diffNode, previousPath) => {
   const {
     key, type, value, previousValue, currentValue, children,
   } = diffNode;
-  const currentPath = previousPath === null ? key : `${previousPath}.${key}`;
-
   switch (type) {
     case 'added':
-      return `Property '${currentPath}' was added with value: ${normalizeValue(value)}`;
+      return `Property '${buildPath(previousPath, key)}' was added with value: ${normalizeValue(value)}`;
     case 'removed':
-      return `Property '${currentPath}' was removed`;
+      return `Property '${buildPath(previousPath, key)}' was removed`;
     case 'updated':
-      return `Property '${currentPath}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
+      return `Property '${buildPath(previousPath, key)}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
     case 'unchanged':
       return [];
-    case 'nested':
+    case 'nested': {
+      const currentPath = buildPath(previousPath, key);
       return children.flatMap((node) => format(node, currentPath));
+    }
     case 'root':
       return children.flatMap((node) => format(node, previousPath)).join('\n');
     default:
