@@ -39,7 +39,7 @@ const format = (diffNode, previousPath) => {
       return rows.join('\n');
     }
     default:
-      throw new Error(`unknown diffNode type: ${type}`);
+      throw new Error(`Unknown diffNode type: ${type}`);
   }
 };
 
