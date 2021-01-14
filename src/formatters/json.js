@@ -20,7 +20,7 @@ const buildDiffs = (diffNode, previousPath) => {
     case 'root':
       return children.flatMap((node) => buildDiffs(node, previousPath));
     default:
-      throw new Error(`unknown diffNode type: ${type}`);
+      throw new Error(`Unknown diffNode type: ${type}`);
   }
 };
 
