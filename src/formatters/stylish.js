@@ -1,7 +1,7 @@
 import isPlainObject from 'lodash/isPlainObject.js';
 
 const tab = ' '.repeat(2);
-const actionPrefixMap = {
+const diffPrefixesMap = {
   unchanged: ' '.repeat(2),
   nested: ' '.repeat(2),
   added: '+ ',
@@ -23,7 +23,7 @@ const stringifyValue = (value, depth, format) => {
   const row = rows.join('\n');
   const currentTab = getCurrentTab(depth);
 
-  return `{\n${row}\n${currentTab}${actionPrefixMap.unchanged}}`;
+  return `{\n${row}\n${currentTab}${diffPrefixesMap.unchanged}}`;
 };
 
 const format = (diffNode, depth) => {
@@ -35,16 +35,16 @@ const format = (diffNode, depth) => {
     case 'added':
     case 'removed':
     case 'unchanged':
-      return `${currentTab}${actionPrefixMap[type]}${key}: ${stringifyValue(value, depth, format)}`;
+      return `${currentTab}${diffPrefixesMap[type]}${key}: ${stringifyValue(value, depth, format)}`;
     case 'updated':
       return [
-        `${currentTab}${actionPrefixMap.removed}${key}: ${stringifyValue(previousValue, depth, format)}`,
-        `${currentTab}${actionPrefixMap.added}${key}: ${stringifyValue(currentValue, depth, format)}`,
+        `${currentTab}${diffPrefixesMap.removed}${key}: ${stringifyValue(previousValue, depth, format)}`,
+        `${currentTab}${diffPrefixesMap.added}${key}: ${stringifyValue(currentValue, depth, format)}`,
       ];
     case 'nested': {
       const rows = children.flatMap((node) => format(node, depth + 1));
       const row = rows.join('\n');
-      return `${currentTab}${actionPrefixMap[type]}${key}: {\n${row}\n${currentTab}${actionPrefixMap[type]}}`;
+      return `${currentTab}${diffPrefixesMap[type]}${key}: {\n${row}\n${currentTab}${diffPrefixesMap[type]}}`;
     }
     case 'root': {
       const rows = diffNode.children.map((node) => format(node, depth + 1));
