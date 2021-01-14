@@ -1,25 +1,17 @@
-const textMap = {
-  updated: 'Property was updated',
-  added: 'Property was added',
-  removed: 'Property was removed',
-};
-
 const buildDiffs = (diffNode, previousPath) => {
   const {
     key, type, value, previousValue, currentValue, children,
   } = diffNode;
   const path = previousPath === null ? key : `${previousPath}.${key}`;
-  const message = textMap[type];
-
   switch (type) {
     case 'added':
     case 'removed':
       return {
-        type, message, path, value,
+        type, path, value,
       };
     case 'updated':
       return {
-        type, message, path, currentValue, previousValue,
+        type, path, currentValue, previousValue,
       };
     case 'unchanged':
       return [];
