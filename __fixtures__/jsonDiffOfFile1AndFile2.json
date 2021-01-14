@@ -2,32 +2,27 @@
   "differences": [
     {
       "type": "added",
-      "message": "Property was added",
       "path": "common.follow",
       "value": false
     },
     {
       "type": "removed",
-      "message": "Property was removed",
       "path": "common.setting2",
       "value": 200
     },
     {
       "type": "updated",
-      "message": "Property was updated",
       "path": "common.setting3",
       "currentValue": null,
       "previousValue": true
     },
     {
       "type": "added",
-      "message": "Property was added",
       "path": "common.setting4",
       "value": "blah blah"
     },
     {
       "type": "added",
-      "message": "Property was added",
       "path": "common.setting5",
       "value": {
         "key5": "value5"
@@ -35,27 +30,23 @@
     },
     {
       "type": "updated",
-      "message": "Property was updated",
       "path": "common.setting6.doge.wow",
       "currentValue": "so much",
       "previousValue": ""
     },
     {
       "type": "added",
-      "message": "Property was added",
       "path": "common.setting6.ops",
       "value": "vops"
     },
     {
       "type": "updated",
-      "message": "Property was updated",
       "path": "group1.baz",
       "currentValue": "bars",
       "previousValue": "bas"
     },
     {
       "type": "updated",
-      "message": "Property was updated",
       "path": "group1.nest",
       "currentValue": "str",
       "previousValue": {
@@ -64,7 +55,6 @@
     },
     {
       "type": "removed",
-      "message": "Property was removed",
       "path": "group2",
       "value": {
         "abc": 12345,
@@ -75,7 +65,6 @@
     },
     {
       "type": "added",
-      "message": "Property was added",
       "path": "group3",
       "value": {
         "fee": 100500,
