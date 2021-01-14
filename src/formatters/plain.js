@@ -1,8 +1,8 @@
-import isPlainObject from 'lodash/isPlainObject.js';
+import isObjectLike from 'lodash/isObjectLike.js';
 import isString from 'lodash/isString.js';
 
 const normalizeValue = (value) => {
-  if (isPlainObject(value)) {
+  if (isObjectLike(value)) {
     return '[complex value]';
   }
   return isString(value)
