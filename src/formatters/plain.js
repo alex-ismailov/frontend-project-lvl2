@@ -23,10 +23,8 @@ const format = (diffNode, path) => {
       return `Property '${[...path, key].join('.')}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
     case 'unchanged':
       return [];
-    case 'nested': {
-      const currentPath = [...path, key];
-      return children.flatMap((node) => format(node, currentPath));
-    }
+    case 'nested':
+      return children.flatMap((node) => format(node, [...path, key]));
     case 'root': {
       const rows = children.flatMap((node) => format(node, path));
       return rows.join('\n');
