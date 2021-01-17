@@ -2,6 +2,9 @@ import isPlainObject from 'lodash/isPlainObject.js';
 
 const tab = ' '.repeat(2);
 
+/* When you dive 1 level deep into the tree, an offset of 2 tabs is added,
+except for the root node. The root node adds an offset of 1 tab,
+so there is no key in front of it. */
 const getIndent = (depth) => tab.repeat(2 * depth - 1);
 
 const stringifyValue = (value, depth, format) => {
