@@ -10,32 +10,23 @@ const normalizeValue = (value) => {
     : value;
 };
 
-const buildPath = (previousPath, currentPath) => {
-  if (previousPath) {
-    return `${previousPath}.${currentPath}`;
-  }
-  return currentPath;
-};
-
-const format = (diffNode, previousPath) => {
+const format = (diffNode, path) => {
   const {
     key, type, value, previousValue, currentValue, children,
   } = diffNode;
   switch (type) {
     case 'added':
-      return `Property '${buildPath(previousPath, key)}' was added with value: ${normalizeValue(value)}`;
+      return `Property '${[...path, key].join('.')}' was added with value: ${normalizeValue(value)}`;
     case 'removed':
-      return `Property '${buildPath(previousPath, key)}' was removed`;
+      return `Property '${[...path, key].join('.')}' was removed`;
     case 'updated':
-      return `Property '${buildPath(previousPath, key)}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
+      return `Property '${[...path, key].join('.')}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
     case 'unchanged':
       return [];
-    case 'nested': {
-      const currentPath = buildPath(previousPath, key);
-      return children.flatMap((node) => format(node, currentPath));
-    }
+    case 'nested':
+      return children.flatMap((node) => format(node, [...path, key]));
     case 'root': {
-      const rows = children.flatMap((node) => format(node, previousPath));
+      const rows = children.flatMap((node) => format(node, path));
       return rows.join('\n');
     }
     default:
@@ -43,4 +34,4 @@ const format = (diffNode, previousPath) => {
   }
 };
 
-export default (diffTree) => format(diffTree, null);
+export default (diffTree) => format(diffTree, []);
