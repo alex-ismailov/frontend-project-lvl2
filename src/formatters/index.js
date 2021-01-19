@@ -1,6 +1,5 @@
 import formatStylish from './stylish.js';
 import formatPlain from './plain.js';
-import formatJson from './json.js';
 
 export default (diffTree, type) => {
   switch (type) {
@@ -9,7 +8,7 @@ export default (diffTree, type) => {
     case 'plain':
       return formatPlain(diffTree);
     case 'json':
-      return formatJson(diffTree);
+      return JSON.stringify(diffTree);
 
     default:
       throw new Error(`Unknown formatter type: ${type}`);
