@@ -1,11 +1,11 @@
-import isObjectLike from 'lodash/isObjectLike.js';
-import isString from 'lodash/isString.js';
+import _ from 'lodash';
+// import isString from 'lodash/isString.js';
 
 const stringifyValue = (value) => {
-  if (isObjectLike(value)) {
+  if (_.isObjectLike(value)) {
     return '[complex value]';
   }
-  return isString(value)
+  return _.isString(value)
     ? `'${value}'`
     : value;
 };
