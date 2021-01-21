@@ -1,4 +1,4 @@
-import isPlainObject from 'lodash/isPlainObject.js';
+import _ from 'lodash';
 
 const tab = ' '.repeat(2);
 
@@ -8,7 +8,7 @@ so there is no key in front of it. */
 const getIndent = (depth) => tab.repeat(2 * depth - 1);
 
 const stringifyValue = (value, depth, format) => {
-  if (!isPlainObject(value)) {
+  if (!_.isPlainObject(value)) {
     return value;
   }
 
