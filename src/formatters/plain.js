@@ -1,5 +1,4 @@
 import _ from 'lodash';
-// import isString from 'lodash/isString.js';
 
 const stringifyValue = (value) => {
   if (_.isObjectLike(value)) {
