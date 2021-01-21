@@ -2,10 +2,10 @@ import _ from 'lodash';
 
 const tab = ' '.repeat(2);
 
-/* When you dive 1 level deep into the tree, an offset of 2 tabs is added,
-except for the root node. The root node adds an offset of 1 tab,
-so there is no key in front of it. */
-const getIndent = (depth) => tab.repeat(2 * depth - 1);
+/* Since the root diffNode does not have a diff sign, unlike the other diffNodes
+in order to maintain correct visual nesting, we add a double space to the main indentation
+at each nesting level, except when we are at the root diffNode level. */
+const getIndent = (depth) => tab.repeat(depth) + '  '.repeat(depth - 1);
 
 const stringifyValue = (value, depth, format) => {
   if (!_.isPlainObject(value)) {
