@@ -4,21 +4,6 @@ const {
   has, union, sortBy, isPlainObject, isEqual,
 } = _;
 
-/*
-  diffTree is an object tree of nodes.
-  The root node is called root, its children property contains an array of diffNodes
-  which describes the difference between the values for the keys of the same name in
-  the compared objects.
-  * If the values by keys in both objects are not objects, but they are equal,
-    then the node is marked with type 'unchanged'.
-  * If the key is found only in one of the objects,
-    then the node is marked with the corresponding type: added or 'removed'.
-  * If the values by keys in both objects are not objects, and their values are not equal,
-    then the node is marked with the 'updated' type.
-  * If both current key values are objects, then diffTree is evaluated recursively,
-    and the resulting tree is placed in the children property of the diffNode.
-    The diffNode is marked as 'nested'
-*/
 const getDiffTreeChildren = (obj1, obj2) => {
   const keysUnion = union(Object.keys(obj1), Object.keys(obj2));
   const sortedKeysUnion = sortBy(keysUnion);
