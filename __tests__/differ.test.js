@@ -20,17 +20,17 @@ const file1YmlPath = getFixturePath('file1.yml');
 const file2YmlPath = getFixturePath('file2.yml');
 const fileEmptyYamlPath = getFixturePath('fileEmpty.yaml');
 
-const stylishDiffOfFile1AndFile2 = readFile('stylishDiffOfFile1AndFile2.txt').trim();
-const stylishDiffOfFile1AndFileEmpty = readFile('stylishDiffOfFile1AndFileEmpty.txt').trim();
-const stylishDiffOfEmptyFiles = readFile('stylishDiffOfEmptyFiles.txt').trim();
+const stylishDiffOfFile1AndFile2 = readFile('stylishDiffOfFile1AndFile2.txt');
+const stylishDiffOfFile1AndFileEmpty = readFile('stylishDiffOfFile1AndFileEmpty.txt');
+const stylishDiffOfEmptyFiles = readFile('stylishDiffOfEmptyFiles.txt');
 
-const plainDiffOfFile1AndFile2 = readFile('plainDiffOfFile1AndFile2.txt').trim();
-const plainDiffOfFile1AndFileEmpty = readFile('plainDiffOfFile1AndFileEmpty.txt').trim();
-const plainDiffOfEmptyFiles = readFile('plainDiffOfEmptyFiles.txt').trim();
+const plainDiffOfFile1AndFile2 = readFile('plainDiffOfFile1AndFile2.txt');
+const plainDiffOfFile1AndFileEmpty = readFile('plainDiffOfFile1AndFileEmpty.txt');
+const plainDiffOfEmptyFiles = readFile('plainDiffOfEmptyFiles.txt');
 
-const jsonDiffOfFile1AndFile2 = readFile('jsonDiffOfFile1AndFile2.json').trim();
-const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.json').trim();
-const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json').trim();
+const jsonDiffOfFile1AndFile2 = readFile('jsonDiffOfFile1AndFile2.json');
+const jsonDiffOfFile1AndFileEmpty = readFile('jsonDiffOfFile1AndFileEmpty.json');
+const jsonDiffOfEmptyFiles = readFile('jsonDiffOfEmptyFiles.json');
 
 const file1TxtPath = getFixturePath('file1.txt');
 
