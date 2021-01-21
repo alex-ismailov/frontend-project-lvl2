@@ -1,3 +1,0 @@
-Property 'common' was removed
-Property 'group1' was removed
-Property 'group2' was removed
