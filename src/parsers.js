@@ -9,6 +9,6 @@ export default (data, format) => {
       return yaml.safeLoad(data) ?? '';
 
     default:
-      throw new Error(`unknown data format: ${format}`);
+      throw new Error(`Unknown data format: ${format}`);
   }
 };
