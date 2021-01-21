@@ -1,7 +1,7 @@
 import isObjectLike from 'lodash/isObjectLike.js';
 import isString from 'lodash/isString.js';
 
-const normalizeValue = (value) => {
+const stringifyValue = (value) => {
   if (isObjectLike(value)) {
     return '[complex value]';
   }
@@ -16,11 +16,11 @@ const format = (diffNode, path) => {
   } = diffNode;
   switch (type) {
     case 'added':
-      return `Property '${[...path, key].join('.')}' was added with value: ${normalizeValue(value)}`;
+      return `Property '${[...path, key].join('.')}' was added with value: ${stringifyValue(value)}`;
     case 'removed':
       return `Property '${[...path, key].join('.')}' was removed`;
     case 'updated':
-      return `Property '${[...path, key].join('.')}' was updated. From ${normalizeValue(previousValue)} to ${normalizeValue(currentValue)}`;
+      return `Property '${[...path, key].join('.')}' was updated. From ${stringifyValue(previousValue)} to ${stringifyValue(currentValue)}`;
     case 'unchanged':
       return [];
     case 'nested':
